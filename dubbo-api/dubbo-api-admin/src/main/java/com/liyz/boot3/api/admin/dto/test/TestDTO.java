@@ -24,4 +24,7 @@ public class TestDTO implements Serializable {
     @Schema(description = "名字")
     @NotBlank(message = "名字不能为空")
     private String name;
+
+    @Schema(description = "年龄")
+    private Integer age;
 }
