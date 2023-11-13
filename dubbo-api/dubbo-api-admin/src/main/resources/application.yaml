@@ -1,0 +1,45 @@
+# spring
+spring:
+  application:
+    name: dubbo-api-admin
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+#server
+server:
+  port: 7071
+  servlet:
+    context-path: /admin
+  tomcat:
+    accept-count: 10
+    threads:
+      max: 10
+      min-spare: 5
+  error:
+    path: /liyz/error
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: '测试'
+      paths-to-match:
+        - '/**'
+      packages-to-scan:
+        - com.liyz.boot3.api.admin.controller.test
+    - group: "员工"
+      paths-to-match:
+        - '/**'
+      packages-to-scan:
+        - com.liyz.boot3.api.admin.controller.staff
+  default-flat-param-object: true
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+    swagger-model-name: 实体类列表
+  basic:
+    username: abc
+    password: 123
+    enable: false
