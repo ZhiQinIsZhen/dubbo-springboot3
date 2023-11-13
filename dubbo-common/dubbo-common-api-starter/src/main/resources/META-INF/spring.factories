@@ -1,3 +1,0 @@
-# Auto Configure
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.liyz.boot3.common.api.config.WebMvcAutoConfig
