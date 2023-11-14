@@ -16,6 +16,7 @@
         <module>dubbo-common-api-starter</module>
         <module>dubbo-common-remote</module>
         <module>dubbo-common-service</module>
+        <module>dubbo-common-util</module>
     </modules>
 
     <properties>

@@ -58,6 +58,11 @@
                 <artifactId>search-remote</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.liyz.boot3</groupId>
+                <artifactId>dubbo-common-util</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

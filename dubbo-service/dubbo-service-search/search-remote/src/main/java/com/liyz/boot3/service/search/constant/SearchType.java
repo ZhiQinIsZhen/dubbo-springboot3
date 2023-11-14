@@ -1,5 +1,6 @@
 package com.liyz.boot3.service.search.constant;
 
+import com.liyz.boot3.service.search.bo.bid.BidDetailBO;
 import com.liyz.boot3.service.search.bo.company.CompanyBO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum SearchType {
     COMPANY(CompanyBO.class, "公司基本信息"),
+    BID_DETAIL(BidDetailBO.class, "招投标明细"),
     ;
 
     private final Class<?> clazz;

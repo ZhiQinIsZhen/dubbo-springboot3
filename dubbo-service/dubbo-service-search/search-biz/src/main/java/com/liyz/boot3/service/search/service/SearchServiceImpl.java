@@ -180,8 +180,9 @@ public abstract class SearchServiceImpl<BO extends BaseBO, BaseQuery extends Pag
      * @return 命中结果
      */
     private RemotePage<BO> doQuery(SearchRequest request) {
-        log.info("es index : [{}], body : {}", properties.getIndex(), request.toString());
+        log.info("es index : [{}], body : {}", properties.getIndex(), request);
         try {
+            long start = System.currentTimeMillis();
             SearchResponse<BO> response = client.search(request, boClass);
             List<BO> boList = response.hits().hits()
                     .stream()
@@ -192,7 +193,10 @@ public abstract class SearchServiceImpl<BO extends BaseBO, BaseQuery extends Pag
                     })
                     .peek(this::afterHandle)
                     .collect(Collectors.toList());
-            return new RemotePage<>(boList, response.hits().hits().size(), Math.max(0, request.from()) + 1, request.size());
+            long end = System.currentTimeMillis();
+            log.info("es hits count : [{}], es take : {}ms, java code take : {}ms",
+                    response.hits().total().value(), response.took(), end - start);
+            return new RemotePage<>(boList, response.hits().total().value(), Math.max(0, request.from()) + 1, request.size());
         } catch (IOException e) {
             log.error("query es error", e);
             throw new RemoteSearchServiceException(SearchExceptionCodeEnum.ES_SEARCH_ERROR);

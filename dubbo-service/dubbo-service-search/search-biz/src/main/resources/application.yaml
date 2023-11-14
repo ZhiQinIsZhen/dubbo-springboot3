@@ -16,3 +16,7 @@ company:
   search:
     index: search-company-online
     search-type: company
+bid:
+  detail:
+    index: bidding-v0830
+    search-type: bid_detail

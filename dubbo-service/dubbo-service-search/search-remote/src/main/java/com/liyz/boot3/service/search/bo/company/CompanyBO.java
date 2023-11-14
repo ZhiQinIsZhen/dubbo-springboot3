@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serial;
-import java.util.Date;
 
 /**
  * Desc:
@@ -32,5 +31,5 @@ public class CompanyBO extends BaseBO {
 
     private String addressTag;
 
-    private Date establishmentTime;
+    private Long establishmentTime;
 }

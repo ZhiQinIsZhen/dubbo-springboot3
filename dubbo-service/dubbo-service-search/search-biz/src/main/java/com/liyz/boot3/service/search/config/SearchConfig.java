@@ -4,6 +4,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpHost;
@@ -63,7 +64,11 @@ public class SearchConfig {
                                 .addInterceptorLast((HttpResponseInterceptor) (response, context) -> response.addHeader("X-Elastic-Product", "Elasticsearch"))
                         )
                         .build(),
-                new JacksonJsonpMapper(new JsonMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)))
+                new JacksonJsonpMapper(new JsonMapper()
+                        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                        .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+                )
+        )
         );
     }
 }
