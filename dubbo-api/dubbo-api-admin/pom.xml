@@ -25,6 +25,14 @@
             <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-registry-nacos</artifactId>
+        </dependency>
+        <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
         </dependency>
@@ -39,6 +47,10 @@
         <dependency>
             <groupId>com.liyz.boot3</groupId>
             <artifactId>dubbo-common-api-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.boot3</groupId>
+            <artifactId>search-remote</artifactId>
         </dependency>
     </dependencies>
 

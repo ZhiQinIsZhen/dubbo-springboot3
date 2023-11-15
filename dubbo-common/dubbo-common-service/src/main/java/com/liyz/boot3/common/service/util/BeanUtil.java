@@ -65,8 +65,8 @@ public class BeanUtil {
      * @param <S> 原对象泛型
      * @param <T> 目标对象泛型
      */
-    public static <S, T> List<T> copyProperties(List<S> sources, Supplier<T> targetSupplier) {
-        return copyProperties(sources, targetSupplier, (BiConsumer<S, T>) null);
+    public static <S, T> List<T> copyList(List<S> sources, Supplier<T> targetSupplier) {
+        return copyList(sources, targetSupplier, null);
     }
 
     /**
@@ -79,7 +79,7 @@ public class BeanUtil {
      * @param <S> 原对象泛型
      * @param <T> 目标对象泛型
      */
-    public static <S, T> List<T> copyProperties(List<S> sources, Supplier<T> targetSupplier, BiConsumer<S, T> ext) {
+    public static <S, T> List<T> copyList(List<S> sources, Supplier<T> targetSupplier, BiConsumer<S, T> ext) {
         if (CollectionUtils.isEmpty(sources)) {
             return List.of();
         }
@@ -98,8 +98,8 @@ public class BeanUtil {
      * @param <S> 原对象泛型
      * @param <T> 目标对象泛型
      */
-    public static <S, T> RemotePage<T> copyProperties(RemotePage<S> pageSource, Supplier<T> targetSupplier) {
-        return copyProperties(pageSource, targetSupplier, (BiConsumer<S, T>) null);
+    public static <S, T> RemotePage<T> copyRemotePage(RemotePage<S> pageSource, Supplier<T> targetSupplier) {
+        return copyRemotePage(pageSource, targetSupplier, null);
     }
 
     /**
@@ -112,12 +112,12 @@ public class BeanUtil {
      * @param <S> 原对象泛型
      * @param <T> 目标对象泛型
      */
-    public static <S, T> RemotePage<T> copyProperties(RemotePage<S> pageSource, Supplier<T> targetSupplier, BiConsumer<S, T> ext) {
+    public static <S, T> RemotePage<T> copyRemotePage(RemotePage<S> pageSource, Supplier<T> targetSupplier, BiConsumer<S, T> ext) {
         if (Objects.isNull(pageSource)) {
             return RemotePage.of();
         }
         return new RemotePage<>(
-                copyProperties(pageSource.getList(), targetSupplier, ext),
+                copyList(pageSource.getList(), targetSupplier, ext),
                 pageSource.getTotal(),
                 pageSource.getPageNum(),
                 pageSource.getPageSize()

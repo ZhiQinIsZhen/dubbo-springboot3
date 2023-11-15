@@ -1,23 +1,30 @@
 package com.liyz.boot3.service.search.service;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.IdsQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.util.NamedValue;
 import com.liyz.boot3.common.remote.page.RemotePage;
 import com.liyz.boot3.service.search.bo.BaseBO;
+import com.liyz.boot3.service.search.bo.agg.AggBO;
 import com.liyz.boot3.service.search.exception.RemoteSearchServiceException;
 import com.liyz.boot3.service.search.exception.SearchExceptionCodeEnum;
 import com.liyz.boot3.service.search.query.PageQuery;
+import com.liyz.boot3.service.search.query.agg.AggQuery;
+import com.liyz.boot3.service.search.response.EsResponse;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -50,7 +57,7 @@ public abstract class SearchServiceImpl<BO extends BaseBO, BaseQuery extends Pag
                 .from(0)
                 .size(10)
         );
-        RemotePage<BO> remotePage = doQuery(request);
+        RemotePage<BO> remotePage = doQuery(request).getPageData();
         if (CollectionUtils.isEmpty(remotePage.getList())) {
             return null;
         }
@@ -73,7 +80,7 @@ public abstract class SearchServiceImpl<BO extends BaseBO, BaseQuery extends Pag
                 .from(0)
                 .size(ids.size())
         );
-        RemotePage<BO> remotePage = doQuery(request);
+        RemotePage<BO> remotePage = doQuery(request).getPageData();
         if (CollectionUtils.isEmpty(remotePage.getList())) {
             return List.of();
         }
@@ -89,7 +96,7 @@ public abstract class SearchServiceImpl<BO extends BaseBO, BaseQuery extends Pag
     @Override
     public BO search(BaseQuery baseQuery) {
         SearchRequest request = SearchRequest.of(s -> buildQuery(baseQuery).from(0).size(10));
-        RemotePage<BO> remotePage = doQuery(request);
+        RemotePage<BO> remotePage = doQuery(request).getPageData();
         if (CollectionUtils.isEmpty(remotePage.getList())) {
             return null;
         }
@@ -105,7 +112,7 @@ public abstract class SearchServiceImpl<BO extends BaseBO, BaseQuery extends Pag
     @Override
     public List<BO> searchList(BaseQuery query) {
         SearchRequest request = SearchRequest.of(s -> buildQuery(query).from(0).size(query.getListMaxCount()));
-        RemotePage<BO> remotePage = doQuery(request);
+        RemotePage<BO> remotePage = doQuery(request).getPageData();
         if (CollectionUtils.isEmpty(remotePage.getList())) {
             return List.of();
         }
@@ -120,12 +127,35 @@ public abstract class SearchServiceImpl<BO extends BaseBO, BaseQuery extends Pag
      */
     @Override
     public RemotePage<BO> searchPage(BaseQuery query) {
-        SearchRequest request = SearchRequest.of(s ->
-                buildQuery(query)
+        SearchRequest request = SearchRequest.of(s -> buildQuery(query)
                 .from(query.getPageNum() - 1)
                 .size(query.getPageSize())
         );
-        return doQuery(request);
+        return doQuery(request).getPageData();
+    }
+
+    /**
+     * 聚合查询
+     *
+     * @param baseQuery 查询条件
+     * @param aggQuery 聚合条件
+     * @return 聚合结果
+     */
+    @Override
+    public List<AggBO> agg(BaseQuery baseQuery, AggQuery aggQuery) {
+        SearchRequest request = SearchRequest.of(s -> buildQuery(baseQuery)
+                        .from(0)
+                        .size(0)
+                        .aggregations("agg_".concat(aggQuery.getField()), agg -> agg
+                                .terms(t -> t
+                                        .field(aggQuery.getField())
+                                        .size(aggQuery.getSize())
+                                        .minDocCount(aggQuery.getMinDocCount())
+                                        .order(NamedValue.of(aggQuery.getOrder(), aggQuery.isDesc() ? SortOrder.Desc : SortOrder.Asc))
+                                )
+                        )
+        );
+        return doQuery(request).getAggData().get("agg_".concat(aggQuery.getField()));
     }
 
     /**
@@ -179,7 +209,7 @@ public abstract class SearchServiceImpl<BO extends BaseBO, BaseQuery extends Pag
      * @param request 查询条件
      * @return 命中结果
      */
-    private RemotePage<BO> doQuery(SearchRequest request) {
+    private EsResponse<BO> doQuery(SearchRequest request) {
         log.info("es index : [{}], body : {}", properties.getIndex(), request);
         try {
             long start = System.currentTimeMillis();
@@ -196,7 +226,20 @@ public abstract class SearchServiceImpl<BO extends BaseBO, BaseQuery extends Pag
             long end = System.currentTimeMillis();
             log.info("es hits count : [{}], es take : {}ms, java code take : {}ms",
                     response.hits().total().value(), response.took(), end - start);
-            return new RemotePage<>(boList, response.hits().total().value(), Math.max(0, request.from()) + 1, request.size());
+            Map<String, List<AggBO>> aggData = new HashMap<>();
+            if (!CollectionUtils.isEmpty(response.aggregations())) {
+                for (String key : response.aggregations().keySet()) {
+                    aggData.put(key, response.aggregations().get(key).sterms().buckets().array()
+                            .stream()
+                            .map(item -> AggBO.of(item.key().stringValue(), item.docCount()))
+                            .collect(Collectors.toList())
+                    );
+                }
+            }
+            return EsResponse.of(
+                    new RemotePage<>(boList, response.hits().total().value(), Math.max(0, request.from()) + 1, request.size()),
+                    aggData
+                    );
         } catch (IOException e) {
             log.error("query es error", e);
             throw new RemoteSearchServiceException(SearchExceptionCodeEnum.ES_SEARCH_ERROR);

@@ -16,6 +16,7 @@
         <springboot.version>3.1.5</springboot.version>
         <hutool.version>5.8.22</hutool.version>
         <knife4j.version>4.3.0</knife4j.version>
+        <apache.dubbo.version>3.3.0-beta.1</apache.dubbo.version>
     </properties>
 
     <dependencyManagement>
@@ -37,6 +38,16 @@
                 <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-spring-boot-starter</artifactId>
+                <version>${apache.dubbo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-registry-nacos</artifactId>
+                <version>${apache.dubbo.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.liyz.boot3</groupId>
@@ -56,6 +67,11 @@
             <dependency>
                 <groupId>com.liyz.boot3</groupId>
                 <artifactId>search-remote</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.liyz.boot3</groupId>
+                <artifactId>dubbo-exception-filter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

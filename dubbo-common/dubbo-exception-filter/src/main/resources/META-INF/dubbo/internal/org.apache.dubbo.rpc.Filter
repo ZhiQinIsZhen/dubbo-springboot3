@@ -1,0 +1,1 @@
+remoteServiceExceptionFilter=com.liyz.boot3.exception.filter.RemoteServiceExceptionFilter

@@ -1,7 +1,7 @@
 # spring
 spring:
   application:
-    name: dubbo-service-search
+    name: &application_name dubbo-service-search
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
@@ -11,6 +11,28 @@ spring:
 logging:
   pattern:
     console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5level) %clr(${PID:-}){magenta} %clr([%t]){faint} %clr([%F:%L]){cyan} %clr(:){faint} %m%n%throwable'
+# dubbo
+dubbo:
+  application:
+    name: *application_name
+    qos-enable: false
+  protocol:
+    port: 20777
+  provider:
+    filter: remoteServiceExceptionFilter,-exception
+    version: 1.0.0
+  consumer:
+    version: 1.0.0
+    check: false
+    cluster: failfast
+    timeout: 60000
+  registry:
+    timeout: 5000
+    address: nacos://localhost:8848
+  metadata-report:
+    address: nacos://localhost:8848
+  scan:
+    base-packages: com.liyz.boot3.service.search.provider
 # index
 company:
   search:

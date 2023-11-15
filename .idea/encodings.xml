@@ -13,6 +13,8 @@
     <file url="file://$PROJECT_DIR$/dubbo-common/dubbo-common-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dubbo-common/dubbo-common-util/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dubbo-common/dubbo-common-util/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dubbo-common/dubbo-exception-filter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dubbo-common/dubbo-exception-filter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dubbo-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dubbo-common/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dubbo-dependencies-bom/src/main/java" charset="UTF-8" />

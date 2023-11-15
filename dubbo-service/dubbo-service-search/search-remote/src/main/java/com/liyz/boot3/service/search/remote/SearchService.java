@@ -2,7 +2,9 @@ package com.liyz.boot3.service.search.remote;
 
 import com.liyz.boot3.common.remote.page.RemotePage;
 import com.liyz.boot3.service.search.bo.BaseBO;
+import com.liyz.boot3.service.search.bo.agg.AggBO;
 import com.liyz.boot3.service.search.query.PageQuery;
+import com.liyz.boot3.service.search.query.agg.AggQuery;
 
 import java.util.List;
 
@@ -54,4 +56,13 @@ public interface SearchService<BO extends BaseBO, BaseQuery extends PageQuery> {
      * @return 结果
      */
     RemotePage<BO> searchPage(BaseQuery baseQuery);
+
+    /**
+     * 聚合查询
+     *
+     * @param baseQuery 查询条件
+     * @param aggQuery 聚合条件
+     * @return 聚合结果
+     */
+    List<AggBO> agg(BaseQuery baseQuery, AggQuery aggQuery);
 }

@@ -1,7 +1,7 @@
 # spring
 spring:
   application:
-    name: dubbo-api-admin
+    name: &application_name dubbo-api-admin
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
@@ -17,6 +17,27 @@ server:
       min-spare: 5
   error:
     path: /liyz/error
+# dubbo
+dubbo:
+  application:
+    name: *application_name
+    qos-enable: false
+  protocol:
+    port: 20771
+    threads: 1
+  provider:
+    filter: remoteServiceExceptionFilter,-exception
+    version: 1.0.0
+  consumer:
+    version: 1.0.0
+    check: false
+    cluster: failfast
+    timeout: 60000
+  registry:
+    timeout: 5000
+    address: nacos://localhost:8848
+  metadata-report:
+    address: nacos://localhost:8848
 # springdoc
 springdoc:
   default-flat-param-object: true
@@ -34,6 +55,11 @@ springdoc:
         - /**
       packages-to-scan:
         - com.liyz.boot3.api.admin.controller.staff
+    - group: 搜索
+      paths-to-match:
+        - /**
+      packages-to-scan:
+        - com.liyz.boot3.api.admin.controller.search
 # knife4j
 knife4j:
   enable: true
