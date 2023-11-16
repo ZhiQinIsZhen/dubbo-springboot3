@@ -1,6 +1,6 @@
 #server
 server:
-  port: 8081
+  port: 8080
   shutdown: graceful
 #spring
 spring:
@@ -18,6 +18,10 @@ spring:
           uri: http://localhost:7071
           predicates:
             - Path=/admin/**
+        - id: api-user
+          uri: http://localhost:7072
+          predicates:
+            - Path=/user/**
 knife4j:
   # 聚合swagger文档
   gateway:
@@ -38,3 +42,18 @@ knife4j:
         service-name: api-admin
         context-path: /admin
         order: 3
+      - name: 用户前台服务
+        url: /user/v3/api-docs?group=default
+        service-name: api-user
+        context-path: /user
+        order: 101
+      - name: 用户前台服务-测试
+        url: /user/v3/api-docs/test?group=default
+        service-name: api-user
+        context-path: /user
+        order: 102
+      - name: 用户前台服务-搜索
+        url: /user/v3/api-docs/search?group=default
+        service-name: api-user
+        context-path: /user
+        order: 103

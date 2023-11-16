@@ -1,15 +1,15 @@
 # spring
 spring:
   application:
-    name: &application_name dubbo-api-admin
+    name: &application_name dubbo-api-user
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
 #server
 server:
-  port: 7071
+  port: 7072
   servlet:
-    context-path: /admin
+    context-path: /user
   tomcat:
     accept-count: 10
     threads:
@@ -28,7 +28,7 @@ dubbo:
     name: *application_name
     qos-enable: false
   protocol:
-    port: 20771
+    port: 20772
     threads: 1
   provider:
     filter: remoteServiceExceptionFilter,-exception
@@ -55,19 +55,19 @@ springdoc:
       paths-to-match:
         - /**
       packages-to-scan:
-        - com.liyz.boot3.api.admin.controller.test
-    - group: staff
-      display-name: 员工
+        - com.liyz.boot3.api.user.controller.test
+    - group: user
+      display-name: 用户
       paths-to-match:
         - /**
       packages-to-scan:
-        - com.liyz.boot3.api.admin.controller.staff
+        - com.liyz.boot3.api.user.controller.user
     - group: search
       display-name: 搜索
       paths-to-match:
         - /**
       packages-to-scan:
-        - com.liyz.boot3.api.admin.controller.search
+        - com.liyz.boot3.api.user.controller.search
 # knife4j
 knife4j:
   enable: true

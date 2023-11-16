@@ -14,6 +14,7 @@
 
     <modules>
         <module>dubbo-api-admin</module>
+        <module>dubbo-api-user</module>
     </modules>
 
 </project>
