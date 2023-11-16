@@ -19,6 +19,8 @@
     <file url="file://$PROJECT_DIR$/dubbo-common/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dubbo-dependencies-bom/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dubbo-dependencies-bom/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dubbo-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dubbo-gateway/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dubbo-service/dubbo-service-search/search-biz/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dubbo-service/dubbo-service-search/search-biz/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dubbo-service/dubbo-service-search/search-dao/src/main/java" charset="UTF-8" />

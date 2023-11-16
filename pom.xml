@@ -13,6 +13,7 @@
         <module>dubbo-common</module>
         <module>dubbo-api</module>
         <module>dubbo-service</module>
+        <module>dubbo-gateway</module>
     </modules>
 
     <properties>

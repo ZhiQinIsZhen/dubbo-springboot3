@@ -1,0 +1,40 @@
+#server
+server:
+  port: 8081
+  shutdown: graceful
+#spring
+spring:
+  application:
+    name: dubbo-gateway
+  #gateway-#路由规则
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: api-admin
+          uri: http://localhost:7071
+          predicates:
+            - Path=/admin/**
+knife4j:
+  # 聚合swagger文档
+  gateway:
+    enabled: true
+    routes:
+      - name: 后台管理服务
+        url: /admin/v3/api-docs?group=default
+        service-name: api-admin
+        context-path: /admin
+        order: 1
+      - name: 后台管理服务-测试
+        url: /admin/v3/api-docs/test?group=default
+        service-name: api-admin
+        context-path: /admin
+        order: 2
+      - name: 后台管理服务-搜索
+        url: /admin/v3/api-docs/search?group=default
+        service-name: api-admin
+        context-path: /admin
+        order: 3

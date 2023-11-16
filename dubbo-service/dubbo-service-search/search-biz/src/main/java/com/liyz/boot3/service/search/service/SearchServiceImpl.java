@@ -200,7 +200,7 @@ public abstract class SearchServiceImpl<BO extends BaseBO, BaseQuery extends Pag
     private SearchRequest.Builder buildQuery(BaseQuery baseQuery) {
         BoolQuery.Builder boolBuild = new BoolQuery.Builder();
         this.buildCustomerQuery(boolBuild, baseQuery);
-        return new SearchRequest.Builder().index(properties.getIndex()).query(new Query.Builder().bool(boolBuild.build()).build());
+        return new SearchRequest.Builder().index(properties.getIndex()).query(new Query.Builder().bool(boolBuild.build()).build()).source(s -> s.filter(sf -> sf.excludes("company_id")));
     }
 
     /**

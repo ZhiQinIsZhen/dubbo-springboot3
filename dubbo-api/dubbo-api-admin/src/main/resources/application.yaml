@@ -17,6 +17,10 @@ server:
       min-spare: 5
   error:
     path: /liyz/error
+# log
+logging:
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5level) %clr(${PID:-}){magenta} %clr([%t]){faint} %clr([%F:%L]){cyan} %clr(:){faint} %m%n%throwable'
 # dubbo
 dubbo:
   application:
@@ -45,17 +49,20 @@ springdoc:
     path: /v3/api-docs
     enabled: true
   group-configs:
-    - group: 测试
+    - group: test
+      display-name: 测试
       paths-to-match:
         - /**
       packages-to-scan:
         - com.liyz.boot3.api.admin.controller.test
-    - group: 员工
+    - group: staff
+      display-name: 员工
       paths-to-match:
         - /**
       packages-to-scan:
         - com.liyz.boot3.api.admin.controller.staff
-    - group: 搜索
+    - group: search
+      display-name: 搜索
       paths-to-match:
         - /**
       packages-to-scan:
