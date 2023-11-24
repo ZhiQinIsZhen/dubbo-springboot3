@@ -19,6 +19,10 @@ public class RemotePage<T> implements Serializable {
         return new RemotePage<>(List.of(), 0, 1, 10);
     }
 
+    public static <T> RemotePage<T> of(List<T> list, long total, long pageNum, long pageSize) {
+        return new RemotePage<>(list, total, pageNum, pageSize);
+    }
+
     public RemotePage(List<T> list, long total, long pageNum, long pageSize) {
         this.list = list;
         this.total = total;

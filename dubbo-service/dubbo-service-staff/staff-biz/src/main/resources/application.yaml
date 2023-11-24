@@ -1,0 +1,50 @@
+server:
+  shutdown: graceful
+# spring
+spring:
+  application:
+    name: &application_name dubbo-service-staff
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+# datasource
+  datasource:
+    url: jdbc:mysql://localhost:3306/staff3?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
+    type: com.zaxxer.hikari.HikariDataSource
+    username: root
+    password: root
+# hikari
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 5
+      idle-timeout: 30000
+      connection-timeout: 30000
+      max-lifetime: 1800000
+# log
+logging:
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5level) %clr(${PID:-}){magenta} %clr([%t]){faint} %clr([%F:%L]){cyan} %clr(:){faint} %m%n%throwable'
+  level:
+    com.liyz.boot3.service.staff.dao: debug
+# dubbo
+dubbo:
+  application:
+    name: *application_name
+    qos-enable: false
+  protocol:
+    port: 20773
+  provider:
+    filter: remoteServiceExceptionFilter,-exception
+    version: 1.0.0
+  consumer:
+    version: 1.0.0
+    check: false
+    cluster: failfast
+    timeout: 60000
+  registry:
+    timeout: 5000
+    address: nacos://localhost:8848
+  metadata-report:
+    address: nacos://localhost:8848
+  scan:
+    base-packages: com.liyz.boot3.service.staff.provider

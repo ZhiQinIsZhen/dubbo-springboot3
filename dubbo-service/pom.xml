@@ -14,6 +14,9 @@
 
     <modules>
         <module>dubbo-service-search</module>
+        <module>dubbo-service-staff</module>
+        <module>dubbo-service-user</module>
+        <module>dubbo-service-auth</module>
     </modules>
 
 </project>

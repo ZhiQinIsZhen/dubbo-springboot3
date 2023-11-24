@@ -21,12 +21,12 @@ public enum SearchExceptionCodeEnum implements IExceptionService {
     private final String message;
 
     @Override
-    public String getCode() {
+    public String code() {
         return code;
     }
 
     @Override
-    public String getMessage() {
+    public String message() {
         return message;
     }
 }

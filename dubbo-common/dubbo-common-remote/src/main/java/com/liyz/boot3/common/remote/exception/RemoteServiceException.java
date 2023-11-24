@@ -21,8 +21,8 @@ public class RemoteServiceException extends RuntimeException{
     }
 
     public RemoteServiceException(IExceptionService codeService) {
-        super(codeService.getMessage());
-        this.code = codeService.getCode();
+        super(codeService.message());
+        this.code = codeService.code();
     }
 
     /**

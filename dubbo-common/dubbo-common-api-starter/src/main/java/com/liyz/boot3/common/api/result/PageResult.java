@@ -38,8 +38,8 @@ public class PageResult<T> {
         this.total = isNull ? 0L : data.getTotal();
         this.pageNum = isNull ? 1 : data.getPageNum();
         this.pageSize = isNull ? 10 : data.getPageSize();
-        this.code = CommonExceptionCodeEnum.SUCCESS.getCode();
-        this.message = CommonExceptionCodeEnum.SUCCESS.getMessage();
+        this.code = CommonExceptionCodeEnum.SUCCESS.code();
+        this.message = CommonExceptionCodeEnum.SUCCESS.message();
     }
 
     @Schema(description = "code码")
@@ -69,7 +69,7 @@ public class PageResult<T> {
     }
 
     public static <T> PageResult<T> error(IExceptionService codeEnum) {
-        return new PageResult<T>(codeEnum.getCode(), codeEnum.getMessage());
+        return new PageResult<T>(codeEnum.code(), codeEnum.message());
     }
 
     public void setPageNum(long pageNum) {

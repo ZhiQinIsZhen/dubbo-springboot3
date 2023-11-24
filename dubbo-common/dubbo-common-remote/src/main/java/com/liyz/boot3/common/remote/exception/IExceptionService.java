@@ -14,12 +14,12 @@ public interface IExceptionService {
      *
      * @return code
      */
-    String getCode();
+    String code();
 
     /**
      * 获取异常信息
      *
      * @return 异常信息
      */
-    String getMessage();
+    String message();
 }

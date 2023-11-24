@@ -128,7 +128,7 @@ public abstract class SearchServiceImpl<BO extends BaseBO, BaseQuery extends Pag
     @Override
     public RemotePage<BO> searchPage(BaseQuery query) {
         SearchRequest request = SearchRequest.of(s -> buildQuery(query)
-                .from(query.getPageNum() - 1)
+                .from((query.getPageNum() - 1) * query.getPageSize())
                 .size(query.getPageSize())
         );
         return doQuery(request).getPageData();

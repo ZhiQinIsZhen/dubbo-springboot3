@@ -25,12 +25,12 @@ public enum CommonExceptionCodeEnum implements IExceptionService{
     }
 
     @Override
-    public String getCode() {
+    public String code() {
         return code;
     }
 
     @Override
-    public String getMessage() {
+    public String message() {
         return message;
     }
 }
