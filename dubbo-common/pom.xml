@@ -19,6 +19,7 @@
         <module>dubbo-common-util</module>
         <module>dubbo-exception-filter</module>
         <module>dubbo-common-dao-starter</module>
+        <module>dubbo-security-client-starter</module>
     </modules>
 
 </project>

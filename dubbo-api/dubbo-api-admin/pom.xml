@@ -50,7 +50,23 @@
         </dependency>
         <dependency>
             <groupId>com.liyz.boot3</groupId>
+            <artifactId>dubbo-security-client-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.boot3</groupId>
             <artifactId>search-remote</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.boot3</groupId>
+            <artifactId>staff-remote</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.boot3</groupId>
+            <artifactId>user-remote</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.boot3</groupId>
+            <artifactId>auth-remote</artifactId>
         </dependency>
     </dependencies>
 
