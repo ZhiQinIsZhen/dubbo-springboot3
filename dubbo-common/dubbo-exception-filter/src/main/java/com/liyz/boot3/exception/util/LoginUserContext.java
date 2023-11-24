@@ -14,7 +14,7 @@ import org.apache.dubbo.rpc.RpcContext;
 @UtilityClass
 public class LoginUserContext {
 
-    private static final String ATTACHMENT_LOGIN_USER = "loginUser";
+    public static final String ATTACHMENT_LOGIN_USER = "loginUser";
     private static final Long DEFAULT_SYSTEM_USER_ID = -1L;
 
     private static final InheritableThreadLocal<Long> innerContext = new InheritableThreadLocal<>();

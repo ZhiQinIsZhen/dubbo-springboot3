@@ -24,6 +24,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,7 +62,7 @@ public class StaffInfoController {
         return Result.success(BeanUtil.copyProperties(remoteStaffInfoService.getByStaffId(authUserBO.getAuthId()), StaffInfoVO::new));
     }
 
-//    @PreAuthorize("hasAuthority('DUBBO-API-ADMIN:STAFFINFO'.toUpperCase())")
+    @PreAuthorize("hasAuthority('DUBBO-API-ADMIN:STAFFINFO'.toUpperCase())")
     @Operation(summary = "分页查询员工信息")
     @GetMapping("/page")
     public PageResult<StaffInfoVO> page(PageDTO page) {
@@ -69,7 +70,7 @@ public class StaffInfoController {
         return PageResult.success(BeanUtil.copyRemotePage(remotePage, StaffInfoVO::new));
     }
 
-//    @PreAuthorize("hasAuthority('DUBBO-API-ADMIN:STAFFLOG'.toUpperCase())")
+    @PreAuthorize("hasAuthority('DUBBO-API-ADMIN:STAFFLOG'.toUpperCase())")
     @Operation(summary = "分页查询员工登录日志")
     @GetMapping("/loginLogs/page")
     public PageResult<StaffLoginLogVO> pageLoginLogs(StaffLogPageDTO page) {
@@ -80,7 +81,7 @@ public class StaffInfoController {
         return PageResult.success(BeanUtil.copyRemotePage(remotePage, StaffLoginLogVO::new));
     }
 
-//    @PreAuthorize("hasAuthority('DUBBO-API-ADMIN:STAFFLOG'.toUpperCase())")
+    @PreAuthorize("hasAuthority('DUBBO-API-ADMIN:STAFFLOG'.toUpperCase())")
     @Operation(summary = "分页查询员工登出日志")
     @GetMapping("/logoutLogs/page")
     public PageResult<StaffLogoutLogVO> pageLogoutLogs(StaffLogPageDTO page) {
