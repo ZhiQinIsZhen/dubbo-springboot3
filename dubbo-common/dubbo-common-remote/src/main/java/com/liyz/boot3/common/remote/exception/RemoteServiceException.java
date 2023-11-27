@@ -1,6 +1,7 @@
 package com.liyz.boot3.common.remote.exception;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serial;
 
@@ -11,9 +12,13 @@ import java.io.Serial;
  * @version 1.0.0
  * @date 2023/11/13 10:35
  */
+@Getter
+@Setter
 public class RemoteServiceException extends RuntimeException{
     @Serial
     private static final long serialVersionUID = 1L;
+
+    private IExceptionService codeService;
 
     public RemoteServiceException() {
         this(CommonExceptionCodeEnum.FAIL);
@@ -21,12 +26,15 @@ public class RemoteServiceException extends RuntimeException{
 
     public RemoteServiceException(IExceptionService codeService) {
         super(codeService.getMessage());
-        this.code = codeService.getCode();
+        this.codeService = codeService;
     }
 
-    /**
-     * 异常code
-     */
-    @Getter
-    private final String code;
+    public String getCode() {
+        return codeService.getCode();
+    }
+
+    @Override
+    public String getMessage() {
+        return codeService.getMessage();
+    }
 }
