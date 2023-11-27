@@ -48,7 +48,7 @@ dubbo:
   application:
     name: *application_name
     qos-enable: false
-    serialize-check-status: WARN
+    serialize-check-status: STRICT
   protocol:
     port: 20770
   provider:

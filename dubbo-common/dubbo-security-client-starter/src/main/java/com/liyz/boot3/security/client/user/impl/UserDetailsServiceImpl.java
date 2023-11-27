@@ -39,7 +39,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, EnvironmentAw
         AuthUserBO authUserBO = AuthContext.AuthService.loadByUsername(username.substring(index + 1),
                 Device.getByType(Integer.parseInt(username.substring(0, index))));
         if (Objects.isNull(authUserBO)) {
-            throw new UsernameNotFoundException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL.message());
+            throw new UsernameNotFoundException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL.getMessage());
         }
         RpcContext.getClientAttachment().setAttachment(LoginUserContext.ATTACHMENT_LOGIN_USER, authUserBO.getAuthId().toString());
         return AuthUserDetails.build(authUserBO);

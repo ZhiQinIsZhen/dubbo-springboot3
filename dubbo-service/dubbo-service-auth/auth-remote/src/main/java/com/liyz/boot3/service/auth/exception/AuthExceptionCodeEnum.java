@@ -31,12 +31,12 @@ public enum AuthExceptionCodeEnum implements IExceptionService {
     private final String message;
 
     @Override
-    public String code() {
+    public String getCode() {
         return code;
     }
 
     @Override
-    public String message() {
+    public String getMessage() {
         return message;
     }
 }

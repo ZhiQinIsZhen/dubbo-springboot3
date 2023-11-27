@@ -30,7 +30,7 @@ public class Result<T> {
     }
 
     public Result(IExceptionService codeEnum) {
-        this(codeEnum.code(), codeEnum.message());
+        this(codeEnum.getCode(), codeEnum.getMessage());
     }
 
     @Schema(description = "code码")

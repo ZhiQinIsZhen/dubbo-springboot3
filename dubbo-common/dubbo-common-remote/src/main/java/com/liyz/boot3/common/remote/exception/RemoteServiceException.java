@@ -11,7 +11,6 @@ import java.io.Serial;
  * @version 1.0.0
  * @date 2023/11/13 10:35
  */
-@Getter
 public class RemoteServiceException extends RuntimeException{
     @Serial
     private static final long serialVersionUID = 1L;
@@ -21,12 +20,13 @@ public class RemoteServiceException extends RuntimeException{
     }
 
     public RemoteServiceException(IExceptionService codeService) {
-        super(codeService.message());
-        this.code = codeService.code();
+        super(codeService.getMessage());
+        this.code = codeService.getCode();
     }
 
     /**
      * 异常code
      */
+    @Getter
     private final String code;
 }
