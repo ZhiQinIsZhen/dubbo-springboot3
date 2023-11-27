@@ -9,6 +9,8 @@ import com.liyz.boot3.service.search.bo.company.CompanyBO;
 import com.liyz.boot3.service.search.query.company.CompanyPageQuery;
 import com.liyz.boot3.service.search.remote.company.RemoteCompanyService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -37,6 +39,7 @@ public class SearchController {
 
     @Operation(summary = "分页查询公司")
     @GetMapping("/company/page")
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
     public PageResult<CompanyVO> companyPage(@ParameterObject @Valid CompanyDTO companyDTO) {
         RemotePage<CompanyBO> remotePage = remoteCompanyService.searchPage(BeanUtil.copyProperties(companyDTO, CompanyPageQuery::new));
         return PageResult.success(BeanUtil.copyRemotePage(remotePage, CompanyVO::new, (s, t) -> {

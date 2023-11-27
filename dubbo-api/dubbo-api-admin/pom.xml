@@ -58,6 +58,10 @@
         </dependency>
         <dependency>
             <groupId>com.liyz.boot3</groupId>
+            <artifactId>dubbo-common-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.boot3</groupId>
             <artifactId>search-remote</artifactId>
         </dependency>
         <dependency>

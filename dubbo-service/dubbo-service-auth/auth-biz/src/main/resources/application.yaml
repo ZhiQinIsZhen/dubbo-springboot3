@@ -1,5 +1,6 @@
 server:
   shutdown: graceful
+  port: 7070
 # spring
 spring:
   application:
@@ -9,7 +10,7 @@ spring:
     allow-circular-references: true
 # datasource
   datasource:
-    url: jdbc:mysql://localhost:3306/staff3?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/auth?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
     type: com.zaxxer.hikari.HikariDataSource
     username: root
     password: root
@@ -47,6 +48,7 @@ dubbo:
   application:
     name: *application_name
     qos-enable: false
+    serialize-check-status: WARN
   protocol:
     port: 20770
   provider:

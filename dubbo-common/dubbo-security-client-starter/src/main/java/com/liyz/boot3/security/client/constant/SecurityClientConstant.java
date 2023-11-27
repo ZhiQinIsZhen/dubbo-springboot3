@@ -16,7 +16,7 @@ public interface SecurityClientConstant {
             "/doc.html",
             "/favicon.ico",
             "/webjars/**",
-            "/v2/api-docs",
+            "/v3/api-docs/**",
             "/configuration/ui",
             "/swagger-resources"
     };

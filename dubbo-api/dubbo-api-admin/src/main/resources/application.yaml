@@ -27,6 +27,7 @@ dubbo:
   application:
     name: *application_name
     qos-enable: false
+    serialize-check-status: WARN
   protocol:
     port: 20771
     threads: 1
@@ -56,6 +57,12 @@ springdoc:
         - /**
       packages-to-scan:
         - com.liyz.boot3.api.admin.controller.test
+    - group: authentication
+      display-name: 鉴权
+      paths-to-match:
+        - /**
+      packages-to-scan:
+        - com.liyz.boot3.api.admin.controller.authentication
     - group: staff
       display-name: 员工
       paths-to-match:
@@ -78,3 +85,4 @@ knife4j:
     username: abc
     password: 123
     enable: false
+auth.advice.enable: true

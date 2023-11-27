@@ -2,6 +2,7 @@ package com.liyz.boot3.security.client.advice;
 
 import com.liyz.boot3.common.api.result.Result;
 import com.liyz.boot3.service.auth.exception.AuthExceptionCodeEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @version 1.0.0
  * @date 2023/11/24 11:15
  */
+@Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 @ConditionalOnProperty(prefix = "auth.advice", name = "enable", havingValue = "true", matchIfMissing = true)

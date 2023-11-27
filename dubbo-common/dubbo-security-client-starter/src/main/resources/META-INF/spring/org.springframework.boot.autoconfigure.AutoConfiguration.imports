@@ -1,1 +1,2 @@
 com.liyz.boot3.security.client.config.AuthSecurityClientAutoConfig
+com.liyz.boot3.security.client.advice.AuthExceptionHandleAdvice

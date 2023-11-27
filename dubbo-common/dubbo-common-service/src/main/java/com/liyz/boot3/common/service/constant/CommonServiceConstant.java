@@ -13,4 +13,6 @@ public interface CommonServiceConstant {
      * 默认连接符
      */
     String DEFAULT_JOINER = ":";
+
+    String DEFAULT_PADDING = "================================================================";
 }

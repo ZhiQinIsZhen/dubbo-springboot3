@@ -20,6 +20,7 @@
         <apache.dubbo.version>3.3.0-beta.1</apache.dubbo.version>
         <mybatis.plus.version>3.5.4.1</mybatis.plus.version>
         <redisson.version>3.24.3</redisson.version>
+        <io.jwt.version>0.12.3</io.jwt.version>
     </properties>
 
     <dependencyManagement>
@@ -70,6 +71,21 @@
                 <groupId>org.apache.dubbo</groupId>
                 <artifactId>dubbo-registry-nacos</artifactId>
                 <version>${apache.dubbo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${io.jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${io.jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${io.jwt.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.liyz.boot3</groupId>

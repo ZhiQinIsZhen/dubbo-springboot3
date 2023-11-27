@@ -32,16 +32,21 @@ knife4j:
         service-name: api-admin
         context-path: /admin
         order: 1
+      - name: 后台管理服务-鉴权
+        url: /admin/v3/api-docs/authentication?group=default
+        service-name: api-admin
+        context-path: /admin
+        order: 2
       - name: 后台管理服务-测试
         url: /admin/v3/api-docs/test?group=default
         service-name: api-admin
         context-path: /admin
-        order: 2
+        order: 3
       - name: 后台管理服务-搜索
         url: /admin/v3/api-docs/search?group=default
         service-name: api-admin
         context-path: /admin
-        order: 3
+        order: 4
       - name: 用户前台服务
         url: /user/v3/api-docs?group=default
         service-name: api-user

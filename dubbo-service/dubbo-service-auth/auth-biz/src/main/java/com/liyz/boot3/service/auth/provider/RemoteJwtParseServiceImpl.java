@@ -19,6 +19,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClaims;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboService;
@@ -70,11 +72,11 @@ public class RemoteJwtParseServiceImpl implements RemoteJwtParseService {
         if (Objects.isNull(authUser)) {
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
-        Claims claims = this.parseClaimsJws(authToken, Joiner.on(CommonServiceConstant.DEFAULT_JOINER).join(authJwtDO.getSigningKey(), authUser.getSalt()));
+        Claims claims = this.parseClaimsJws(authToken, Joiner.on(CommonServiceConstant.DEFAULT_PADDING).join(authJwtDO.getSigningKey(), authUser.getSalt()));
         if (authJwtDO.getOneOnline() && Objects.nonNull(authUser.getCheckTime()) && claims.getNotBefore().compareTo(authUser.getCheckTime()) < 0) {
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.OTHERS_LOGIN);
         }
-        if (!clientId.equals(claims.getAudience())) {
+        if (!clientId.equals(claims.getAudience().stream().findFirst().get())) {
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
         if (DateUtil.currentDate().compareTo(claims.getExpiration()) > 0) {
@@ -90,7 +92,7 @@ public class RemoteJwtParseServiceImpl implements RemoteJwtParseService {
                 .checkTime(claims.getNotBefore())
                 .roleIds(Lists.newArrayList())
                 .token(authToken)
-                .clientId(claims.getAudience())
+                .clientId(claims.getAudience().stream().findFirst().get())
                 .authorities(authJwtDO.getIsAuthority() ? remoteAuthService.authorities(authUser) : Lists.newArrayList())
                 .build();
     }
@@ -112,18 +114,16 @@ public class RemoteJwtParseServiceImpl implements RemoteJwtParseService {
             log.warn("生成token失败, 没有找到该应用下jwt配置信息，clientId : {}", authUser.getClientId());
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.LOGIN_ERROR);
         }
-        Claims claims = new DefaultClaims();
-        claims.setId(authUser.getAuthId().toString());
-        claims.setSubject(authUser.getUsername());
-        claims.setAudience(authUser.getClientId());
-        claims.setExpiration(new Date(System.currentTimeMillis() + authJwtDO.getExpiration() * 1000));
-        claims.setNotBefore(authUser.getCheckTime());
-        claims.put(CLAIM_DEVICE, authUser.getDevice().getType());
         return Jwts.builder()
-                .setClaims(claims)
+                .id(authUser.getAuthId().toString())
+                .subject(authUser.getUsername())
+                .audience().add(authUser.getClientId()).and()
+                .expiration(new Date(System.currentTimeMillis() + authJwtDO.getExpiration() * 1000))
+                .notBefore(authUser.getCheckTime())
+                .claim(CLAIM_DEVICE, authUser.getDevice().getType())
                 .signWith(
                         SignatureAlgorithm.forName(authJwtDO.getSignatureAlgorithm()),
-                        Joiner.on(CommonServiceConstant.DEFAULT_JOINER).join(authJwtDO.getSigningKey(), authUser.getSalt())
+                        Keys.hmacShaKeyFor(Decoders.BASE64.decode(Joiner.on(CommonServiceConstant.DEFAULT_PADDING).join(authJwtDO.getSigningKey(), authUser.getSalt())))
                 )
                 .compact();
     }
@@ -149,7 +149,7 @@ public class RemoteJwtParseServiceImpl implements RemoteJwtParseService {
     private Claims parseClaimsJws(final String token, final String signingKey) {
         Claims claims;
         try {
-            claims = Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token).getBody();
+            claims = Jwts.parser().setSigningKey(signingKey).build().parseClaimsJws(token).getBody();
         } catch (Exception e) {
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
