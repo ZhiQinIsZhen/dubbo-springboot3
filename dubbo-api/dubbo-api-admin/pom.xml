@@ -54,6 +54,10 @@
         </dependency>
         <dependency>
             <groupId>com.liyz.boot3</groupId>
+            <artifactId>dubbo-exception-filter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.boot3</groupId>
             <artifactId>dubbo-security-client-starter</artifactId>
         </dependency>
         <dependency>

@@ -76,7 +76,7 @@ public class RemoteJwtParseServiceImpl implements RemoteJwtParseService {
         if (authJwtDO.getOneOnline() && Objects.nonNull(authUser.getCheckTime()) && claims.getNotBefore().compareTo(authUser.getCheckTime()) < 0) {
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.OTHERS_LOGIN);
         }
-        if (!clientId.equals(claims.getAudience().stream().findFirst().get())) {
+        if (!clientId.equals(claims.getAudience().stream().findFirst().orElse(StringUtils.EMPTY))) {
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
         if (DateUtil.currentDate().compareTo(claims.getExpiration()) > 0) {
@@ -92,7 +92,7 @@ public class RemoteJwtParseServiceImpl implements RemoteJwtParseService {
                 .checkTime(claims.getNotBefore())
                 .roleIds(Lists.newArrayList())
                 .token(authToken)
-                .clientId(claims.getAudience().stream().findFirst().get())
+                .clientId(claims.getAudience().stream().findFirst().orElse(StringUtils.EMPTY))
                 .authorities(authJwtDO.getIsAuthority() ? remoteAuthService.authorities(authUser) : Lists.newArrayList())
                 .build();
     }

@@ -5,7 +5,7 @@ server:
 #spring
 spring:
   application:
-    name: dubbo-gateway
+    name: &application_name dubbo-gateway
   #gateway-#路由规则
   cloud:
     gateway:
@@ -22,6 +22,28 @@ spring:
           uri: http://localhost:7072
           predicates:
             - Path=/user/**
+# dubbo
+dubbo:
+  application:
+    name: *application_name
+    qos-enable: false
+    serialize-check-status: WARN
+  protocol:
+    port: 20774
+    threads: 2
+  provider:
+    filter: remoteServiceExceptionFilter,-exception
+    version: 1.0.0
+  consumer:
+    version: 1.0.0
+    check: false
+    cluster: failfast
+    timeout: 60000
+  registry:
+    timeout: 5000
+    address: nacos://localhost:8848
+  metadata-report:
+    address: nacos://localhost:8848
 knife4j:
   # 聚合swagger文档
   gateway:
@@ -62,3 +84,14 @@ knife4j:
         service-name: api-user
         context-path: /user
         order: 103
+anonymous:
+  mapping:
+    server:
+      dubbo-api-admin:
+        - /auth/register
+        - /auth/login
+        - /test/hello
+      dubbo-api-user:
+        - /auth/register
+        - /auth/login
+# 免鉴权
