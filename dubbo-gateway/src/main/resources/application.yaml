@@ -4,6 +4,8 @@ server:
   shutdown: graceful
 #spring
 spring:
+  main:
+    web-application-type: reactive
   application:
     name: &application_name dubbo-gateway
   #gateway-#路由规则
@@ -88,10 +90,10 @@ anonymous:
   mapping:
     server:
       dubbo-api-admin:
-        - /auth/register
-        - /auth/login
-        - /test/hello
+        - /admin/auth/register
+        - /admin/auth/login
+        - /admin/test/hello
       dubbo-api-user:
-        - /auth/register
-        - /auth/login
+        - /user/auth/register
+        - /user/auth/login
 # 免鉴权

@@ -61,7 +61,7 @@ public class GlobalJWTFilter implements GlobalFilter {
         log.info("path : {}", path);
         String clientId = new AntPathMatcher().match("/admin/**", path) ? "dubbo-api-admin" : "dubbo-api-user";
         Set<String> mappingSet = properties.getServer().get(clientId);
-        if (!CollectionUtils.isEmpty(mappingSet) && mappingSet.contains(path)) {
+        if (CollectionUtils.isEmpty(mappingSet) || !mappingSet.contains(path)) {
             String jwt = req.getHeaders().getFirst("Authorization");
             if (StringUtils.isBlank(jwt)) {
                 return ResponseUtil.response(resp, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
