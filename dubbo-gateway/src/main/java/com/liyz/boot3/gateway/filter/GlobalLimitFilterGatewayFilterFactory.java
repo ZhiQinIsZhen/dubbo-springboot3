@@ -2,7 +2,6 @@ package com.liyz.boot3.gateway.filter;
 
 import com.liyz.boot3.common.remote.exception.CommonExceptionCodeEnum;
 import com.liyz.boot3.gateway.util.ResponseUtil;
-import com.liyz.boot3.service.auth.exception.AuthExceptionCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.RequestRateLimiterGatewayFilterFactory;
@@ -12,7 +11,6 @@ import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -42,16 +40,13 @@ public class GlobalLimitFilterGatewayFilterFactory extends RequestRateLimiterGat
             }
             String finalRouteId = routeId;
             return limiter.isAllowed(routeId, key).flatMap((response) -> {
-                Iterator var4 = response.getHeaders().entrySet().iterator();
-                while(var4.hasNext()) {
-                    Map.Entry<String, String> header = (Map.Entry)var4.next();
+                for (Map.Entry<String, String> header : response.getHeaders().entrySet()) {
                     exchange.getResponse().getHeaders().add(header.getKey(), header.getValue());
                 }
-
                 if (response.isAllowed()) {
                     return chain.filter(exchange);
                 }
-                log.warn("已限流: {}", finalRouteId);
+                log.warn("已限流: {}, key : {}", finalRouteId, key);
                 return ResponseUtil.response(exchange.getResponse(), CommonExceptionCodeEnum.OUT_LIMIT_COUNT);
             });
         });
