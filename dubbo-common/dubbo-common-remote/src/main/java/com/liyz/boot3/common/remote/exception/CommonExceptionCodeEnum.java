@@ -12,6 +12,7 @@ public enum CommonExceptionCodeEnum implements IExceptionService{
     FAIL("1", "失败"),
     PARAMS_VALIDATED("10000", "参数校验失败"),
     REMOTE_SERVICE_FAIL("10005", "服务异常"),
+    OUT_LIMIT_COUNT("10006", "访问频率过快"),
     ;
 
     private final String code;

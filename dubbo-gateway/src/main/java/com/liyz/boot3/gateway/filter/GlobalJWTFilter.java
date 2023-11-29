@@ -13,9 +13,9 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ServerWebExchange;
@@ -32,7 +32,7 @@ import java.util.Set;
  * @date 2023/11/27 16:44
  */
 @Slf4j
-@Configuration
+@Component
 @EnableConfigurationProperties(AnonymousMappingProperties.class)
 public class GlobalJWTFilter implements GlobalFilter {
 

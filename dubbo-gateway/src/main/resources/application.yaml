@@ -20,10 +20,22 @@ spring:
           uri: http://localhost:7071
           predicates:
             - Path=/admin/**
+          filters:
+            - name: GlobalLimitFilter
+              args:
+                key-resolver: '#{@keyResolver}'
+                redis-rate-limiter.replenishRate: 1
+                redis-rate-limiter.burstCapacity: 3
         - id: api-user
           uri: http://localhost:7072
           predicates:
             - Path=/user/**
+  # redis
+  data:
+    redis:
+      database: 2
+      host: 127.0.0.1
+      port: 6379
 # dubbo
 dubbo:
   application:
@@ -86,6 +98,7 @@ knife4j:
         service-name: api-user
         context-path: /user
         order: 103
+# 免鉴权
 anonymous:
   mapping:
     server:
@@ -96,4 +109,3 @@ anonymous:
       dubbo-api-user:
         - /user/auth/register
         - /user/auth/login
-# 免鉴权
