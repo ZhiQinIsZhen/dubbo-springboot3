@@ -11,10 +11,6 @@
 
     <artifactId>auth-biz</artifactId>
 
-    <properties>
-        <spring.jwt.version>1.1.1.RELEASE</spring.jwt.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.liyz.boot3</groupId>
@@ -84,11 +80,6 @@
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo-registry-nacos</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-jwt</artifactId>
-            <version>${spring.jwt.version}</version>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

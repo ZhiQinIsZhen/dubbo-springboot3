@@ -4,7 +4,6 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.liyz.boot3.common.service.constant.CommonServiceConstant;
 import com.liyz.boot3.common.util.DateUtil;
-import com.liyz.boot3.common.util.JsonMapperUtil;
 import com.liyz.boot3.common.util.PatternUtil;
 import com.liyz.boot3.service.auth.bo.AuthUserBO;
 import com.liyz.boot3.service.auth.enums.Device;
@@ -15,8 +14,8 @@ import com.liyz.boot3.service.auth.model.AuthJwtDO;
 import com.liyz.boot3.service.auth.remote.RemoteAuthService;
 import com.liyz.boot3.service.auth.remote.RemoteJwtParseService;
 import com.liyz.boot3.service.auth.service.AuthJwtService;
+import com.liyz.boot3.service.auth.util.JwtUtil;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClaims;
 import io.jsonwebtoken.io.Decoders;
@@ -24,7 +23,6 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboService;
-import org.springframework.security.jwt.JwtHelper;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -114,7 +112,7 @@ public class RemoteJwtParseServiceImpl implements RemoteJwtParseService {
             log.warn("生成token失败, 没有找到该应用下jwt配置信息，clientId : {}", authUser.getClientId());
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.LOGIN_ERROR);
         }
-        return Jwts.builder()
+        return JwtUtil.builder()
                 .id(authUser.getAuthId().toString())
                 .subject(authUser.getUsername())
                 .audience().add(authUser.getClientId()).and()
@@ -149,7 +147,7 @@ public class RemoteJwtParseServiceImpl implements RemoteJwtParseService {
     private Claims parseClaimsJws(final String token, final String signingKey) {
         Claims claims;
         try {
-            claims = Jwts.parser().setSigningKey(signingKey).build().parseClaimsJws(token).getBody();
+            claims = JwtUtil.parser().setSigningKey(signingKey).build().parseClaimsJws(token).getBody();
         } catch (Exception e) {
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
@@ -163,6 +161,6 @@ public class RemoteJwtParseServiceImpl implements RemoteJwtParseService {
      * @return 解析后属性
      */
     private Claims parseClaimsJws(final String token) {
-        return JsonMapperUtil.readValue(JwtHelper.decode(token).getClaims(), DefaultClaims.class);
+        return JwtUtil.decode(token, DefaultClaims.class);
     }
 }
