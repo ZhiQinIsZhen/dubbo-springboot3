@@ -4,6 +4,7 @@ import com.liyz.boot3.api.user.dto.test.TestDTO;
 import com.liyz.boot3.api.user.vo.test.TestVO;
 import com.liyz.boot3.common.api.result.Result;
 import com.liyz.boot3.common.service.util.BeanUtil;
+import com.liyz.boot3.security.client.annotation.Anonymous;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/test")
 public class TestController {
 
+    @Anonymous
     @Operation(summary = "你好")
     @GetMapping("/hello")
     public Result<TestVO> hello(@ParameterObject @Valid TestDTO testDTO) {

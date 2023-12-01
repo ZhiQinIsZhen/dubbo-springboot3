@@ -30,6 +30,12 @@ spring:
           uri: http://localhost:7072
           predicates:
             - Path=/user/**
+          filters:
+            - name: GlobalLimitFilter
+              args:
+                key-resolver: '#{@keyResolver}'
+                redis-rate-limiter.replenishRate: 1
+                redis-rate-limiter.burstCapacity: 3
   # redis
   data:
     redis:
@@ -103,9 +109,11 @@ anonymous:
   mapping:
     server:
       dubbo-api-admin:
+        - /admin/v3/api-docs/**
         - /admin/auth/register
         - /admin/auth/login
         - /admin/test/hello
       dubbo-api-user:
-        - /user/auth/register
-        - /user/auth/login
+        - /user/v3/api-docs/**
+        - /user/user/register
+        - /user/user/login

@@ -68,6 +68,12 @@ springdoc:
         - /**
       packages-to-scan:
         - com.liyz.boot3.api.user.controller.search
+    - group: authen
+      display-name: 鉴权
+      paths-to-match:
+        - /**
+      packages-to-scan:
+        - com.liyz.boot3.api.user.controller.authen
 # knife4j
 knife4j:
   enable: true
@@ -78,3 +84,4 @@ knife4j:
     username: abc
     password: 123
     enable: false
+auth.advice.enable: true

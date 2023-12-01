@@ -61,25 +61,39 @@ public class GlobalJWTFilter implements GlobalFilter {
         log.info("path : {}", path);
         String clientId = new AntPathMatcher().match("/admin/**", path) ? "dubbo-api-admin" : "dubbo-api-user";
         Set<String> mappingSet = properties.getServer().get(clientId);
-        if (CollectionUtils.isEmpty(mappingSet) || !mappingSet.contains(path)) {
-            String jwt = req.getHeaders().getFirst("Authorization");
-            if (StringUtils.isBlank(jwt)) {
+        if (!CollectionUtils.isEmpty(mappingSet) && (mappingSet.contains(path) || pathMatch(path, mappingSet))) {
+            return chain.filter(exchange);
+        }
+        String jwt = req.getHeaders().getFirst("Authorization");
+        if (StringUtils.isBlank(jwt)) {
+            return ResponseUtil.response(resp, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
+        }
+        log.info("JWT : {}", jwt);
+        try {
+            AuthUserBO authUserBO = remoteJwtParseService.parseToken(jwt, clientId);
+            if (Objects.isNull(authUserBO)) {
                 return ResponseUtil.response(resp, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
             }
-            log.info("JWT : {}", jwt);
-            try {
-                AuthUserBO authUserBO = remoteJwtParseService.parseToken(jwt, clientId);
-                if (Objects.isNull(authUserBO)) {
-                    return ResponseUtil.response(resp, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
-                }
-                log.info("AuthUserBO : {}", JsonMapperUtil.toJSONString(authUserBO));
-            } catch (RemoteServiceException e) {
-                return ResponseUtil.response(resp, e.getCodeService());
-            } catch (Exception e) {
-                log.error("parse token error", e);
-                return ResponseUtil.response(resp, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
-            }
+            log.info("AuthUserBO : {}", JsonMapperUtil.toJSONString(authUserBO));
+        } catch (RemoteServiceException e) {
+            return ResponseUtil.response(resp, e.getCodeService());
+        } catch (Exception e) {
+            log.error("parse token error", e);
+            return ResponseUtil.response(resp, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
         return chain.filter(exchange);
+    }
+
+    private boolean pathMatch(String path, Set<String> mappingSet) {
+        if (CollectionUtils.isEmpty(mappingSet)) {
+            return false;
+        }
+        for (String mapping : mappingSet) {
+            if (new AntPathMatcher().match(mapping, path)) {
+                mappingSet.add(path);
+                return true;
+            }
+        }
+        return false;
     }
 }
