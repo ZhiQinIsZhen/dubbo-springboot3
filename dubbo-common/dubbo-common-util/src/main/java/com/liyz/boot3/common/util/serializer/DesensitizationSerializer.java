@@ -41,6 +41,9 @@ public class DesensitizationSerializer extends JsonSerializer<String> implements
 
     @Override
     public JsonSerializer<?> createContextual(SerializerProvider serializerProvider, BeanProperty beanProperty) throws JsonMappingException {
+        if (Objects.isNull(beanProperty)) {
+            return this;
+        }
         Desensitization desensitization = beanProperty.getAnnotation(Desensitization.class);
         return Objects.isNull(desensitization) ? this : new DesensitizationSerializer(desensitization);
     }

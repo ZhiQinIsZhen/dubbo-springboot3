@@ -1,6 +1,8 @@
 package com.liyz.boot3.api.admin.vo.staff;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.liyz.boot3.common.util.annotation.Desensitization;
+import com.liyz.boot3.common.util.constant.DesensitizationType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,17 +28,17 @@ public class StaffInfoVO implements Serializable {
     private Long staffId;
 
     @Schema(description = "真实名称")
-//    @Desensitization(DesensitizationType.REAL_NAME)
+    @Desensitization(DesensitizationType.REAL_NAME)
     private String realName;
 
     @Schema(description = "昵称")
     private String nickName;
 
-//    @Desensitization(DesensitizationType.MOBILE)
+    @Desensitization(DesensitizationType.MOBILE)
     @Schema(description = "手机号码")
     private String mobile;
 
-//    @Desensitization(DesensitizationType.EMAIL)
+    @Desensitization(DesensitizationType.EMAIL)
     @Schema(description = "邮箱地址")
     private String email;
 
