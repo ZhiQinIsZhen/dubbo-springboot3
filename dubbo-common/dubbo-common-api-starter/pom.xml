@@ -38,6 +38,11 @@
             <artifactId>dubbo-common-service</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.liyz.boot3</groupId>
+            <artifactId>dubbo-common-util</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>
