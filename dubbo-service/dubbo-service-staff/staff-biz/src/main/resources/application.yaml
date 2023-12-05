@@ -23,7 +23,7 @@ spring:
 # log
 logging:
   pattern:
-    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5level) %clr(${PID:-}){magenta} %clr([%t]){faint} %clr([%F:%L]){cyan} %clr(:){faint} %m%n%throwable'
+#    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5level) %clr(${PID:-}){magenta} %clr([%t]){faint} %clr([%F:%L]){cyan} %clr(:){faint} %m%n%throwable'
   level:
     com.liyz.boot3.service.staff.dao: debug
 # dubbo
