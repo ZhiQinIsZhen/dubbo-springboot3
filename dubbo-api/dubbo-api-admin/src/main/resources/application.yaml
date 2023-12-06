@@ -42,9 +42,9 @@ dubbo:
     timeout: 60000
   registry:
     timeout: 5000
-    address: nacos://localhost:8848
+    address: nacos://localhost:8848?namespace=4ee7d3a5-c973-4dca-9e03-ef2c95c0e064
   metadata-report:
-    address: nacos://localhost:8848
+    address: nacos://localhost:8848?namespace=4ee7d3a5-c973-4dca-9e03-ef2c95c0e064
 # springdoc
 springdoc:
   default-flat-param-object: true
