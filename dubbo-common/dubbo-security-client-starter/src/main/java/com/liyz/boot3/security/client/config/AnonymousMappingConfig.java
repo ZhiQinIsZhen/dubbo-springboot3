@@ -29,11 +29,7 @@ import java.util.Set;
 public class AnonymousMappingConfig implements ApplicationContextAware, InitializingBean {
 
     /**
-     * -- GETTER --
      *  获取免鉴权的mappings
-     *  can see annotation
-     *
-     * @return 免鉴权的mappings
      */
     @Getter
     private static final Set<String> anonymousMappings = new HashSet<>(100);

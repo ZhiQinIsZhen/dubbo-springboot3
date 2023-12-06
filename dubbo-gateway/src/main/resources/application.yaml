@@ -117,3 +117,4 @@ anonymous:
         - /user/v3/api-docs/**
         - /user/user/register
         - /user/user/login
+        - /user/test/**

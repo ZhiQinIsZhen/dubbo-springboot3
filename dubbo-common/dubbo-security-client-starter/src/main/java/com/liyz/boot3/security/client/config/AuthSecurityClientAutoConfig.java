@@ -48,7 +48,7 @@ public class AuthSecurityClientAutoConfig implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        log.warn("init security...");
+        //do nothing
     }
 
     @Bean

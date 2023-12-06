@@ -35,7 +35,7 @@ import java.util.Objects;
  */
 @Slf4j
 @DubboService(tag = "user")
-public class RemoteAuthenticationServiceImpl implements RemoteAuthService {
+public class RemoteAuthServiceImpl implements RemoteAuthService {
 
     @Resource
     private UserInfoService userInfoService;
