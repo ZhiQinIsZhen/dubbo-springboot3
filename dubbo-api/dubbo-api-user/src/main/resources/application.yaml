@@ -5,6 +5,12 @@ spring:
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
+  data:
+    # redis
+    redis:
+      database: 2
+      host: 127.0.0.1
+      port: 6379
 #server
 server:
   port: 7072

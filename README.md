@@ -13,7 +13,7 @@
 
 ---
 
-这是一个Springboot3项目，基于Java17、SpringBoot3、Mybatis-plus、Nacos、Dubbo3、Gateway、Security等框架。
+这是一个Springboot3项目，基于Java21、SpringBoot3、Mybatis-plus、Nacos、Dubbo3、Gateway、Security等框架。
 
 ---
 
@@ -49,19 +49,22 @@
 2.**dubbo-common-dao-starter**: 通用DAO层的框架(基于Mybatis-plus)
 
 ---
-3.**dubbo-common-remote**: 通用Dubbo远程接口框架(包含了参数验证器:validation)
+3.**dubbo-common-lock-starter**: 通用Lock框架
 
 ---
-4.**dubbo-common-service**: 业务通用核心框架
+4.**dubbo-common-remote**: 通用Dubbo远程接口框架(包含了参数验证器:validation)
 
 ---
-5.**dubbo-common-util**: 通用工具类框架
+5.**dubbo-common-service**: 业务通用核心框架
 
 ---
-6.**dubbo-exception-filter**: Dubbo自定义异常过滤器
+6.**dubbo-common-util**: 通用工具类框架
 
 ---
-7.**dubbo-security-client-starter**: security-client，适用于各个网关服务中
+7.**dubbo-exception-filter**: Dubbo自定义异常过滤器
+
+---
+8.**dubbo-security-client-starter**: security-client，适用于各个网关服务中
 
 ---
 

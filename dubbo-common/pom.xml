@@ -20,6 +20,7 @@
         <module>dubbo-exception-filter</module>
         <module>dubbo-common-dao-starter</module>
         <module>dubbo-security-client-starter</module>
+        <module>dubbo-common-lock-starter</module>
     </modules>
 
 </project>
