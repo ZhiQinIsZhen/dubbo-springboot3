@@ -50,6 +50,12 @@ springdoc:
     path: /v3/api-docs
     enabled: true
   group-configs:
+    - group: all
+      display-name: 所有接口
+      paths-to-match:
+        - /**
+      packages-to-scan:
+        - com.liyz.boot3.api.user.controller
     - group: test
       display-name: 测试
       paths-to-match:

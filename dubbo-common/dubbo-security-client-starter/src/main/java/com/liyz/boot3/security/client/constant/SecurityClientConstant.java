@@ -13,6 +13,7 @@ public interface SecurityClientConstant {
      * 免登录资源
      */
     String[] KNIFE4J_IGNORE_RESOURCES = new String[] {
+            "/liyz/error",
             "/doc.html",
             "/favicon.ico",
             "/webjars/**",

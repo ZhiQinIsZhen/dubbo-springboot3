@@ -1,4 +1,4 @@
-package com.liyz.boot3.api.user.dto.user;
+package com.liyz.boot3.api.user.controller.user;
 
 import com.liyz.boot3.api.user.vo.user.UserInfoVO;
 import com.liyz.boot3.common.api.result.Result;
