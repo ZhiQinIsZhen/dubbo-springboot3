@@ -62,8 +62,8 @@ dubbo:
     timeout: 60000
   registry:
     timeout: 5000
-    address: nacos://localhost:8848?namespace=4ee7d3a5-c973-4dca-9e03-ef2c95c0e064
+    address: nacos://localhost:8848?namespace=liyz
   metadata-report:
-    address: nacos://localhost:8848?namespace=4ee7d3a5-c973-4dca-9e03-ef2c95c0e064
+    address: nacos://localhost:8848?namespace=liyz
   scan:
     base-packages: com.liyz.boot3.service.auth.provider

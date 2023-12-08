@@ -7,9 +7,24 @@ spring:
   main:
     web-application-type: reactive
   application:
-    name: &application_name dubbo-gateway
-  #gateway-#路由规则
+    name: dubbo-gateway
   cloud:
+    nacos:
+      config:
+        enabled: true
+        server-addr: http://127.0.0.1:8848
+        namespace: liyz
+        group: config
+        prefix: ${spring.application.name}
+        file-extension: yaml
+        refresh-enabled: true
+        extension-configs:
+#          - data-id: xxx.yaml
+#            group: config
+#            refresh: true
+    discovery:
+      enabled: true
+    #gateway-#路由规则
     gateway:
       discovery:
         locator:
@@ -45,7 +60,7 @@ spring:
 # dubbo
 dubbo:
   application:
-    name: *application_name
+    name: ${spring.application.name}
     qos-enable: false
     serialize-check-status: WARN
   protocol:
@@ -61,9 +76,9 @@ dubbo:
     timeout: 60000
   registry:
     timeout: 5000
-    address: nacos://localhost:8848?namespace=4ee7d3a5-c973-4dca-9e03-ef2c95c0e064
+    address: nacos://localhost:8848?namespace=liyz
   metadata-report:
-    address: nacos://localhost:8848?namespace=4ee7d3a5-c973-4dca-9e03-ef2c95c0e064
+    address: nacos://localhost:8848?namespace=liyz
 knife4j:
   # 聚合swagger文档
   gateway:

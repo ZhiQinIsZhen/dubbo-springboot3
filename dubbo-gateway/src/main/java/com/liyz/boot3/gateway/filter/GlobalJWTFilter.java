@@ -10,7 +10,9 @@ import com.liyz.boot3.service.auth.remote.RemoteJwtParseService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -33,8 +35,12 @@ import java.util.Set;
  */
 @Slf4j
 @Component
+@RefreshScope
 @EnableConfigurationProperties(AnonymousMappingProperties.class)
 public class GlobalJWTFilter implements GlobalFilter {
+
+    @Value(value = "${test}")
+    private String test;
 
     private final AnonymousMappingProperties properties;
 
@@ -55,6 +61,7 @@ public class GlobalJWTFilter implements GlobalFilter {
      */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        log.info("test:{}", test);
         ServerHttpRequest req = exchange.getRequest();
         ServerHttpResponse resp = exchange.getResponse();
         String path = req.getURI().getPath();
