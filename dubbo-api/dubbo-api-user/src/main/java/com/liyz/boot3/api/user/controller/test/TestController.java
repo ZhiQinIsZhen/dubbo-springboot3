@@ -1,5 +1,7 @@
 package com.liyz.boot3.api.user.controller.test;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.liyz.boot3.api.user.dto.test.TestDTO;
 import com.liyz.boot3.api.user.vo.test.TestVO;
 import com.liyz.boot3.common.api.result.Result;
@@ -31,11 +33,13 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Anonymous
 @Tag(name = "测试")
+@ApiSort(4)
 @RestController
 @RequestMapping("/test")
 public class TestController {
 
-    @Operation(summary = "你好")
+    @ApiOperationSupport(order = 1)
+    @Operation(summary = "你好", tags = "1000")
     @GetMapping("/hello")
     public Result<TestVO> hello(@ParameterObject @Valid TestDTO testDTO) {
         log.info("1111");
@@ -43,6 +47,7 @@ public class TestController {
         return Result.success(BeanUtil.copyProperties(testDTO, TestVO::new));
     }
 
+    @ApiOperationSupport(order = 2)
     @Operation(summary = "虚拟线程")
     @GetMapping("/virtual/thread")
     public Result<Boolean> virtualThread() {
@@ -62,6 +67,7 @@ public class TestController {
         return Result.success(Boolean.TRUE);
     }
 
+    @ApiOperationSupport(order = 3)
     @Operation(summary = "正常线程")
     @GetMapping("/natual/thread")
     public Result<Boolean> natualThread() {
@@ -81,6 +87,7 @@ public class TestController {
         return Result.success(Boolean.TRUE);
     }
 
+    @ApiOperationSupport(order = 4)
     @Operation(summary = "锁")
     @GetMapping("/lock")
     public Result<TestVO> lock(@ParameterObject @Valid TestDTO testDTO) {

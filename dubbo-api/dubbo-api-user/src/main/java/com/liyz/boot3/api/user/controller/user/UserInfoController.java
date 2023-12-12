@@ -1,5 +1,6 @@
 package com.liyz.boot3.api.user.controller.user;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.liyz.boot3.api.user.vo.user.UserInfoVO;
 import com.liyz.boot3.common.api.result.Result;
 import com.liyz.boot3.common.service.util.BeanUtil;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 1.0.0
  * @date 2023/12/6 10:47
  */
+@ApiSort(3)
 @Tag(name = "用户信息")
 @ApiResponses(value = {
         @ApiResponse(responseCode = "0", description = "成功"),

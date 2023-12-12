@@ -1,10 +1,14 @@
 package com.liyz.boot3.common.api.config;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpHeaders;
 
 /**
  * Desc:
@@ -29,6 +33,18 @@ public class SwaggerConfig {
                                 .email("liyangzhen0114@foxmail.com")
                                 .url("https://github.com/ZhiQinIsZhen/dubbo-springboot3")
                         )
-                );
+                )
+                .addSecurityItem(new SecurityRequirement().addList(HttpHeaders.AUTHORIZATION))
+                .components(new Components().addSecuritySchemes(
+                        HttpHeaders.AUTHORIZATION,
+                        new SecurityScheme()
+                                .name(HttpHeaders.AUTHORIZATION)
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("Bearer ")
+                                .in(SecurityScheme.In.HEADER)
+                                .description("鉴权Token")
+                        )
+                )
+                ;
     }
 }

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * @date 2023/11/13 13:15
  */
 @UtilityClass
-public class BeanUtil {
+public final class BeanUtil {
 
     /**
      * 单个对象拷贝

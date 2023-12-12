@@ -1,5 +1,7 @@
 package com.liyz.boot3.api.user.controller.authen;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.liyz.boot3.api.user.dto.authen.UserLoginDTO;
 import com.liyz.boot3.api.user.dto.authen.UserRegisterDTO;
 import com.liyz.boot3.api.user.vo.authen.AuthLoginVO;
@@ -17,10 +19,12 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,25 +40,29 @@ import java.io.IOException;
  * @version 1.0.0
  * @date 2023/6/15 16:15
  */
+@SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
 @Tag(name = "客户鉴权")
 @ApiResponses(value = {
         @ApiResponse(responseCode = "0", description = "成功"),
         @ApiResponse(responseCode = "1", description = "失败")
 })
 @Slf4j
+@ApiSort(1)
 @RestController
 @RequestMapping("/user")
 public class AuthenticationController {
 
+    @ApiOperationSupport(order = 1)
     @Anonymous
-    @Operation(summary = "注册")
+    @Operation(summary = "注册", tags = {"1000"})
     @PostMapping("/register")
     public Result<Boolean> register(@Validated({UserRegisterDTO.Register.class}) @RequestBody UserRegisterDTO staffRegister) {
         return Result.success(AuthContext.AuthService.registry(BeanUtil.copyProperties(staffRegister, AuthUserRegisterBO::new)));
     }
 
+    @ApiOperationSupport(order = 2)
     @Anonymous
-    @Operation(summary = "登录")
+    @Operation(summary = "登录", tags = "1000")
     @PostMapping("/login")
     public Result<AuthLoginVO> login(@Validated({UserLoginDTO.Login.class}) @RequestBody UserLoginDTO loginDTO) throws IOException {
         AuthUserBO authUserBO = AuthContext.AuthService.login(BeanUtil.copyProperties(loginDTO, AuthUserLoginBO::new));
@@ -69,7 +77,8 @@ public class AuthenticationController {
         return Result.success(authLoginVO);
     }
 
-    @Operation(summary = "登出")
+    @ApiOperationSupport(order = 3)
+    @Operation(summary = "登出", tags = "1000")
     @PostMapping("/logout")
     @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
     public Result<Boolean> logout() {

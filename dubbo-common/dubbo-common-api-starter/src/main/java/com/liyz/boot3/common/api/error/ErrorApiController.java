@@ -1,6 +1,7 @@
 package com.liyz.boot3.common.api.error;
 
 import com.liyz.boot3.common.api.result.Result;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
         @ApiResponse(responseCode = "0", description = "成功"),
         @ApiResponse(responseCode = "1", description = "非0都为失败")
 })
+@Hidden
 @RestController
 @RequestMapping("/liyz")
 public class ErrorApiController extends BasicErrorController {

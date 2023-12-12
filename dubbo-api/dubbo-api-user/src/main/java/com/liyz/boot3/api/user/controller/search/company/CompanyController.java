@@ -1,5 +1,6 @@
 package com.liyz.boot3.api.user.controller.search.company;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.liyz.boot3.api.user.dto.search.company.CompanyDTO;
 import com.liyz.boot3.api.user.vo.search.company.CompanyVO;
 import com.liyz.boot3.common.api.result.PageResult;
@@ -29,6 +30,7 @@ import java.util.Objects;
  * @version 1.0.0
  * @date 2023/11/15 10:17
  */
+@ApiSort(2)
 @Tag(name = "搜索")
 @RestController
 @RequestMapping("/search/company")

@@ -13,7 +13,7 @@ spring:
       config:
         enabled: true
         server-addr: http://127.0.0.1:8848
-        namespace: liyz
+        namespace: liyz-config
         group: config
         prefix: ${spring.application.name}
         file-extension: yaml
@@ -119,6 +119,10 @@ knife4j:
         service-name: api-user
         context-path: /user
         order: 103
+    discover:
+      version: openapi3
+    tags-sorter: order
+    operations-sorter: order
 # 免鉴权
 anonymous:
   mapping:
