@@ -39,4 +39,9 @@ public enum CommonExceptionCodeEnum implements IExceptionService{
     public String getMessage() {
         return message;
     }
+
+    @Override
+    public String getName() {
+        return name();
+    }
 }

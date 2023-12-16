@@ -1,6 +1,7 @@
 package com.liyz.boot3.common.api.result;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.liyz.boot3.common.api.util.I18nMessageUtil;
 import com.liyz.boot3.common.remote.exception.CommonExceptionCodeEnum;
 import com.liyz.boot3.common.remote.exception.IExceptionService;
 import com.liyz.boot3.common.remote.page.RemotePage;
@@ -32,14 +33,17 @@ public class PageResult<T> {
         this.pageSize = 10L;
     }
 
+    public PageResult(IExceptionService codeEnum) {
+        this(codeEnum.getCode(), I18nMessageUtil.getMessage(codeEnum.getName(), codeEnum.getMessage(), null));
+    }
+
     public PageResult(RemotePage<T> data) {
+        this(CommonExceptionCodeEnum.SUCCESS);
         boolean isNull = data == null;
         this.setData(isNull ? List.of() : data.getList());
         this.total = isNull ? 0L : data.getTotal();
         this.pageNum = isNull ? 1 : data.getPageNum();
         this.pageSize = isNull ? 10 : data.getPageSize();
-        this.code = CommonExceptionCodeEnum.SUCCESS.getCode();
-        this.message = CommonExceptionCodeEnum.SUCCESS.getMessage();
     }
 
     @Schema(description = "code码")
@@ -69,7 +73,7 @@ public class PageResult<T> {
     }
 
     public static <T> PageResult<T> error(IExceptionService codeEnum) {
-        return new PageResult<T>(codeEnum.getCode(), codeEnum.getMessage());
+        return new PageResult<>(codeEnum);
     }
 
     public void setPageNum(long pageNum) {

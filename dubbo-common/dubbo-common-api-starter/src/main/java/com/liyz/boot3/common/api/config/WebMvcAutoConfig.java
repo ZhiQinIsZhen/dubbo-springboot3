@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.liyz.boot3.common.api.advice.GlobalControllerExceptionAdvice;
 import com.liyz.boot3.common.api.error.ErrorApiController;
+import com.liyz.boot3.common.api.util.I18nMessageUtil;
 import com.liyz.boot3.common.util.DateUtil;
 import com.liyz.boot3.common.util.deserializer.TrimDeserializer;
 import com.liyz.boot3.common.util.serializer.DesensitizationSerializer;
@@ -20,11 +21,16 @@ import org.springframework.core.Ordered;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.TimeZone;
@@ -48,6 +54,11 @@ public class WebMvcAutoConfig extends WebMvcConfigurationSupport {
     @Bean
     public ErrorApiController errorApiController(ServerProperties serverProperties) {
         return new ErrorApiController(serverProperties);
+    }
+
+    @Bean
+    public I18nMessageUtil i18nMessageUtil() {
+        return new I18nMessageUtil();
     }
 
     /**
@@ -99,5 +110,17 @@ public class WebMvcAutoConfig extends WebMvcConfigurationSupport {
     @Override
     protected void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("**/current").allowedMethods("GET").allowedHeaders("Authorization");
+    }
+
+    @Override
+    protected void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LocaleChangeInterceptor());
+    }
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver("locale");
+        cookieLocaleResolver.setCookieMaxAge(Duration.ofDays(1));
+        return cookieLocaleResolver;
     }
 }

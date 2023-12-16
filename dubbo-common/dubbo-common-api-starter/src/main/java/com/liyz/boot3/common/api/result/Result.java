@@ -1,6 +1,7 @@
 package com.liyz.boot3.common.api.result;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.liyz.boot3.common.api.util.I18nMessageUtil;
 import com.liyz.boot3.common.remote.exception.CommonExceptionCodeEnum;
 import com.liyz.boot3.common.remote.exception.IExceptionService;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,7 +31,7 @@ public class Result<T> {
     }
 
     public Result(IExceptionService codeEnum) {
-        this(codeEnum.getCode(), codeEnum.getMessage());
+        this(codeEnum.getCode(), I18nMessageUtil.getMessage(codeEnum.getName(), codeEnum.getMessage(), null));
     }
 
     @Schema(description = "code码")

@@ -22,4 +22,11 @@ public interface IExceptionService {
      * @return 异常信息
      */
     String getMessage();
+
+    /**
+     * 获取枚举name
+     *
+     * @return name
+     */
+    String getName();
 }

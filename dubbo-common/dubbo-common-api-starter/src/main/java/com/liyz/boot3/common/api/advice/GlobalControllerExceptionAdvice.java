@@ -1,6 +1,7 @@
 package com.liyz.boot3.common.api.advice;
 
 import com.liyz.boot3.common.api.result.Result;
+import com.liyz.boot3.common.api.util.I18nMessageUtil;
 import com.liyz.boot3.common.remote.exception.CommonExceptionCodeEnum;
 import com.liyz.boot3.common.remote.exception.RemoteServiceException;
 import com.liyz.boot3.common.service.constant.CommonServiceConstant;
@@ -58,6 +59,6 @@ public class GlobalControllerExceptionAdvice {
 
     @ExceptionHandler({RemoteServiceException.class})
     public Result<String> remoteServiceException(RemoteServiceException exception) {
-        return Result.error(exception.getCode(), exception.getMessage());
+        return Result.error(exception.getCode(), I18nMessageUtil.getMessage(exception.getCodeService().getName(), exception.getMessage(), null));
     }
 }

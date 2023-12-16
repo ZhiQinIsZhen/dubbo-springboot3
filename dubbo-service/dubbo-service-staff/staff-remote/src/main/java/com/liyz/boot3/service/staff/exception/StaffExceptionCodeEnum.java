@@ -27,4 +27,9 @@ public enum StaffExceptionCodeEnum implements IExceptionService {
     public String getMessage() {
         return message;
     }
+
+    @Override
+    public String getName() {
+        return name();
+    }
 }

@@ -16,6 +16,8 @@ spring:
         pool:
           enabled: true
           max-active: 1
+  messages:
+    basename: i18n.message
 #server
 server:
   port: 7072
