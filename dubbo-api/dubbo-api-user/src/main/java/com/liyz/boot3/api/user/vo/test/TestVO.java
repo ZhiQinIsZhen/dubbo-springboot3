@@ -22,4 +22,10 @@ public class TestVO implements Serializable {
 
     @Schema(description = "名字")
     private String name;
+
+    @Schema(description = "年龄")
+    private Integer age;
+
+    @Schema(description = "手机号码")
+    private String mobile;
 }

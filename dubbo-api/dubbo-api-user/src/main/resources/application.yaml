@@ -11,6 +11,11 @@ spring:
       database: 2
       host: 127.0.0.1
       port: 6379
+      client-type: lettuce
+      lettuce:
+        pool:
+          enabled: true
+          max-active: 1
 #server
 server:
   port: 7072

@@ -35,7 +35,6 @@
 ---
 1.**dubbo-api-admin**: 管理后台网关层，鉴权基于spring-security
 
----
 2.**dubbo-api-user**: 客户前台网关层
 
 ---
@@ -45,25 +44,18 @@
 ---
 1.**dubbo-common-api-starter**: 通用web或者网关层框架
 
----
 2.**dubbo-common-dao-starter**: 通用DAO层的框架(基于Mybatis-plus)
 
----
 3.**dubbo-common-lock-starter**: 通用Lock框架
 
----
 4.**dubbo-common-remote**: 通用Dubbo远程接口框架(包含了参数验证器:validation)
 
----
 5.**dubbo-common-service**: 业务通用核心框架
 
----
 6.**dubbo-common-util**: 通用工具类框架
 
----
 7.**dubbo-exception-filter**: Dubbo自定义异常过滤器
 
----
 8.**dubbo-security-client-starter**: security-client，适用于各个网关服务中
 
 ---
@@ -73,10 +65,8 @@
 ---
 1.**dubbo-service-auth**: 认证资源服务，基于spring-security以及jwt
 
----
 2.**dubbo-service-staff**: 员工信息服务
 
----
 3.**dubbo-service-user**: 客户信息服务
 
 ---
@@ -86,7 +76,6 @@
 ---
 1.**GlobalJWTFilter**: 自定义全局JWT过滤器
 
----
 2.**GlobalLimitFilterGatewayFilterFactory**: 自定义限流过滤器
 
 ---

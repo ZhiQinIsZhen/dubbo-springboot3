@@ -25,6 +25,12 @@ public class TestDTO implements Serializable {
     @NotBlank(message = "名字不能为空")
     private String name;
 
+    @Schema(description = "手机号码")
+    @NotBlank(message = "手机号码不能为空", groups = {Test1.class})
+    private String mobile;
+
     @Schema(description = "年龄")
     private Integer age;
+
+    public interface Test1 {}
 }

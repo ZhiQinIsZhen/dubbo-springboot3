@@ -94,31 +94,16 @@ knife4j:
         service-name: api-admin
         context-path: /admin
         order: 2
-      - name: 后台管理服务-测试
-        url: /admin/v3/api-docs/test?group=default
-        service-name: api-admin
-        context-path: /admin
-        order: 3
-      - name: 后台管理服务-搜索
-        url: /admin/v3/api-docs/search?group=default
-        service-name: api-admin
-        context-path: /admin
-        order: 4
       - name: 用户前台服务
         url: /user/v3/api-docs?group=default
         service-name: api-user
         context-path: /user
         order: 101
-      - name: 用户前台服务-测试
-        url: /user/v3/api-docs/test?group=default
+      - name: 用户前台服务-鉴权
+        url: /user/v3/api-docs/authen?group=default
         service-name: api-user
         context-path: /user
         order: 102
-      - name: 用户前台服务-搜索
-        url: /user/v3/api-docs/search?group=default
-        service-name: api-user
-        context-path: /user
-        order: 103
     discover:
       version: openapi3
     tags-sorter: order
@@ -131,7 +116,7 @@ anonymous:
         - /admin/v3/api-docs/**
         - /admin/auth/register
         - /admin/auth/login
-        - /admin/test/hello
+        - /admin/test/**
       dubbo-api-user:
         - /user/v3/api-docs/**
         - /user/user/register

@@ -96,6 +96,7 @@ public class AuthSecurityClientAutoConfig implements InitializingBean {
                 .addFilterBefore(new JwtAuthenticationTokenFilter(SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY),
                         UsernamePasswordAuthenticationFilter.class)
                 .headers(hc -> hc.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+                //如无需要请勿设置跨域
                 .cors(cc -> cc.configurationSource(corsConfigurationSource()));
         return http.build();
     }
