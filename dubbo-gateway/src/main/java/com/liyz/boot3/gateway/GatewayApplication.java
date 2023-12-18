@@ -1,6 +1,5 @@
 package com.liyz.boot3.gateway;
 
-import com.liyz.boot3.common.api.config.WebMvcAutoConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -13,7 +12,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @date 2023/11/15 10:51
  */
 @EnableDiscoveryClient
-@SpringBootApplication(exclude = {WebMvcAutoConfig.class})
+@SpringBootApplication
 public class GatewayApplication {
 
     public static void main(String[] args) {

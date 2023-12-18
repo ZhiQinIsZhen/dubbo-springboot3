@@ -21,7 +21,9 @@ spring:
       idle-timeout: 30000
       connection-timeout: 30000
       max-lifetime: 1800000
-# cache
+  messages:
+    basename: i18n.message
+  # cache
   cache:
     cache-names: test,bug
     type: redis

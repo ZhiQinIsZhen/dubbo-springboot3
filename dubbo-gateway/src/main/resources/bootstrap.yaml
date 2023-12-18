@@ -57,6 +57,8 @@ spring:
       database: 2
       host: 127.0.0.1
       port: 6379
+  messages:
+    basename: i18n.message
 # dubbo
 dubbo:
   application:

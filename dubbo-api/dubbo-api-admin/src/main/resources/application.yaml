@@ -5,6 +5,14 @@ spring:
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
+  messages:
+    basename: i18n.message
+  web:
+    resources:
+      cache:
+        use-last-modified: true
+        cache control:
+          max-age: 3600s
 #server
 server:
   port: 7071

@@ -17,6 +17,14 @@
 
 ---
 
+```properties
+-javaagent:C:\skywalking-java\skywalking-agent\skywalking-agent.jar
+-Dskywalking.agent.keep_tracing=true
+-Dskywalking.agent.service_name=dubbo-service-auth
+-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=6666
+```
+---
+
 ### 项目结构
 1.**dubbo-api**：后置网关层
 
