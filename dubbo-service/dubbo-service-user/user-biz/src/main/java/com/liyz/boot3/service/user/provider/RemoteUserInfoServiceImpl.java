@@ -5,6 +5,7 @@ import com.liyz.boot3.common.remote.page.PageBO;
 import com.liyz.boot3.common.remote.page.RemotePage;
 import com.liyz.boot3.common.service.util.BeanUtil;
 import com.liyz.boot3.service.user.bo.UserInfoBO;
+import com.liyz.boot3.service.user.model.UserInfoDO;
 import com.liyz.boot3.service.user.remote.RemoteUserInfoService;
 import com.liyz.boot3.service.user.service.UserInfoService;
 import org.apache.dubbo.config.annotation.DubboService;
@@ -43,7 +44,7 @@ public class RemoteUserInfoServiceImpl implements RemoteUserInfoService {
      */
     @Override
     public RemotePage<UserInfoBO> page(PageBO pageBO) {
-        Page page = userInfoService.page(Page.of(pageBO.getPageNum(), pageBO.getPageSize()));
+        Page<UserInfoDO> page = userInfoService.page(Page.of(pageBO.getPageNum(), pageBO.getPageSize()));
         return RemotePage.of(BeanUtil.copyList(page.getRecords(), UserInfoBO::new), page.getTotal(), pageBO.getPageNum(), pageBO.getPageSize());
     }
 }

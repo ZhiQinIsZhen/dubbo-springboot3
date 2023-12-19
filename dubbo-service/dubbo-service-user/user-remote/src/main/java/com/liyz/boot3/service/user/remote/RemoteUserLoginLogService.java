@@ -22,4 +22,13 @@ public interface RemoteUserLoginLogService {
      * @return 用户登录日志
      */
     RemotePage<UserLoginLogBO> page(@NotNull Long userId, @NotNull PageBO pageBO);
+
+    /**
+     * 根据userId分页流式查询登录日志
+     *
+     * @param userId 用户ID
+     * @param pageBO 分页参数
+     * @return 用户登录日志
+     */
+    RemotePage<UserLoginLogBO> pageStream(@NotNull Long userId, @NotNull PageBO pageBO);
 }

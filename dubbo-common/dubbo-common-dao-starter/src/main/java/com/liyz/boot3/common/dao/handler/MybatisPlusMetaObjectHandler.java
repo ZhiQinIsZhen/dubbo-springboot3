@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.liyz.boot3.exception.util.LoginUserContext;
 import org.apache.ibatis.reflection.MetaObject;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Desc:
@@ -33,18 +33,18 @@ public class MybatisPlusMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {
-        Date now = new Date();
-        setFieldValByName(DEFAULT_CREATE_TIME, now, metaObject);
-        setFieldValByName(DEFAULT_UPDATE_TIME, now, metaObject);
-        setFieldValByName(DEFAULT_CREATE_USER, LoginUserContext.getLoginId(), metaObject);
-        setFieldValByName(DEFAULT_UPDATE_USER, LoginUserContext.getLoginId(), metaObject);
-        setFieldValByName(DEFAULT_DELETED, DEFAULT_DELETED_VALUE, metaObject);
-        setFieldValByName(DEFAULT_VERSION, DEFAULT_VERSION_VALUE, metaObject);
+        LocalDateTime now = LocalDateTime.now();
+        this.strictInsertFill(metaObject, DEFAULT_CREATE_TIME, LocalDateTime.class, now);
+        this.strictInsertFill(metaObject, DEFAULT_UPDATE_TIME, LocalDateTime.class, now);
+        this.strictInsertFill(metaObject, DEFAULT_CREATE_USER, Long.class, LoginUserContext.getLoginId());
+        this.strictInsertFill(metaObject, DEFAULT_UPDATE_USER, Long.class, LoginUserContext.getLoginId());
+        this.strictInsertFill(metaObject, DEFAULT_DELETED, Integer.class, DEFAULT_DELETED_VALUE);
+        this.strictInsertFill(metaObject, DEFAULT_VERSION, Integer.class, DEFAULT_VERSION_VALUE);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        setFieldValByName(DEFAULT_UPDATE_TIME, new Date(), metaObject);
-        setFieldValByName(DEFAULT_UPDATE_USER, LoginUserContext.getLoginId(), metaObject);
+        this.strictUpdateFill(metaObject, DEFAULT_UPDATE_TIME, LocalDateTime.class, LocalDateTime.now());
+        this.strictUpdateFill(metaObject, DEFAULT_UPDATE_USER, Long.class, LoginUserContext.getLoginId());
     }
 }

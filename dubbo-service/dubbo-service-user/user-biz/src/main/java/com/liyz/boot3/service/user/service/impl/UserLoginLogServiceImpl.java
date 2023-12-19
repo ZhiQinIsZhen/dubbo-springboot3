@@ -1,10 +1,13 @@
 package com.liyz.boot3.service.user.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liyz.boot3.service.auth.enums.Device;
 import com.liyz.boot3.service.user.dao.UserLoginLogMapper;
 import com.liyz.boot3.service.user.model.UserLoginLogDO;
 import com.liyz.boot3.service.user.service.UserLoginLogService;
+import org.apache.ibatis.session.ResultHandler;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -46,5 +49,17 @@ public class UserLoginLogServiceImpl extends ServiceImpl<UserLoginLogMapper, Use
     @CacheEvict(cacheNames = {"userInfo"}, key = "'lastLoginTime:' + #entity.device + ':' + #entity.userId")
     public boolean save(UserLoginLogDO entity) {
         return super.save(entity);
+    }
+
+    /**
+     * 流式查询
+     *
+     * @param page 分页
+     * @param queryWrapper 查询条件
+     * @param resultHandler 流式结果
+     */
+    @Override
+    public void pageStream(IPage<UserLoginLogDO> page, Wrapper<UserLoginLogDO> queryWrapper, ResultHandler<UserLoginLogDO> resultHandler) {
+        getBaseMapper().selectList(page, queryWrapper, resultHandler);
     }
 }

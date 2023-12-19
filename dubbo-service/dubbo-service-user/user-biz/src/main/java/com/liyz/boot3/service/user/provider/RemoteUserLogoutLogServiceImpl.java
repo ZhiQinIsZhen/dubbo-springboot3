@@ -35,7 +35,7 @@ public class RemoteUserLogoutLogServiceImpl implements RemoteUserLogoutLogServic
      */
     @Override
     public RemotePage<UserLogoutLogBO> page(Long userId, PageBO pageBO) {
-        Page page = userLogoutLogService.page(
+        Page<UserLogoutLogDO> page = userLogoutLogService.page(
                 Page.of(pageBO.getPageNum(), pageBO.getPageSize()),
                 Wrappers.lambdaQuery(UserLogoutLogDO.builder().userId(userId).build())
         );

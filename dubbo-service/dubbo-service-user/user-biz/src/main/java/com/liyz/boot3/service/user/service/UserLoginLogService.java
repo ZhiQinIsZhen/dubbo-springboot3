@@ -1,8 +1,11 @@
 package com.liyz.boot3.service.user.service;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.liyz.boot3.service.auth.enums.Device;
 import com.liyz.boot3.service.user.model.UserLoginLogDO;
+import org.apache.ibatis.session.ResultHandler;
 
 import java.util.Date;
 
@@ -23,4 +26,13 @@ public interface UserLoginLogService extends IService<UserLoginLogDO> {
      * @return 上次登录时间
      */
     Date lastLoginTime(Long userId, Device device);
+
+    /**
+     * 流式查询
+     *
+     * @param page 分页
+     * @param queryWrapper 查询条件
+     * @param resultHandler 流式结果
+     */
+    void pageStream(IPage<UserLoginLogDO> page, Wrapper<UserLoginLogDO> queryWrapper, ResultHandler<UserLoginLogDO> resultHandler);
 }
