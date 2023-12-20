@@ -9,9 +9,14 @@
 ![Mybatis-plus Version](https://img.shields.io/badge/MybatisPlus-3.5.4.1-brightgreen)
 ![Swagger Version](https://img.shields.io/badge/knife4j-4.3.0-brightgreen)
 
----
-
-这是一个Springboot3项目，基于Java21、SpringBoot3、Mybatis-plus、Nacos、Dubbo3、Gateway、Security等框架。
+这是一个Springboot3项目的脚手架，基于Jdk21。
+使用的是[SpringBoot3](https://spring.io/projects/spring-boot) + 
+[Apache Dubbo](https://cn.dubbo.apache.org/zh-cn/index.html)，
+ORM框架选用了[Mybatis-plus](https://baomidou.com/)，
+注册中心以及配置中心使用了[Nacos](https://nacos.io/zh-cn/)，
+网关选用了[Gateway](https://spring.io/projects/spring-cloud-gateway)，
+认证以及资源框架使用了[Spring Security](https://spring.io/projects/spring-security)，
+链路追踪使用的是[Skywalking](https://skywalking.apache.org/)。
 
 ---
 
