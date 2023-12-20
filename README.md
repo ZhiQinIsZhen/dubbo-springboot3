@@ -1,11 +1,9 @@
-# dubbo-springboot3
+# Dubbo Springboot3 Project
 =========================================
 
 [![Build Status](https://img.shields.io/badge/Build-ZhiQinlsZhen-red)](https://github.com/ZhiQinIsZhen/dubbo-springboot3)
-![Maven](https://img.shields.io/maven-central/v/org.apache.dubbo/dubbo.svg)
-![License](https://img.shields.io/github/license/alibaba/dubbo.svg)
-![Springboot Version](https://img.shields.io/badge/Springboot-3.1.5-brightgreen)
-![SpringJwt Version](https://img.shields.io/badge/SpringJwt-1.1.1.RELEASE-brightgreen)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/ZhiQinIsZhen/dubbo-springboot3/blob/main/LICENSE)
+![Springboot Version](https://img.shields.io/badge/Springboot-3.1.6-brightgreen)
 ![jjwt Version](https://img.shields.io/badge/jjwt-0.12.3-brightgreen)
 ![Dubbo Version](https://img.shields.io/badge/Dubbo-3.3.0(beta1)-brightgreen)
 ![Mybatis-plus Version](https://img.shields.io/badge/MybatisPlus-3.5.4.1-brightgreen)
