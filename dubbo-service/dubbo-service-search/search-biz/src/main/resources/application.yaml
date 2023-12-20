@@ -12,8 +12,11 @@ spring:
     uris: http://127.0.0.1:9200
     username: liyz
     password: liyz
-    connection-timeout: 5s
-    socket-timeout: 30s
+    connection-timeout: 5000ms
+    socket-timeout: 30000ms
+    pool:
+      max-conn-total: 100
+      max-conn-per-route: 20
 # log
 logging:
   pattern:
@@ -43,7 +46,7 @@ dubbo:
 # index
 company:
   search:
-    index: search-company-online
+    index: search-company-auto-20231216
     search-type: company
 bid:
   detail:

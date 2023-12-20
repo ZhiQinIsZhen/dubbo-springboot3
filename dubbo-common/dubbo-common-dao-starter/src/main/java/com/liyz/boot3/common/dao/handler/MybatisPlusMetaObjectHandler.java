@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.liyz.boot3.exception.util.LoginUserContext;
 import org.apache.ibatis.reflection.MetaObject;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Desc:
@@ -33,9 +33,9 @@ public class MybatisPlusMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {
-        LocalDateTime now = LocalDateTime.now();
-        this.strictInsertFill(metaObject, DEFAULT_CREATE_TIME, LocalDateTime.class, now);
-        this.strictInsertFill(metaObject, DEFAULT_UPDATE_TIME, LocalDateTime.class, now);
+        Date now = new Date();
+        this.strictInsertFill(metaObject, DEFAULT_CREATE_TIME, Date.class, now);
+        this.strictInsertFill(metaObject, DEFAULT_UPDATE_TIME, Date.class, now);
         this.strictInsertFill(metaObject, DEFAULT_CREATE_USER, Long.class, LoginUserContext.getLoginId());
         this.strictInsertFill(metaObject, DEFAULT_UPDATE_USER, Long.class, LoginUserContext.getLoginId());
         this.strictInsertFill(metaObject, DEFAULT_DELETED, Integer.class, DEFAULT_DELETED_VALUE);
@@ -44,7 +44,7 @@ public class MybatisPlusMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        this.strictUpdateFill(metaObject, DEFAULT_UPDATE_TIME, LocalDateTime.class, LocalDateTime.now());
+        this.strictUpdateFill(metaObject, DEFAULT_UPDATE_TIME, Date.class, new Date());
         this.strictUpdateFill(metaObject, DEFAULT_UPDATE_USER, Long.class, LoginUserContext.getLoginId());
     }
 }
