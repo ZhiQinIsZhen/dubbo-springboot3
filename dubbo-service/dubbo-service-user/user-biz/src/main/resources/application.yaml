@@ -65,3 +65,6 @@ dubbo:
     address: nacos://localhost:8848?namespace=liyz
   scan:
     base-packages: com.liyz.boot3.service.user.provider
+desensitization:
+  database:
+    enable: true

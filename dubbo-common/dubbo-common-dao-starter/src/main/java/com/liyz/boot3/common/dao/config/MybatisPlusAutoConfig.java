@@ -6,6 +6,10 @@ import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerIntercep
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.liyz.boot3.common.dao.handler.MybatisPlusMetaObjectHandler;
+import com.liyz.boot3.common.dao.interceptor.MapperParamInterceptor;
+import com.liyz.boot3.common.dao.interceptor.MapperResultInterceptor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,6 +21,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2023/11/23 17:06
  */
 @Configuration
+@EnableConfigurationProperties(DesensitizationProperties.class)
 public class MybatisPlusAutoConfig {
 
     /**
@@ -40,5 +45,17 @@ public class MybatisPlusAutoConfig {
     @Bean
     public MybatisPlusMetaObjectHandler mybatisPlusMetaObjectHandler() {
         return new MybatisPlusMetaObjectHandler();
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "desensitization.database", name = "enable", havingValue = "true")
+    public MapperParamInterceptor mapperParamInterceptor() {
+        return new MapperParamInterceptor();
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "desensitization.database", name = "enable", havingValue = "true")
+    public MapperResultInterceptor mapperResultInterceptor() {
+        return new MapperResultInterceptor();
     }
 }

@@ -1,0 +1,18 @@
+{
+  "groups": [
+    {
+      "name": "auth.advice",
+      "type": "com.liyz.boot3.security.client.config.AuthSecurityClientProperties",
+      "sourceType": "com.liyz.boot3.security.client.config.AuthSecurityClientProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "auth.advice.enable",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.liyz.boot3.security.client.config.AuthSecurityClientProperties",
+      "defaultValue": true
+    }
+  ],
+  "hints": []
+}

@@ -29,6 +29,10 @@
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>com.liyz.boot3</groupId>
+            <artifactId>dubbo-common-util</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

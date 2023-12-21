@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>dubbo-common-remote</artifactId>
+    <description>dubbo通用远程依赖</description>
 
     <dependencies>
         <dependency>

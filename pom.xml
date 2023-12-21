@@ -14,7 +14,7 @@
         <module>dubbo-api</module>
         <module>dubbo-service</module>
         <module>dubbo-gateway</module>
-        <module>dubbo-task</module>
+<!--        <module>dubbo-task</module>-->
     </modules>
 
     <properties>

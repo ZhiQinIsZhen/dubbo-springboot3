@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.liyz.boot3.common.dao.model.BaseDO;
+import com.liyz.boot3.common.util.annotation.Desensitization;
+import com.liyz.boot3.common.util.constant.DesensitizationType;
 import lombok.*;
 
 import java.io.Serial;
@@ -41,5 +43,6 @@ public class UserLoginLogDO extends BaseDO implements Serializable {
 
     private Date loginTime;
 
+    @Desensitization(value = DesensitizationType.SELF_DEFINITION, beginIndex = 2, endIndex = 5)
     private String ip;
 }

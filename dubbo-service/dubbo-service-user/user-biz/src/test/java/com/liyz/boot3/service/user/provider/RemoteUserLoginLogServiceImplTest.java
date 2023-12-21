@@ -36,4 +36,13 @@ public class RemoteUserLoginLogServiceImplTest {
         RemotePage<UserLoginLogBO> remotePage = remoteUserLoginLogService.pageStream(1L, pageBO);
         log.info("value:{}", JsonMapperUtil.toJSONString(remotePage));
     }
+
+    @Test
+    public void test1() {
+        PageBO pageBO = new PageBO();
+        pageBO.setPageNum(1L);
+        pageBO.setPageSize(10L);
+        RemotePage<UserLoginLogBO> remotePage = remoteUserLoginLogService.page(1L, pageBO);
+        log.info("value:{}", JsonMapperUtil.toJSONString(remotePage));
+    }
 }
