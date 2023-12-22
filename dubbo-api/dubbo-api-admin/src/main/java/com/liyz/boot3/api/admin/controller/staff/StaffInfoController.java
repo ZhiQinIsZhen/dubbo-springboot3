@@ -59,7 +59,7 @@ public class StaffInfoController {
 
     @Operation(summary = "查询当前登录员工信息")
     @GetMapping("/current")
-    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
+//    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
     public Result<StaffInfoVO> userInfo() {
         AuthUserBO authUserBO = AuthContext.getAuthUser();
         return Result.success(BeanUtil.copyProperties(remoteStaffInfoService.getByStaffId(authUserBO.getAuthId()), StaffInfoVO::new));
@@ -68,7 +68,7 @@ public class StaffInfoController {
     @PreAuthorize("hasAuthority('DUBBO-API-ADMIN:STAFFINFO'.toUpperCase())")
     @Operation(summary = "分页查询员工信息")
     @GetMapping("/page")
-    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
+//    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
     public PageResult<StaffInfoVO> page(PageDTO page) {
         RemotePage<StaffInfoBO> remotePage = remoteStaffInfoService.page(BeanUtil.copyProperties(page, PageBO::new));
         return PageResult.success(BeanUtil.copyRemotePage(remotePage, StaffInfoVO::new));
@@ -77,7 +77,7 @@ public class StaffInfoController {
     @PreAuthorize("hasAuthority('DUBBO-API-ADMIN:STAFFLOG'.toUpperCase())")
     @Operation(summary = "分页查询员工登录日志")
     @GetMapping("/loginLogs/page")
-    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
+//    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
     public PageResult<StaffLoginLogVO> pageLoginLogs(StaffLogPageDTO page) {
         AuthUserBO authUserBO = AuthContext.getAuthUser();
         page = Objects.nonNull(page) ? page : new StaffLogPageDTO();
@@ -89,7 +89,7 @@ public class StaffInfoController {
     @PreAuthorize("hasAuthority('DUBBO-API-ADMIN:STAFFLOG'.toUpperCase())")
     @Operation(summary = "分页查询员工登出日志")
     @GetMapping("/logoutLogs/page")
-    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
+//    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
     public PageResult<StaffLogoutLogVO> pageLogoutLogs(StaffLogPageDTO page) {
         AuthUserBO authUserBO = AuthContext.getAuthUser();
         page = Objects.nonNull(page) ? page : new StaffLogPageDTO();

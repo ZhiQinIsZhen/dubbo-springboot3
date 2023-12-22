@@ -47,7 +47,7 @@ public class StaffAuthorityController {
     @PreAuthorize("hasAuthority('DUBBO-API-ADMIN:STAFF-BIND-ROLE'.toUpperCase())")
     @Operation(summary = "给员工绑定一个角色")
     @PostMapping("/bindRole")
-    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
+//    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
     public Result<Boolean> bindRole(@RequestBody @Validated StaffRoleDTO staffRoleDTO) {
         AuthUserBO authUser = AuthContext.getAuthUser();
         staffRoleDTO.setStaffId(Objects.nonNull(staffRoleDTO.getStaffId()) ? staffRoleDTO.getStaffId() : authUser.getAuthId());

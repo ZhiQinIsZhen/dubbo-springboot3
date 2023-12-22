@@ -39,7 +39,7 @@ public class SearchController {
 
     @Operation(summary = "分页查询公司")
     @GetMapping("/company/page")
-    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
+//    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
     public PageResult<CompanyVO> companyPage(@ParameterObject @Valid CompanyDTO companyDTO) {
         RemotePage<CompanyBO> remotePage = remoteCompanyService.searchPage(BeanUtil.copyProperties(companyDTO, CompanyPageQuery::new));
         return PageResult.success(BeanUtil.copyRemotePage(remotePage, CompanyVO::new, (s, t) -> {

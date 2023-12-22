@@ -71,7 +71,7 @@ public class AuthenticationController {
 
     @Operation(summary = "登出")
     @PostMapping("/logout")
-    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
+//    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
     public Result<Boolean> logout() {
         return Result.success(AuthContext.AuthService.logout());
     }
