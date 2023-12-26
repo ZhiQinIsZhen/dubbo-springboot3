@@ -4,8 +4,10 @@ import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.liyz.boot3.api.user.dto.search.company.CompanyDTO;
 import com.liyz.boot3.api.user.vo.search.company.CompanyVO;
 import com.liyz.boot3.common.api.result.PageResult;
+import com.liyz.boot3.common.api.result.Result;
 import com.liyz.boot3.common.remote.page.RemotePage;
 import com.liyz.boot3.common.service.util.BeanUtil;
+import com.liyz.boot3.security.client.annotation.Anonymous;
 import com.liyz.boot3.service.search.bo.company.CompanyBO;
 import com.liyz.boot3.service.search.query.company.CompanyPageQuery;
 import com.liyz.boot3.service.search.remote.company.RemoteCompanyService;
@@ -18,6 +20,7 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
@@ -41,7 +44,6 @@ public class CompanyController {
 
     @Operation(summary = "分页查询公司")
     @GetMapping("/page")
-//    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
     public PageResult<CompanyVO> companyPage(@ParameterObject @Valid CompanyDTO companyDTO) {
         RemotePage<CompanyBO> remotePage = remoteCompanyService.searchPage(BeanUtil.copyProperties(companyDTO, CompanyPageQuery::new));
         return PageResult.success(BeanUtil.copyRemotePage(remotePage, CompanyVO::new, (s, t) -> {
@@ -50,5 +52,13 @@ public class CompanyController {
                 }
             })
         );
+    }
+
+    @Anonymous
+    @Operation(summary = "根据id查询公司信息")
+    @GetMapping("/id")
+    public Result<CompanyVO> companyById(@RequestParam("id") String id) {
+        CompanyBO companyBO = remoteCompanyService.getById(id);
+        return Result.success(BeanUtil.copyProperties(companyBO, CompanyVO::new));
     }
 }

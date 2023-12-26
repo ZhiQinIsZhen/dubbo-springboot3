@@ -145,6 +145,11 @@
             </dependency>
             <dependency>
                 <groupId>com.liyz.boot3</groupId>
+                <artifactId>dubbo-common-es-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.liyz.boot3</groupId>
                 <artifactId>staff-remote</artifactId>
                 <version>${project.version}</version>
             </dependency>

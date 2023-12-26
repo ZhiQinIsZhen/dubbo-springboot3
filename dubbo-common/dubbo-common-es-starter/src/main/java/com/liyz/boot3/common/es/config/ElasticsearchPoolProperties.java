@@ -1,4 +1,4 @@
-package com.liyz.boot3.service.search.config;
+package com.liyz.boot3.common.es.config;
 
 import lombok.Getter;
 import lombok.Setter;

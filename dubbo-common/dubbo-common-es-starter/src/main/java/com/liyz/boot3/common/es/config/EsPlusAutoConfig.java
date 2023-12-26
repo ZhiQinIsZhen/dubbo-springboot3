@@ -1,4 +1,4 @@
-package com.liyz.boot3.service.search.config;
+package com.liyz.boot3.common.es.config;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
@@ -6,6 +6,7 @@ import co.elastic.clients.transport.rest_client.RestClientTransport;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.liyz.boot3.common.es.method.AbstractEsMethod;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpHost;
@@ -31,16 +32,16 @@ import java.util.List;
  *
  * @author lyz
  * @version 1.0.0
- * @date 2023/11/14 9:40
+ * @date 2023/12/25 16:45
  */
 @Configuration
 @EnableConfigurationProperties({ElasticsearchProperties.class, ElasticsearchPoolProperties.class})
-public class SearchConfig {
+public class EsPlusAutoConfig {
 
     private final ElasticsearchProperties properties;
     private final ElasticsearchPoolProperties poolProperties;
 
-    public SearchConfig(ElasticsearchProperties properties, ElasticsearchPoolProperties poolProperties) {
+    public EsPlusAutoConfig(ElasticsearchProperties properties, ElasticsearchPoolProperties poolProperties) {
         this.properties = properties;
         this.poolProperties = poolProperties;
     }
@@ -73,12 +74,14 @@ public class SearchConfig {
                     .build();
             return requestConfigBuilder;
         });
-        return new ElasticsearchClient(new RestClientTransport(
+        ElasticsearchClient client = new ElasticsearchClient(new RestClientTransport(
                 builder.build(),
                 new JacksonJsonpMapper(
                         new JsonMapper()
                                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                                 .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE))
         ));
+        AbstractEsMethod.setCLIENT(client);
+        return client;
     }
 }

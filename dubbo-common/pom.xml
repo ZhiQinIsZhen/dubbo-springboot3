@@ -21,6 +21,7 @@
         <module>dubbo-common-dao-starter</module>
         <module>dubbo-security-client-starter</module>
         <module>dubbo-common-lock-starter</module>
+        <module>dubbo-common-es-starter</module>
     </modules>
 
 </project>
