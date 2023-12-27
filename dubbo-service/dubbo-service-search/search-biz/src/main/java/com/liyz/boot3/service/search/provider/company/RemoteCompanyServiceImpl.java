@@ -3,6 +3,7 @@ package com.liyz.boot3.service.search.provider.company;
 import com.liyz.boot3.common.service.util.BeanUtil;
 import com.liyz.boot3.service.search.bo.company.CompanyBO;
 import com.liyz.boot3.service.search.constant.SearchType;
+import com.liyz.boot3.service.search.mapper.CompanyHolderMapper;
 import com.liyz.boot3.service.search.mapper.CompanyMapper;
 import com.liyz.boot3.service.search.model.CompanyDO;
 import com.liyz.boot3.service.search.query.company.CompanyPageQuery;
@@ -24,6 +25,8 @@ public class RemoteCompanyServiceImpl extends SearchServiceImpl<CompanyBO, Compa
 
     @Resource
     private CompanyMapper companyMapper;
+    @Resource
+    private CompanyHolderMapper companyHolderMapper;
 
     @Override
     protected SearchType getSearchType() {

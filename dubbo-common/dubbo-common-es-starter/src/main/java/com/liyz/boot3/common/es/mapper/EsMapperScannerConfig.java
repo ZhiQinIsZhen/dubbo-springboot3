@@ -1,5 +1,6 @@
 package com.liyz.boot3.common.es.mapper;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.InitializingBean;
@@ -19,6 +20,7 @@ import org.springframework.util.StringUtils;
  * @version 1.0.0
  * @date 2023/12/25 16:56
  */
+@Slf4j
 public class EsMapperScannerConfig implements BeanDefinitionRegistryPostProcessor, InitializingBean, ApplicationContextAware, BeanNameAware {
 
     private String basePackage;
@@ -62,7 +64,8 @@ public class EsMapperScannerConfig implements BeanDefinitionRegistryPostProcesso
         scanner.setBeanNameGenerator(this.nameGenerator);
         scanner.setMapperFactoryBeanClass(this.mapperFactoryBeanClass);
         scanner.registerFilters();
-        scanner.scan(StringUtils.tokenizeToStringArray(this.basePackage, ",; \t\n"));
+        int count = scanner.scan(StringUtils.tokenizeToStringArray(this.basePackage, ",; \t\n"));
+        log.info("EsMapper interface count is {}", count);
     }
 
     @Override

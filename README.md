@@ -2,12 +2,13 @@
 
 [![Build Status](https://img.shields.io/badge/Build-ZhiQinlsZhen-red)](https://github.com/ZhiQinIsZhen/dubbo-springboot3)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/ZhiQinIsZhen/dubbo-springboot3/blob/main/LICENSE)
-![Springboot Version](https://img.shields.io/badge/Springboot-3.1.6-brightgreen)
+![Springboot Version](https://img.shields.io/badge/Springboot-3.2.1-brightgreen)
 ![Gateway Version](https://img.shields.io/badge/Gateway-4.3.0-brightgreen)
 ![jjwt Version](https://img.shields.io/badge/jjwt-0.12.3-brightgreen)
 ![Dubbo Version](https://img.shields.io/badge/Dubbo-3.3.0(beta1)-brightgreen)
-![Mybatis-plus Version](https://img.shields.io/badge/MybatisPlus-3.5.4.1-brightgreen)
-![Swagger Version](https://img.shields.io/badge/knife4j-4.3.0-brightgreen)
+![Mybatis-plus Version](https://img.shields.io/badge/MybatisPlus-3.5.5-brightgreen)
+![Swagger Version](https://img.shields.io/badge/knife4j-4.4.0-brightgreen)
+![Elasticjob Version](https://img.shields.io/badge/elasticjob-3.0.4-brightgreen)
 
 这是一个Springboot3项目的脚手架，基于Jdk21。
 使用的是[SpringBoot3](https://spring.io/projects/spring-boot) + 
@@ -16,6 +17,7 @@ ORM框架选用了[Mybatis-plus](https://baomidou.com/)，
 注册中心以及配置中心使用了[Nacos](https://nacos.io/zh-cn/)，
 网关选用了[Gateway](https://spring.io/projects/spring-cloud-gateway)，
 认证以及资源框架使用了[Spring Security](https://spring.io/projects/spring-security)，
+分布式定时任务选用了[ElasticJob](https://shardingsphere.apache.org/elasticjob)，
 链路追踪使用的是[Skywalking](https://skywalking.apache.org/)。
 
 ## Skywalking配置
@@ -38,6 +40,7 @@ ORM框架选用了[Mybatis-plus](https://baomidou.com/)，
 3. `dubbo-api`：后置网关层，即真正的入口
 4. `dubbo-common`：基础包的框架
 5. `dubbo-service`：Dubbo的服务提供者，即业务服务
+6. `dubbo-task`：分布式定时任务
 
 ## api结构说明
 
@@ -67,6 +70,9 @@ ORM框架选用了[Mybatis-plus](https://baomidou.com/)，
 
 1. `GlobalJWTFilter`: 自定义全局JWT过滤器
 2. `GlobalLimitFilterGatewayFilterFactory`: 自定义限流过滤器
+
+## task结构说明
+1. `dubbo-task-elastic`：使用的是基于elastic job为框架
 
 ## 如需之前版本，请关注tag标签，重新拉取tag代码
 

@@ -53,8 +53,7 @@ public class EsMapperScannerRegistrar implements ImportBeanDefinitionRegistrar {
         if (!EsMapperFactoryBean.class.equals(mapperFactoryBeanClass)) {
             builder.addPropertyValue("mapperFactoryBeanClass", mapperFactoryBeanClass);
         }
-        List<String> basePackages = new ArrayList<>();
-        basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("basePackages")).filter(StringUtils::hasText).collect(Collectors.toList()));
+        List<String> basePackages = new ArrayList<>(Arrays.stream(annoAttrs.getStringArray("basePackages")).filter(StringUtils::hasText).collect(Collectors.toList()));
         if (basePackages.isEmpty()) {
             basePackages.add(ClassUtils.getPackageName(annoMeta.getClassName()));
         }

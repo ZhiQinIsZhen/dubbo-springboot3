@@ -50,3 +50,7 @@ dubbo:
   scan:
     base-packages: com.liyz.boot3.task.elastic.provider
 # elastic-job
+elasticjob:
+  reg-center:
+    server-lists: localhost:2181
+    namespace: ${spring.application.name}

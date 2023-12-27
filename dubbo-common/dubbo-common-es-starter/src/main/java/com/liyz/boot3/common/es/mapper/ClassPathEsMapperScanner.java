@@ -75,13 +75,6 @@ public class ClassPathEsMapperScanner extends ClassPathBeanDefinitionScanner {
         BeanDefinitionRegistry registry = this.getRegistry();
         beanDefinitions.forEach(holder -> {
             AbstractBeanDefinition definition = (AbstractBeanDefinition) holder.getBeanDefinition();
-            boolean scopedProxy = false;
-            if (ScopedProxyFactoryBean.class.getName().equals(definition.getBeanClassName())) {
-                definition = (AbstractBeanDefinition) Optional.ofNullable(((RootBeanDefinition)definition).getDecoratedDefinition()).map(BeanDefinitionHolder::getBeanDefinition).orElseThrow(() -> {
-                    return new IllegalStateException("The target bean definition of scoped proxy bean not found. Root bean definition[" + holder + "]");
-                });
-                scopedProxy = true;
-            }
             String beanClassName = definition.getBeanClassName();
             log.info("Creating MapperFactoryBean with name '{}'  and '{}'  mapperInterface", holder.getBeanName(), beanClassName);
             definition.getConstructorArgumentValues().addGenericArgumentValue(beanClassName);
