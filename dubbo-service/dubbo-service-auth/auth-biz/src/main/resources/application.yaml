@@ -8,6 +8,9 @@ spring:
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
+  threads:
+    virtual:
+      enabled: true
 # datasource
   datasource:
     url: jdbc:mysql://localhost:3306/auth?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8

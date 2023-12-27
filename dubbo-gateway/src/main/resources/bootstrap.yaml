@@ -8,6 +8,9 @@ spring:
     web-application-type: reactive
   application:
     name: dubbo-gateway
+  threads:
+    virtual:
+      enabled: true
   cloud:
     nacos:
       config:

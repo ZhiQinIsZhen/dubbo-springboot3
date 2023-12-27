@@ -13,6 +13,9 @@ spring:
         use-last-modified: true
         cache control:
           max-age: 3600s
+  threads:
+    virtual:
+      enabled: true
 #server
 server:
   port: 7071

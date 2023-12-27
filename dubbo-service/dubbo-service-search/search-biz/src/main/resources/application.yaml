@@ -7,6 +7,9 @@ spring:
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
+  threads:
+    virtual:
+      enabled: true
 # elasticsearch
   elasticsearch:
     uris: http://127.0.0.1:9200

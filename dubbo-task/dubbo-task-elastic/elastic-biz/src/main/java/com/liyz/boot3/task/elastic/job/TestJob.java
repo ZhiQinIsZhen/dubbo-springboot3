@@ -13,7 +13,7 @@ import org.apache.shardingsphere.elasticjob.simple.job.SimpleJob;
  * @date 2023/12/27 10:56
  */
 @Slf4j
-@ElasticJobConfiguration(jobName = "Test", description = "测试", cron = "0/10 * * * * ?", shardingTotalCount = 1)
+@ElasticJobConfiguration(jobName = "Test", description = "测试", cron = "0/10 * * * * ?", shardingTotalCount = 1, overwrite = true)
 public class TestJob implements SimpleJob {
 
     @Override
