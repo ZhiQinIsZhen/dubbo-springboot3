@@ -5,7 +5,8 @@ import co.elastic.clients.elasticsearch.core.SearchRequest;
 import com.liyz.boot3.common.es.mapper.EsMethod;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,32 +15,35 @@ import java.util.stream.Collectors;
  *
  * @author lyz
  * @version 1.0.0
- * @date 2023/12/26 11:13
+ * @date 2023/12/27 14:04
  */
-public class SelectById extends AbstractEsMethod {
+public class SelectBatchIds extends AbstractEsMethod{
 
     @Override
     public Object execute(Class<?> mapperInterface, Method method, Object[] args) {
         Object object = super.execute(mapperInterface, method, args);
         if (object == null) {
-            return null;
+            return new ArrayList<>();
         }
         if (object instanceof List<?> list) {
-            return list.get(0);
+            return list;
         }
-        return object;
+        return List.of(object);
     }
 
     @Override
     protected SearchRequest.Builder buildRequest(Object[] args) {
         SearchRequest.Builder builder = super.buildRequest(args);
-        return builder
-                .query(q -> q.ids(IdsQuery.of(idq -> idq.values(Arrays.stream(args).map(Object::toString).collect(Collectors.toList())))))
-                .size(1);
+        if (args != null && args[0] instanceof Collection<?> list) {
+            builder = builder
+                        .query(q -> q.ids(IdsQuery.of(idq -> idq.values(list.stream().map(Object::toString).collect(Collectors.toList())))))
+                        .size(list.size());
+        }
+        return builder;
     }
 
     @Override
     public EsMethod getEsMethod() {
-        return EsMethod.SELECT_BY_ID;
+        return EsMethod.SELECT_BATCH_BY_IDS;
     }
 }

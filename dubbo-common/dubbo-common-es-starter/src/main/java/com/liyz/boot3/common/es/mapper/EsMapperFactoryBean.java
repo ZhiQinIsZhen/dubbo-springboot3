@@ -37,7 +37,7 @@ public class EsMapperFactoryBean<T> implements FactoryBean<T>, InitializingBean 
 
     public void setEsMapperRegistry(EsMapperRegistry esMapperRegistry) {
         if (esMapperRegistry == null) {
-            esMapperRegistry = new EsMapperRegistry();
+            esMapperRegistry = EsMapperRegistry.getInstance();
         }
         this.esMapperRegistry = esMapperRegistry;
     }
@@ -54,7 +54,7 @@ public class EsMapperFactoryBean<T> implements FactoryBean<T>, InitializingBean 
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        this.setEsMapperRegistry(null);
+        this.setEsMapperRegistry(EsMapperRegistry.getInstance());
         if (!esMapperRegistry.hasMapper(this.mapperInterface)) {
             esMapperRegistry.addMapper(this.mapperInterface);
         }

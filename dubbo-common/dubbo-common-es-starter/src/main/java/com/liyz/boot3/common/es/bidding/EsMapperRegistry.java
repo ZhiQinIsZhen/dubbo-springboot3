@@ -12,6 +12,22 @@ import java.util.Map;
  */
 public class EsMapperRegistry {
 
+    private static volatile EsMapperRegistry instance;
+
+    public static EsMapperRegistry getInstance() {
+        if (instance == null) {
+            synchronized (EsMapperRegistry.class) {
+                if (instance == null) {
+                    instance = new EsMapperRegistry();
+                }
+            }
+        }
+        return instance;
+    }
+
+    private EsMapperRegistry() {
+    }
+
     private final Map<Class<?>, EsMapperProxyFactory<?>> knownMappers = new HashMap();
 
     public <T> T getEsMapper(Class<T> type) {

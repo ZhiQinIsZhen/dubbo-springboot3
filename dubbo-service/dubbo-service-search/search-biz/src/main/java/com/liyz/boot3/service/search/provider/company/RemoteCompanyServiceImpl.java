@@ -12,6 +12,7 @@ import com.liyz.boot3.service.search.service.SearchServiceImpl;
 import org.apache.dubbo.config.annotation.DubboService;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Desc:
@@ -37,5 +38,10 @@ public class RemoteCompanyServiceImpl extends SearchServiceImpl<CompanyBO, Compa
     public CompanyBO getById(String id) {
         CompanyDO companyDO = companyMapper.selectById(id);
         return BeanUtil.copyProperties(companyDO, CompanyBO::new);
+    }
+
+    @Override
+    public List<CompanyBO> getByIds(List<String> ids) {
+        return BeanUtil.copyList(companyMapper.selectBatchIds(ids), CompanyBO::new);
     }
 }

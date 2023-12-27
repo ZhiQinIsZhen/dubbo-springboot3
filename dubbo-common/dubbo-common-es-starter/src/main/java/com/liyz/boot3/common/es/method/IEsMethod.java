@@ -2,6 +2,8 @@ package com.liyz.boot3.common.es.method;
 
 import com.liyz.boot3.common.es.mapper.EsMethod;
 
+import java.lang.reflect.Method;
+
 /**
  * Desc:
  *
@@ -11,7 +13,7 @@ import com.liyz.boot3.common.es.mapper.EsMethod;
  */
 public interface IEsMethod {
 
-    Object execute(Class<?> mapperInterface, Object[] args);
+    Object execute(Class<?> mapperInterface, Method method, Object[] args);
 
     EsMethod getEsMethod();
 }

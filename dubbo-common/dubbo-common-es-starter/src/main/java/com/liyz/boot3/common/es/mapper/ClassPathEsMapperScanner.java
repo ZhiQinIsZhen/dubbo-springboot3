@@ -79,12 +79,13 @@ public class ClassPathEsMapperScanner extends ClassPathBeanDefinitionScanner {
             log.info("Creating MapperFactoryBean with name '{}'  and '{}'  mapperInterface", holder.getBeanName(), beanClassName);
             definition.getConstructorArgumentValues().addGenericArgumentValue(beanClassName);
             try {
-                definition.getPropertyValues().add("mapperInterface", Resources.classForName(beanClassName));
+                Class<?> beanClass = Resources.classForName(beanClassName);
+                definition.getPropertyValues().add("mapperInterface", beanClass);
+                definition.setAttribute("factoryBeanObjectType", beanClass);
             } catch (ClassNotFoundException var10) {
                 log.error("错误", var10);
             }
             definition.setBeanClass(this.mapperFactoryBeanClass);
-            definition.setAttribute("factoryBeanObjectType", beanClassName);
         });
     }
 

@@ -2,7 +2,6 @@ package com.liyz.boot3.common.es.method;
 
 import cn.hutool.core.util.ReflectUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch._types.query_dsl.IdsQuery;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.liyz.boot3.common.es.response.AggBO;
@@ -16,6 +15,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -38,7 +38,7 @@ public abstract class AbstractEsMethod implements IEsMethod {
     }
 
     @Override
-    public Object execute(Class<?> mapperInterface, Object[] args) {
+    public Object execute(Class<?> mapperInterface, Method method, Object[] args) {
         Type[] genTypes = mapperInterface.getGenericInterfaces();
         if (genTypes == null || genTypes.length == 0) {
             throw new IllegalStateException("mapperInterface need have genericInterfaces");
@@ -50,14 +50,13 @@ public abstract class AbstractEsMethod implements IEsMethod {
         if (Objects.isNull(document) || !StringUtils.hasText(document.indexName())) {
             throw new IllegalStateException("Document annotation need have value");
         }
-        SearchRequest request = SearchRequest.of(s -> s
-                .index(document.indexName())
-                .query(q -> q.ids(IdsQuery.of(idq -> idq.values(Arrays.stream(args).map(Object::toString).collect(Collectors.toList())))))
-                .from(0)
-                .size(10)
-        );
-        RemotePage<?> remotePage = doQuery(request, aClass).getPageData();
+        SearchRequest.Builder builder = this.buildRequest(args);
+        RemotePage<?> remotePage = doQuery(builder.index(document.indexName()).build(), aClass).getPageData();
         return remotePage.getList();
+    }
+
+    protected SearchRequest.Builder buildRequest(Object[] args) {
+        return new SearchRequest.Builder().from(0).size(100);
     }
 
     private EsResponse<?> doQuery(SearchRequest request, Class<?> aClass) {

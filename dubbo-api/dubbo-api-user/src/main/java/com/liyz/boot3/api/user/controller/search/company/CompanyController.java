@@ -12,8 +12,6 @@ import com.liyz.boot3.service.search.bo.company.CompanyBO;
 import com.liyz.boot3.service.search.query.company.CompanyPageQuery;
 import com.liyz.boot3.service.search.remote.company.RemoteCompanyService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -24,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -60,5 +59,13 @@ public class CompanyController {
     public Result<CompanyVO> companyById(@RequestParam("id") String id) {
         CompanyBO companyBO = remoteCompanyService.getById(id);
         return Result.success(BeanUtil.copyProperties(companyBO, CompanyVO::new));
+    }
+
+    @Anonymous
+    @Operation(summary = "根据id列表查询公司信息列表")
+    @GetMapping("/ids")
+    public Result<List<CompanyVO>> companyByIds(@RequestParam("ids") List<String> ids) {
+        List<CompanyBO> boList = remoteCompanyService.getByIds(ids);
+        return Result.success(BeanUtil.copyList(boList, CompanyVO::new));
     }
 }
