@@ -42,7 +42,9 @@ public class RemoteUserLoginLogServiceImpl implements RemoteUserLoginLogService 
     public RemotePage<UserLoginLogBO> page(Long userId, PageBO pageBO) {
         Page<UserLoginLogDO> page = userLoginLogService.page(
                 Page.of(pageBO.getPageNum(), pageBO.getPageSize()),
-                Wrappers.lambdaQuery(UserLoginLogDO.builder().userId(userId).build())
+                Wrappers.lambdaQuery(UserLoginLogDO.class)
+                        .select(UserLoginLogDO::getUserId)
+                        .eq(UserLoginLogDO::getUserId, userId)
         );
         return RemotePage.of(BeanUtil.copyList(page.getRecords(), UserLoginLogBO::new), page.getTotal(), pageBO.getPageNum(), pageBO.getPageSize());
     }

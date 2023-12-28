@@ -5,9 +5,12 @@ import com.liyz.boot3.common.api.util.I18nMessageUtil;
 import com.liyz.boot3.common.remote.exception.CommonExceptionCodeEnum;
 import com.liyz.boot3.common.remote.exception.RemoteServiceException;
 import com.liyz.boot3.common.service.constant.CommonServiceConstant;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Desc:global exception advice
@@ -34,13 +38,23 @@ public class GlobalControllerExceptionAdvice {
         return Result.error(CommonExceptionCodeEnum.REMOTE_SERVICE_FAIL);
     }
 
+    @ExceptionHandler({RemoteServiceException.class})
+    public Result<String> remoteServiceException(RemoteServiceException exception) {
+        return Result.error(exception.getCode(),
+                I18nMessageUtil.getMessage(
+                        exception.getCodeService().getName(),
+                        exception.getMessage(),
+                        null)
+        );
+    }
+
     @ExceptionHandler({BindException.class})
     public Result<String> bindException(BindException exception) {
         if (Objects.nonNull(exception) && exception.hasErrors()) {
             List<ObjectError> errors = exception.getAllErrors();
             for (ObjectError error : errors) {
-                if (error.contains(TypeMismatchException.class) && error instanceof FieldError) {
-                    return Result.error(CommonExceptionCodeEnum.PARAMS_VALIDATED.getCode(), ((FieldError) error).getField() + "类型转化失败");
+                if (error.contains(TypeMismatchException.class) && error instanceof FieldError fieldError) {
+                    return Result.error(CommonExceptionCodeEnum.PARAMS_VALIDATED.getCode(), fieldError.getField() + "类型转化失败");
                 }
                 return Result.error(CommonExceptionCodeEnum.PARAMS_VALIDATED.getCode(), error.getDefaultMessage());
             }
@@ -57,8 +71,14 @@ public class GlobalControllerExceptionAdvice {
         return Result.error(CommonExceptionCodeEnum.PARAMS_VALIDATED);
     }
 
-    @ExceptionHandler({RemoteServiceException.class})
-    public Result<String> remoteServiceException(RemoteServiceException exception) {
-        return Result.error(exception.getCode(), I18nMessageUtil.getMessage(exception.getCodeService().getName(), exception.getMessage(), null));
+    @ExceptionHandler({ConstraintViolationException.class})
+    public Result<String> constraintViolationException(ConstraintViolationException exception) {
+        if (CollectionUtils.isEmpty(exception.getConstraintViolations())) {
+            return Result.error(CommonExceptionCodeEnum.PARAMS_VALIDATED);
+        }
+        Optional<ConstraintViolation<?>> optional = exception.getConstraintViolations().stream().findFirst();
+        return optional
+                .<Result<String>>map(cv -> Result.error(CommonExceptionCodeEnum.PARAMS_VALIDATED.getCode(), cv.getMessageTemplate()))
+                .orElseGet(() -> Result.error(CommonExceptionCodeEnum.PARAMS_VALIDATED));
     }
 }

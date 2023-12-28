@@ -127,4 +127,4 @@ anonymous:
         - /user/user/register
         - /user/user/login
         - /user/test/**
-        - /user//search/company/**
+        - /user/search/company/**
