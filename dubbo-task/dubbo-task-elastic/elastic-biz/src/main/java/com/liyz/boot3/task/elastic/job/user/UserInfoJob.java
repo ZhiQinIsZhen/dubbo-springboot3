@@ -20,7 +20,7 @@ import org.apache.shardingsphere.elasticjob.simple.job.SimpleJob;
 @ElasticJobConfiguration(jobName = "user", description = "查询用户信息", cron = "0 0/1 * * * ? *", shardingTotalCount = 1, overwrite = true)
 public class UserInfoJob implements SimpleJob {
 
-    @DubboReference
+    @DubboReference(group = "task")
     private RemoteUserInfoService remoteUserInfoService;
 
     @Override
