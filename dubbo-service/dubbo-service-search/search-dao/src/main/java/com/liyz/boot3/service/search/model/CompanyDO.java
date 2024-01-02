@@ -21,7 +21,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
-@Document(indexName = "search-company-auto-20231223", createIndex = false)
+@Document(indexName = "search-company-auto-20231230", createIndex = false)
 public class CompanyDO implements Serializable {
     @Serial
     private static final long serialVersionUID = 170535601509514115L;

@@ -1,6 +1,6 @@
 package com.liyz.boot3.service.search;
 
-import com.liyz.boot3.common.es.annotation.EsMapperScan;
+import com.liyz.boot3.common.search.annotation.EsMapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

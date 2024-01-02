@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>com.liyz.boot3</groupId>
-            <artifactId>dubbo-common-es-starter</artifactId>
+            <artifactId>dubbo-common-search-starter</artifactId>
         </dependency>
     </dependencies>
 

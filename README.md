@@ -51,7 +51,7 @@ ORM框架选用了[Mybatis-plus](https://baomidou.com/)，
 
 1. `dubbo-common-api-starter`: 通用web或者网关层框架
 2. `dubbo-common-dao-starter`: 通用DAO层的框架(基于Mybatis-plus)
-3. `dubbo-common-es-starter`: 通用Elastic Search层的框架(借鉴与Mybatis-plus，继承EsMapper即可开箱即用)
+3. `dubbo-common-search-starter`: 通用Elastic Search层的框架(借鉴与Mybatis-plus，继承EsMapper即可开箱即用)
 4. `dubbo-common-lock-starter`: 通用Lock框架
 5. `dubbo-common-remote`: 通用Dubbo远程接口框架(包含了参数验证器:validation)
 6. `dubbo-common-service`: 业务通用核心框架

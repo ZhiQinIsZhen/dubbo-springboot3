@@ -1,6 +1,6 @@
 package com.liyz.boot3.service.search.mapper;
 
-import com.liyz.boot3.common.es.mapper.EsMapper;
+import com.liyz.boot3.common.search.mapper.EsMapper;
 import com.liyz.boot3.service.search.model.CompanyDO;
 
 /**
