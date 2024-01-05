@@ -12,14 +12,46 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ResourceUtil {
 
+    private static final ClassLoaderWrapper classLoaderWrapper = new ClassLoaderWrapper();
     private static final ClassLoaderWrapper WRAPPER = new ClassLoaderWrapper();
 
+    /**
+     * Loads a class
+     *
+     * @param className
+     *          - the class to fetch
+     *
+     * @return The loaded class
+     *
+     * @throws ClassNotFoundException
+     *           If the class cannot be found (duh!)
+     */
     public static Class<?> classForName(String className) throws ClassNotFoundException {
         return WRAPPER.classForName(className);
     }
 
+    /**
+     * Returns the default classloader (may be null).
+     *
+     * @return The default classloader
+     */
+    public static ClassLoader getDefaultClassLoader() {
+        return classLoaderWrapper.defaultClassLoader;
+    }
+
+    /**
+     * Sets the default classloader
+     *
+     * @param defaultClassLoader
+     *          - the new default ClassLoader
+     */
+    public static void setDefaultClassLoader(ClassLoader defaultClassLoader) {
+        classLoaderWrapper.defaultClassLoader = defaultClassLoader;
+    }
+
     class ClassLoaderWrapper {
 
+        ClassLoader defaultClassLoader;
         private final ClassLoader systemClassLoader;
 
         public ClassLoaderWrapper() {
@@ -43,7 +75,7 @@ public class ResourceUtil {
         }
 
         private ClassLoader[] getClassLoaders(ClassLoader classLoader) {
-            return new ClassLoader[]{classLoader, Thread.currentThread().getContextClassLoader(),
+            return new ClassLoader[]{classLoader, defaultClassLoader, Thread.currentThread().getContextClassLoader(),
                     this.getClass().getClassLoader(), this.systemClassLoader};
         }
     }

@@ -26,6 +26,7 @@ ORM框架选用了[Mybatis-plus](https://baomidou.com/)，
 -javaagent:C:\skywalking-java\skywalking-agent\skywalking-agent.jar
 -Dskywalking.agent.keep_tracing=true
 -Dskywalking.agent.service_name=dubbo-service-auth
+-Dskywalking.collector.backend_service=localhost:11800
 ```
 ## Remote Debug配置监听
 

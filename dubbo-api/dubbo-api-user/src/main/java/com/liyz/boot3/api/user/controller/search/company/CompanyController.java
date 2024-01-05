@@ -58,7 +58,11 @@ public class CompanyController {
     @GetMapping("/id")
     public Result<CompanyVO> companyById(@RequestParam("id") String id) {
         CompanyBO companyBO = remoteCompanyService.getById(id);
-        return Result.success(BeanUtil.copyProperties(companyBO, CompanyVO::new));
+        return Result.success(BeanUtil.copyProperties(companyBO, CompanyVO::new, (s, t) -> {
+            if (Objects.nonNull(s.getEstablishmentTime())) {
+                t.setEstablishmentTime(new Date(s.getEstablishmentTime() * 1000));
+            }
+        }));
     }
 
     @Anonymous
@@ -66,6 +70,10 @@ public class CompanyController {
     @GetMapping("/ids")
     public Result<List<CompanyVO>> companyByIds(@RequestParam("ids") List<String> ids) {
         List<CompanyBO> boList = remoteCompanyService.getByIds(ids);
-        return Result.success(BeanUtil.copyList(boList, CompanyVO::new));
+        return Result.success(BeanUtil.copyList(boList, CompanyVO::new, (s, t) -> {
+            if (Objects.nonNull(s.getEstablishmentTime())) {
+                t.setEstablishmentTime(new Date(s.getEstablishmentTime() * 1000));
+            }
+        }));
     }
 }

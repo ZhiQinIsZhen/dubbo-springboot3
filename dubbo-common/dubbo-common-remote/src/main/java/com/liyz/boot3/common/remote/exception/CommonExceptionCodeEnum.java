@@ -13,6 +13,9 @@ public enum CommonExceptionCodeEnum implements IExceptionService{
     PARAMS_VALIDATED("10000", "参数校验失败"),
     REMOTE_SERVICE_FAIL("10005", "服务异常"),
     OUT_LIMIT_COUNT("10006", "访问频率过快"),
+    NON_NO_ARGS_CONSTRUCTOR("10007", "没有无参构造方法"),
+    NOT_FIND_CLASS("10008", "找不到指定的class"),
+    PARSING_PROPERTY_NAME_ERROR("10009", "解析属性名称错误"),
 
     DEC_KEY_LENGTH_ERROR("13001", "DEC加密Key长度不能小于8位"),
     DEC_IV_LENGTH_ERROR("13002", "DEC加密IV长度必须等于8位"),

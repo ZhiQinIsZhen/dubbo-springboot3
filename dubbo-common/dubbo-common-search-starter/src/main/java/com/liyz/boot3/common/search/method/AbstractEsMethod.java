@@ -88,6 +88,7 @@ public abstract class AbstractEsMethod implements IEsMethod {
                         }
                         return source;
                     })
+                    .peek(this::afterHandle)
                     .collect(Collectors.toList());
             long end = System.currentTimeMillis();
             log.info("es hits count : [{}], es take : {}ms, java code take : {}ms",
@@ -114,5 +115,14 @@ public abstract class AbstractEsMethod implements IEsMethod {
                 new RemotePage<>(List.of(), 0, Math.max(0, request.from()) + 1, request.size()),
                 null
         );
+    }
+
+    /**
+     * 后置数据处理
+     *
+     * @param o 数据
+     */
+    protected void afterHandle(Object o) {
+        //do nothing
     }
 }

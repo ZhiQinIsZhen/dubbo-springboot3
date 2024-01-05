@@ -1,5 +1,7 @@
 package com.liyz.boot3.common.search.mapper;
 
+import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
@@ -19,7 +21,11 @@ public interface EsMapper<T> {
      * @param id
      * @return
      */
-    T selectById(Serializable id);
+    default T selectById(Serializable id) {
+        return selectById(id, null);
+    }
+
+    T selectById(Serializable id, LambdaQueryWrapper<T> queryWrapper);
 
     /**
      * 根据主键IDs查询数据

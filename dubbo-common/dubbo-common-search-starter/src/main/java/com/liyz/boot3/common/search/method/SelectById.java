@@ -32,7 +32,7 @@ public class SelectById extends AbstractEsMethod{
             return null;
         }
         if (object instanceof List<?> list) {
-            return list.get(0);
+            return list.getFirst();
         }
         return object;
     }
@@ -41,7 +41,7 @@ public class SelectById extends AbstractEsMethod{
     protected SearchRequest.Builder buildRequest(Object[] args) {
         SearchRequest.Builder builder = super.buildRequest(args);
         return builder
-                .query(q -> q.ids(IdsQuery.of(idq -> idq.values(Arrays.stream(args).map(Object::toString).collect(Collectors.toList())))))
+                .query(q -> q.ids(IdsQuery.of(idq -> idq.values(args[0].toString()))))
                 .size(1);
     }
 }

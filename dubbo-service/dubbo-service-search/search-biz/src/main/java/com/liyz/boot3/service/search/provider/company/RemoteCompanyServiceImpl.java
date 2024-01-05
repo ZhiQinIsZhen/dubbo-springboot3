@@ -1,5 +1,6 @@
 package com.liyz.boot3.service.search.provider.company;
 
+import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
 import com.liyz.boot3.common.service.util.BeanUtil;
 import com.liyz.boot3.service.search.bo.company.CompanyBO;
 import com.liyz.boot3.service.search.constant.SearchType;
@@ -36,7 +37,7 @@ public class RemoteCompanyServiceImpl extends SearchServiceImpl<CompanyBO, Compa
 
     @Override
     public CompanyBO getById(String id) {
-        CompanyDO companyDO = companyMapper.selectById(id);
+        CompanyDO companyDO = companyMapper.selectById(id, new LambdaQueryWrapper<>(CompanyDO.class).select(CompanyDO::getCompanyId, CompanyDO::getCompanyCode));
         return BeanUtil.copyProperties(companyDO, CompanyBO::new);
     }
 

@@ -3,14 +3,12 @@ package com.liyz.boot3.service.search.model;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Desc:
@@ -47,6 +45,6 @@ public class CompanyDO implements Serializable {
     @Field(name = "address_tag", type = FieldType.Keyword)
     private String addressTag;
 
-    @Field(name = "establishment_time", type = FieldType.Date, format = {DateFormat.epoch_second})
-    private Date establishmentTime;
+    @Field(name = "establishment_time", type = FieldType.Long)
+    private Long establishmentTime;
 }
