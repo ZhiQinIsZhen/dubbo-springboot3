@@ -5,6 +5,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.liyz.boot3.common.remote.page.RemotePage;
+import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
 import com.liyz.boot3.common.search.response.AggResponse;
 import com.liyz.boot3.common.search.response.EsResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +68,17 @@ public abstract class AbstractEsMethod implements IEsMethod {
     }
 
     protected SearchRequest.Builder buildRequest(Object[] args) {
-        return new SearchRequest.Builder().from(0).size(100);
+        SearchRequest.Builder builder = new SearchRequest.Builder().from(0).size(100);
+        if (args != null) {
+            for (Object arg : args) {
+                if (arg instanceof LambdaQueryWrapper<?> wrapper) {
+                    if (!CollectionUtils.isEmpty(wrapper.getIncludes())) {
+                        builder = builder.source(s -> s.filter(sf -> sf.includes(wrapper.getIncludes())));
+                    }
+                }
+            }
+        }
+        return builder;
     }
 
     private EsResponse<?> doQuery(SearchRequest request, Class<?> aClass) {

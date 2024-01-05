@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * @version 1.0.0
  * @date 2023/12/31 13:31
  */
-public class SelectById extends AbstractEsMethod{
+public class SelectById extends AbstractEsMethod {
 
     public SelectById() {
         this(EsMethod.SELECT_BY_ID.getMethod());

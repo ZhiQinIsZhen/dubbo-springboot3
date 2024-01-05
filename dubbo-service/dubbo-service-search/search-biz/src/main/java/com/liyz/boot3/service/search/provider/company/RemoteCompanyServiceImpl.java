@@ -43,6 +43,10 @@ public class RemoteCompanyServiceImpl extends SearchServiceImpl<CompanyBO, Compa
 
     @Override
     public List<CompanyBO> getByIds(List<String> ids) {
-        return BeanUtil.copyList(companyMapper.selectBatchIds(ids), CompanyBO::new);
+        List<CompanyDO> doList = companyMapper.selectBatchIds(ids,
+                new LambdaQueryWrapper<>(CompanyDO.class)
+                        .select(CompanyDO::getCompanyId)
+        );
+        return BeanUtil.copyList(doList, CompanyBO::new);
     }
 }

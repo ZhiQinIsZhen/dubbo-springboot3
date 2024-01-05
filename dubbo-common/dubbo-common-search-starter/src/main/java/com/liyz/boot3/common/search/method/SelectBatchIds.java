@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * @version 1.0.0
  * @date 2023/12/31 13:32
  */
-public class SelectBatchIds extends AbstractEsMethod{
+public class SelectBatchIds extends AbstractEsMethod {
 
     public SelectBatchIds() {
         this(EsMethod.SELECT_BATCH_BY_IDS.getMethod());
