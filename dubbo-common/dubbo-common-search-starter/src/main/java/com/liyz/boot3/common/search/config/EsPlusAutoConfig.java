@@ -6,7 +6,9 @@ import co.elastic.clients.transport.rest_client.RestClientTransport;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.liyz.boot3.common.search.method.AbstractEsMethod;
+import com.liyz.boot3.common.search.toolkit.JsonNameBeanDeserializerModifier;
 import com.liyz.boot3.common.search.util.GlobalEsCacheUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHeaders;
@@ -81,7 +83,9 @@ public class EsPlusAutoConfig implements InitializingBean {
                 new JacksonJsonpMapper(
                         new JsonMapper()
                                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                                .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE))
+                                .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+                                .registerModules(new SimpleModule().setDeserializerModifier(new JsonNameBeanDeserializerModifier()))
+                )
         ));
         //todo 暂时在这里设置
         AbstractEsMethod.setCLIENT(client);
