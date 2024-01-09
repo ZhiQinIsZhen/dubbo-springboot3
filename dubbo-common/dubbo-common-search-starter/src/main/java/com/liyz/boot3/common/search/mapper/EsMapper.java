@@ -52,4 +52,12 @@ public interface EsMapper<T> {
      * @return 数据结果
      */
     List<T> selectBatchIds(Collection<? extends Serializable> idList, LambdaQueryWrapper<T> queryWrapper);
+
+    /**
+     * 查询一条记录
+     *
+     * @param queryWrapper 查询字段
+     * @return 数据结果
+     */
+    T selectOne(LambdaQueryWrapper<T> queryWrapper);
 }

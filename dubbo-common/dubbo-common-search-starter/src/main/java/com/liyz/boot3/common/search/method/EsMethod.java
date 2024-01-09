@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 public enum EsMethod {
     SELECT_BY_ID("selectById", "根据ID 查询一条数据"),
     SELECT_BATCH_BY_IDS("selectBatchIds", "根据ID集合，批量查询数据"),
+    SELECT_ONE("selectOne", "查询一条记录"),
     ;
 
     private final String method;

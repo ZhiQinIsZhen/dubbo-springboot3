@@ -91,7 +91,9 @@ public class IndexInfoUtil {
         IndexInfo indexInfo = new IndexInfo(entityType);
         Document document = entityType.getAnnotation(Document.class);
         indexInfo.setIndexName(document.indexName());
-        List<Field> fields = Arrays.stream(ReflectUtil.getFields(entityType)).toList();
+        List<Field> fields = Arrays.stream(ReflectUtil.getFields(entityType))
+                .filter(f -> indexInfo.getReflector().isValidPropertyName(f.getName()))
+                .toList();
         Field field = fields.stream().filter(f -> f.isAnnotationPresent(Id.class)).findAny().orElse(null);
         if (field != null) {
             indexInfo.setKeyProperty(field.getName());
@@ -101,7 +103,11 @@ public class IndexInfoUtil {
         List<IndexFieldInfo> fieldList = new ArrayList<>();
         for (Field item : fields) {
             org.springframework.data.elasticsearch.annotations.Field annotationField = item.getAnnotation(org.springframework.data.elasticsearch.annotations.Field.class);
-            if (annotationField != null && annotationField.enabled()) {
+            if (annotationField != null) {
+                if (annotationField.enabled()) {
+                    fieldList.add(new IndexFieldInfo(indexInfo, item, indexInfo.getReflector()));
+                }
+            } else {
                 fieldList.add(new IndexFieldInfo(indexInfo, item, indexInfo.getReflector()));
             }
         }

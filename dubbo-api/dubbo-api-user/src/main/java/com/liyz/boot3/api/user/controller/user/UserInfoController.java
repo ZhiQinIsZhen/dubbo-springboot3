@@ -20,9 +20,11 @@ import com.liyz.boot3.service.user.remote.RemoteUserLogoutLogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +45,7 @@ import java.util.Objects;
         @ApiResponse(responseCode = "1", description = "失败")
 })
 @Slf4j
+@SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
 @RestController
 @RequestMapping("/user")
 public class UserInfoController {

@@ -222,7 +222,7 @@ public class Reflector {
         }
     }
 
-    private boolean isValidPropertyName(String name) {
+    public boolean isValidPropertyName(String name) {
         return (!name.startsWith("$") && !"serialVersionUID".equals(name) && !"class".equals(name));
     }
 

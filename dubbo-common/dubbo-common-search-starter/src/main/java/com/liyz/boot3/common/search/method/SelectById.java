@@ -3,11 +3,6 @@ package com.liyz.boot3.common.search.method;
 import co.elastic.clients.elasticsearch._types.query_dsl.IdsQuery;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 /**
  * Desc:
  *
@@ -23,18 +18,6 @@ public class SelectById extends AbstractEsMethod {
 
     public SelectById(String methodName) {
         super(methodName);
-    }
-
-    @Override
-    public Object execute(Class<?> mapperInterface, Method method, Object[] args) {
-        Object object = super.execute(mapperInterface, method, args);
-        if (object == null) {
-            return null;
-        }
-        if (object instanceof List<?> list) {
-            return list.getFirst();
-        }
-        return object;
     }
 
     @Override

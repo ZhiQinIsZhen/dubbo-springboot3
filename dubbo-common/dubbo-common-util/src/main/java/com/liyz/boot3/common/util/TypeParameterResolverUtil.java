@@ -71,6 +71,33 @@ public class TypeParameterResolverUtil {
         return result;
     }
 
+    /**
+     * 类型转化为class
+     *
+     * @param srcType the src type
+     * @return class
+     */
+    public static Class<?> typeToClass(Type srcType) {
+        Class<?> result = null;
+        if (srcType instanceof Class) {
+            result = (Class<?>) srcType;
+        } else if (srcType instanceof ParameterizedType) {
+            result = (Class<?>) ((ParameterizedType) srcType).getRawType();
+        } else if (srcType instanceof GenericArrayType) {
+            Type componentType = ((GenericArrayType) srcType).getGenericComponentType();
+            if (componentType instanceof Class) {
+                result = Array.newInstance((Class<?>) componentType, 0).getClass();
+            } else {
+                Class<?> componentClass = typeToClass(componentType);
+                result = Array.newInstance(componentClass, 0).getClass();
+            }
+        }
+        if (result == null) {
+            result = Object.class;
+        }
+        return result;
+    }
+
     private static Type resolveType(Type type, Type srcType, Class<?> declaringClass) {
         if (type instanceof TypeVariable) {
             return resolveTypeVar((TypeVariable<?>) type, srcType, declaringClass);

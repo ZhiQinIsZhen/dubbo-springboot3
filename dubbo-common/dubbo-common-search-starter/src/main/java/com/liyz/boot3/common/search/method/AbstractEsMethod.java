@@ -8,6 +8,7 @@ import com.liyz.boot3.common.remote.page.RemotePage;
 import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
 import com.liyz.boot3.common.search.response.AggResponse;
 import com.liyz.boot3.common.search.response.EsResponse;
+import com.liyz.boot3.common.util.TypeParameterResolverUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -63,7 +64,24 @@ public abstract class AbstractEsMethod implements IEsMethod {
         }
         SearchRequest.Builder builder = this.buildRequest(args);
         RemotePage<?> remotePage = doQuery(builder.index(document.indexName()).build(), aClass).getPageData();
-        Type returnType = method.getGenericReturnType();
+        Type returnType = TypeParameterResolverUtil.resolveReturnType(method, mapperInterface);
+        Class<?> returnClass = TypeParameterResolverUtil.typeToClass(returnType);
+        if (aClass.equals(returnClass)) {
+            if (CollectionUtils.isEmpty(remotePage.getList())) {
+                return null;
+            } else {
+                return remotePage.getList().getFirst();
+            }
+        } else if (returnClass.isAssignableFrom(List.class)) {
+            if (returnType instanceof ParameterizedType parameterizedType1) {
+                Class<?> aaClass = (Class<?>) parameterizedType1.getActualTypeArguments()[0];
+                if (aClass.equals(aaClass)) {
+                    return remotePage.getList();
+                }
+            }
+        } else if (returnClass.equals(RemotePage.class)) {
+            return remotePage;
+        }
         return remotePage.getList();
     }
 
