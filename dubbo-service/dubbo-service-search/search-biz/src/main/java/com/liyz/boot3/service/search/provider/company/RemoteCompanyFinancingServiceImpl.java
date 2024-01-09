@@ -1,14 +1,18 @@
 package com.liyz.boot3.service.search.provider.company;
 
+import com.alibaba.excel.EasyExcel;
 import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
 import com.liyz.boot3.common.service.util.BeanUtil;
 import com.liyz.boot3.service.search.bo.company.CompanyFinancingBO;
+import com.liyz.boot3.service.search.excel.CompanyFinancingExcel;
 import com.liyz.boot3.service.search.mapper.CompanyFinancingMapper;
 import com.liyz.boot3.service.search.model.CompanyFinancingDO;
 import com.liyz.boot3.service.search.remote.company.RemoteCompanyFinancingService;
 import jakarta.annotation.Resource;
 import org.apache.dubbo.config.annotation.DubboService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -31,5 +35,20 @@ public class RemoteCompanyFinancingServiceImpl implements RemoteCompanyFinancing
                         .term(Objects.nonNull(financingBO.getFinancingRounds()), CompanyFinancingDO::getFinancingRounds, financingBO.getFinancingRounds())
                 ), CompanyFinancingBO::new
         );
+    }
+
+    @Override
+    public void export(List<String> companyIds) {
+        CompanyFinancingBO financingBO = new CompanyFinancingBO();
+        financingBO.setFinancingRounds("Pre-IPO");
+        String fileName = "C:\\Users\\liyangzhen\\Downloads\\excel\\" + System.currentTimeMillis() + ".xlsx";
+        EasyExcel.write(fileName, CompanyFinancingExcel.class).sheet("融资历程").doWrite(() -> {
+            List<CompanyFinancingBO> boList = new ArrayList<>();
+            for (String companyId : companyIds) {
+                financingBO.setCompanyId(companyId);
+                boList.add(selectOne(financingBO));
+            }
+            return boList;
+        });
     }
 }

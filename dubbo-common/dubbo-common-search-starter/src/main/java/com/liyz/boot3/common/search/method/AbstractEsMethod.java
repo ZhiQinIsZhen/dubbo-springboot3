@@ -56,7 +56,7 @@ public abstract class AbstractEsMethod implements IEsMethod {
     @Override
     public Object execute(Class<?> mapperInterface, Method method, Object[] args) {
         Type[] genTypes = mapperInterface.getGenericInterfaces();
-        if (genTypes == null || genTypes.length == 0) {
+        if (genTypes.length == 0) {
             throw new IllegalStateException("mapperInterface need have genericInterfaces");
         }
         Type genType = genTypes[0];

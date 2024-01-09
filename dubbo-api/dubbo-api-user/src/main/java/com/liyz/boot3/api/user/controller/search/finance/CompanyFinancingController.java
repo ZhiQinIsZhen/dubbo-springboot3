@@ -12,7 +12,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * Desc:
@@ -30,10 +33,18 @@ public class CompanyFinancingController {
     private RemoteCompanyFinancingService remoteCompanyFinancingService;
 
     @Anonymous
-    @Operation(summary = "根据id查询投资机构信息")
+    @Operation(summary = "查询投资机构单条数据")
     @GetMapping("/one")
     public Result<CompanyFinancingVO> getOne(CompanyFinancingDTO dto) {
         CompanyFinancingBO financingBO = remoteCompanyFinancingService.selectOne(BeanUtil.copyProperties(dto, CompanyFinancingBO::new));
         return Result.success(BeanUtil.copyProperties(financingBO, CompanyFinancingVO::new));
+    }
+
+    @Anonymous
+    @Operation(summary = "投资机构导出")
+    @GetMapping("/export")
+    public Result export(@RequestParam("ids")List<String> ids) {
+        remoteCompanyFinancingService.export(ids);
+        return Result.success();
     }
 }
