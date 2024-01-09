@@ -27,10 +27,15 @@ public class AbstractLambdaWrapper<T, Children extends AbstractLambdaWrapper<T, 
     private boolean initColumnMap = false;
 
     protected final List<String> columnsToIncludes(boolean onlyColumn, List<SFunction<T, ?>> columns) {
-        return columns.stream().map(item -> columnToInclude(onlyColumn, item)).collect(Collectors.toList());
+        return columns.stream().map(item -> columnToString(onlyColumn, item)).collect(Collectors.toList());
     }
 
-    protected String columnToInclude(boolean onlyColumn, SFunction<T, ?> column) {
+    @Override
+    protected String columnToString(SFunction<T, ?> column) {
+        return columnToString(false, column);
+    }
+
+    protected String columnToString(boolean onlyColumn, SFunction<T, ?> column) {
          ColumnCache cache = getColumnCache(column);
          return onlyColumn ? cache.getColumn() : cache.getColumnSelect();
     }

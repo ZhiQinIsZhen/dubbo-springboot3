@@ -2,10 +2,14 @@ package com.liyz.boot3.common.search.method;
 
 import cn.hutool.core.util.ReflectUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.liyz.boot3.common.remote.page.RemotePage;
+import com.liyz.boot3.common.search.Query.EsKeyword;
 import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
+import com.liyz.boot3.common.search.Query.QueryCondition;
 import com.liyz.boot3.common.search.response.AggResponse;
 import com.liyz.boot3.common.search.response.EsResponse;
 import com.liyz.boot3.common.util.TypeParameterResolverUtil;
@@ -92,6 +96,26 @@ public abstract class AbstractEsMethod implements IEsMethod {
                 if (arg instanceof LambdaQueryWrapper<?> wrapper) {
                     if (!CollectionUtils.isEmpty(wrapper.getIncludes())) {
                         builder = builder.source(s -> s.filter(sf -> sf.includes(wrapper.getIncludes())));
+                    }
+                    if (wrapper.getQueryCondition() != null) {
+                        switch (wrapper.getQueryCondition().getEsKeyword()) {
+                            case MUST -> {
+                                BoolQuery.Builder boolBuild = new BoolQuery.Builder();
+                                List<Query> queries = new ArrayList<>();
+                                for (QueryCondition item : wrapper.getQueryCondition().getChildren()) {
+                                    if (item.getEsKeyword() == EsKeyword.TERM) {
+                                        queries.add(new Query.Builder().term(tm -> tm.field(item.getColum()).value(item.getVal().toString())).build());
+                                    }
+                                }
+                                builder.query(new Query.Builder().bool(boolBuild.filter(queries).build()).build());
+                            }
+                            case SHOULD -> {
+
+                            }
+                            case NOT_MUST -> {
+
+                            }
+                        }
                     }
                 }
             }

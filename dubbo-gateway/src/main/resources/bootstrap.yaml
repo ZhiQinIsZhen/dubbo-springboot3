@@ -129,3 +129,4 @@ anonymous:
         - /user/test/**
         - /user/search/company/**
         - /user/search/investor/**
+        - /user/search/financing/**

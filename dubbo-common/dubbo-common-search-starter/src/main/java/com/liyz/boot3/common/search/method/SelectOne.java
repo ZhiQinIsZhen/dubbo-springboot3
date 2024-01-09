@@ -1,5 +1,7 @@
 package com.liyz.boot3.common.search.method;
 
+import co.elastic.clients.elasticsearch.core.SearchRequest;
+
 /**
  * Desc:
  *
@@ -15,5 +17,11 @@ public class SelectOne extends AbstractEsMethod {
 
     public SelectOne(String methodName) {
         super(methodName);
+    }
+
+    @Override
+    protected SearchRequest.Builder buildRequest(Object[] args) {
+        SearchRequest.Builder builder = super.buildRequest(args);
+        return builder.size(1);
     }
 }
