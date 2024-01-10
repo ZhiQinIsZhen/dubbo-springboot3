@@ -1,5 +1,6 @@
 package com.liyz.boot3.common.search.Query;
 
+import co.elastic.clients.elasticsearch._types.FieldValue;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,6 +8,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Desc:
@@ -39,5 +41,17 @@ public class QueryCondition implements Serializable {
         this.colum = colum;
         this.val = val;
         this.children = new ArrayList<>();
+    }
+
+    public List<FieldValue> valToList() {
+        if (val == null) {
+            return null;
+        }
+        if (val instanceof List<?> valList) {
+            return valList.stream().map(item -> FieldValue.of(item.toString())).collect(Collectors.toList());
+        }
+        List<FieldValue> list = new ArrayList<>();
+        list.add(FieldValue.of(val.toString()));
+        return list;
     }
 }

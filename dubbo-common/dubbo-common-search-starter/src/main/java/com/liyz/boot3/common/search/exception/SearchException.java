@@ -23,4 +23,8 @@ public class SearchException extends RemoteServiceException {
     public SearchException(IExceptionService codeService) {
         super(codeService);
     }
+
+    public SearchException(String code, String message) {
+        super(code, message);
+    }
 }

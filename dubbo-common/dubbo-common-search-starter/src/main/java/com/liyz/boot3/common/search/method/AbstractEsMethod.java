@@ -2,17 +2,25 @@ package com.liyz.boot3.common.search.method;
 
 import cn.hutool.core.util.ReflectUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.SortOptions;
+import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.liyz.boot3.common.remote.page.RemotePage;
 import com.liyz.boot3.common.search.Query.EsKeyword;
+import com.liyz.boot3.common.search.Query.EsSort;
 import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
 import com.liyz.boot3.common.search.Query.QueryCondition;
+import com.liyz.boot3.common.search.exception.SearchException;
+import com.liyz.boot3.common.search.exception.SearchExceptionCodeEnum;
+import com.liyz.boot3.common.search.mapper.EsMapper;
 import com.liyz.boot3.common.search.response.AggResponse;
 import com.liyz.boot3.common.search.response.EsResponse;
+import com.liyz.boot3.common.util.ReflectorUtil;
 import com.liyz.boot3.common.util.TypeParameterResolverUtil;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -35,6 +43,7 @@ import java.util.stream.Collectors;
  * @date 2023/12/30 21:16
  */
 @Slf4j
+@Getter
 public abstract class AbstractEsMethod implements IEsMethod {
 
     private static ElasticsearchClient CLIENT;
@@ -49,25 +58,26 @@ public abstract class AbstractEsMethod implements IEsMethod {
         this.methodName = methodName;
     }
 
-    public String getMethodName() {
-        return methodName;
-    }
-
     @Override
     public Object execute(Class<?> mapperInterface, Method method, Object[] args) {
         Type[] genTypes = mapperInterface.getGenericInterfaces();
-        if (genTypes.length == 0) {
-            throw new IllegalStateException("mapperInterface need have genericInterfaces");
-        }
-        Type genType = genTypes[0];
+        Type genType = Arrays.stream(genTypes)
+                .filter(type -> type instanceof ParameterizedType && ReflectorUtil.typeToClass(type) == EsMapper.class)
+                .findFirst()
+                .orElseThrow(() -> new SearchException(SearchExceptionCodeEnum.NOT_EXIST_MAPPER));
         ParameterizedType parameterizedType = (ParameterizedType) genType;
         Class<?> aClass = (Class<?>) parameterizedType.getActualTypeArguments()[0];
         Document document = aClass.getAnnotation(Document.class);
         if (Objects.isNull(document) || !StringUtils.hasText(document.indexName())) {
-            throw new IllegalStateException("Document annotation need have value");
+            throw new SearchException(SearchExceptionCodeEnum.NOT_INDEX_NAME);
         }
         SearchRequest.Builder builder = this.buildRequest(args);
-        RemotePage<?> remotePage = doQuery(builder.index(document.indexName()).build(), aClass).getPageData();
+        EsResponse<?> esResponse = doQuery(builder.index(document.indexName()).build(), aClass);
+        return getByEsResponse(mapperInterface, method, esResponse, aClass);
+    }
+
+    private Object getByEsResponse(Class<?> mapperInterface, Method method, EsResponse<?> esResponse, Class<?> aClass) {
+        RemotePage<?> remotePage = esResponse.getPageData();
         Type returnType = TypeParameterResolverUtil.resolveReturnType(method, mapperInterface);
         Class<?> returnClass = TypeParameterResolverUtil.typeToClass(returnType);
         if (aClass.equals(returnClass)) {
@@ -86,39 +96,47 @@ public abstract class AbstractEsMethod implements IEsMethod {
         } else if (returnClass.equals(RemotePage.class)) {
             return remotePage;
         }
-        return remotePage.getList();
+        //todo 判断是否是agg
+        return esResponse.getAggData();
     }
 
     protected SearchRequest.Builder buildRequest(Object[] args) {
         SearchRequest.Builder builder = new SearchRequest.Builder().from(0).size(100);
-        if (args != null) {
-            for (Object arg : args) {
-                if (arg instanceof LambdaQueryWrapper<?> wrapper) {
-                    if (!CollectionUtils.isEmpty(wrapper.getIncludes())) {
-                        builder = builder.source(s -> s.filter(sf -> sf.includes(wrapper.getIncludes())));
-                    }
-                    if (wrapper.getQueryCondition() != null) {
-                        switch (wrapper.getQueryCondition().getEsKeyword()) {
-                            case MUST -> {
-                                BoolQuery.Builder boolBuild = new BoolQuery.Builder();
-                                List<Query> queries = new ArrayList<>();
-                                for (QueryCondition item : wrapper.getQueryCondition().getChildren()) {
-                                    if (item.getEsKeyword() == EsKeyword.TERM) {
-                                        queries.add(new Query.Builder().term(tm -> tm.field(item.getColum()).value(item.getVal().toString())).build());
-                                    }
-                                }
-                                builder.query(new Query.Builder().bool(boolBuild.filter(queries).build()).build());
-                            }
-                            case SHOULD -> {
-
-                            }
-                            case NOT_MUST -> {
-
-                            }
-                        }
-                    }
+        if (args == null) {
+            return builder;
+        }
+        Object obj = Arrays.stream(args).filter(arg -> arg instanceof LambdaQueryWrapper<?>).findFirst().orElse(null);
+        if (obj == null) {
+            return builder;
+        }
+        LambdaQueryWrapper<?> wrapper = (LambdaQueryWrapper<?>) obj;
+        //查询字段
+        if (!CollectionUtils.isEmpty(wrapper.getIncludes())) {
+            builder.source(s -> s.filter(sf -> sf.includes(wrapper.getIncludes())));
+        }
+        //查询条件  todo 未解决递归问题
+        if (wrapper.getQueryCondition() != null) {
+            BoolQuery.Builder boolBuild = new BoolQuery.Builder();
+            List<Query> queries = new ArrayList<>();
+            for (QueryCondition item : wrapper.getQueryCondition().getChildren()) {
+                if (item.getEsKeyword() == EsKeyword.TERM) {
+                    queries.add(new Query.Builder().term(tm -> tm.field(item.getColum()).value(item.getVal().toString())).build());
+                } else if (item.getEsKeyword() == EsKeyword.TERMS) {
+                    queries.add(new Query.Builder().terms(tms -> tms.field(item.getColum()).terms(tqf -> tqf.value(item.valToList()))).build());
                 }
             }
+            switch (wrapper.getQueryCondition().getEsKeyword()) {
+                case MUST -> builder.query(new Query.Builder().bool(boolBuild.filter(queries).build()).build());
+                case SHOULD -> builder.query(new Query.Builder().bool(boolBuild.should(queries).build()).build());
+                case NOT_MUST -> builder.query(new Query.Builder().bool(boolBuild.mustNot(queries).build()).build());
+            }
+        }
+        //排序
+        if (!CollectionUtils.isEmpty(wrapper.getSorts())) {
+            builder.sort(wrapper.getSorts()
+                    .stream()
+                    .map(item -> SortOptions.of(so -> so.field(sof -> sof.field(item.getColum()).order(item.getEsSort() == EsSort.ASC ? SortOrder.Asc : SortOrder.Desc))))
+                    .collect(Collectors.toList()));
         }
         return builder;
     }

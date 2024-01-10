@@ -12,6 +12,8 @@ import com.liyz.boot3.common.remote.exception.IExceptionService;
 public enum SearchExceptionCodeEnum implements IExceptionService {
     SERIALIZED_FAIL("15001", "序列化拷贝对象失败"),
     DEFAULT_INVOKER_FAIL("15002", "EsMapper默认方法调用失败"),
+    NOT_EXIST_MAPPER("15003", "未继承EsMapper"),
+    NOT_INDEX_NAME("15004", "没有明确的Index名称"),
     ;
 
     private final String code;

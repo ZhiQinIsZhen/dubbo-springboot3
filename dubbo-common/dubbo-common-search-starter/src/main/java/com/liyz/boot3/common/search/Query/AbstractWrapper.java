@@ -1,6 +1,7 @@
 package com.liyz.boot3.common.search.Query;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +21,7 @@ public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, 
     private T entity;
     private Class<T> entityClass;
     private QueryCondition queryCondition;
+    private List<QuerySort> sorts = new ArrayList<>();
 
     public Class<T> getEntityClass() {
         if (entityClass == null && entity != null) {
@@ -47,6 +49,10 @@ public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, 
 
     public QueryCondition getQueryCondition() {
         return queryCondition;
+    }
+
+    public List<QuerySort> getSorts() {
+        return sorts;
     }
 
     /**
@@ -85,6 +91,21 @@ public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, 
                 queryCondition = new QueryCondition(EsKeyword.MUST);
             }
             queryCondition.getChildren().add(new QueryCondition(esKeyword, columnToString(column), val));
+        }
+        return typedThis;
+    }
+
+    public Children sort(R column, EsSort esSort) {
+        return sort(true, column, esSort);
+    }
+
+    public Children sort(boolean condition, R column, EsSort esSort) {
+        return addSort(condition, column, esSort);
+    }
+
+    protected Children addSort(boolean condition, R column, EsSort esSort) {
+        if (condition) {
+            sorts.add(new QuerySort(esSort, columnToString(column)));
         }
         return typedThis;
     }
