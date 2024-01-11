@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serial;
+import java.util.List;
 
 /**
  * Desc:
@@ -32,4 +33,8 @@ public class CompanyBO extends BaseBO {
     private String addressTag;
 
     private Long establishmentTime;
+
+    private List<String> honorFlag;
+
+    private String ssqyFlag;
 }

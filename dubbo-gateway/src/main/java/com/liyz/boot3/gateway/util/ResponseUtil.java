@@ -38,4 +38,13 @@ public class ResponseUtil {
                 .wrap(JsonMapperUtil.toJSONString(Result.error(serviceCode)).getBytes(StandardCharsets.UTF_8));
         return response.writeWith(Flux.just(dataBuffer));
     }
+
+    public static Mono<Void> response(ServerHttpResponse response, String code, String msg) {
+        response.setStatusCode(HttpStatus.OK);
+        response.getHeaders().setContentType(MediaType.APPLICATION_JSON_UTF8);
+        DataBuffer dataBuffer = response
+                .bufferFactory()
+                .wrap(JsonMapperUtil.toJSONString(Result.error(code, msg)).getBytes(StandardCharsets.UTF_8));
+        return response.writeWith(Flux.just(dataBuffer));
+    }
 }

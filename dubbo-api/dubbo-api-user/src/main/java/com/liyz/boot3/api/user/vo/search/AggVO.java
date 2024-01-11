@@ -1,5 +1,6 @@
-package com.liyz.boot3.service.search.bo.agg;
+package com.liyz.boot3.api.user.vo.search;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,18 +16,14 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-public class AggBO implements Serializable {
+public class AggVO implements Serializable {
     @Serial
     private static final long serialVersionUID = -4672225002891936839L;
 
+    @Schema(description = "列")
     private String name;
 
+    @Schema(description = "值")
     private Object value;
 
-    public static AggBO of(String name, Object value) {
-        AggBO aggBO = new AggBO();
-        aggBO.setName(name);
-        aggBO.setValue(value);
-        return aggBO;
-    }
 }

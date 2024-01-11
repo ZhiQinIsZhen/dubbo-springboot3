@@ -43,4 +43,10 @@ public class CompanyFinancingExcel implements Serializable {
 
     @ExcelProperty(value = "是否删除")
     private Integer useFlag;
+
+    @ExcelProperty(value = "是否上市企业")
+    private String ssqyFlag;
+
+    @ExcelProperty(value = "是否有Pre-IPO融资")
+    private String ipo;
 }

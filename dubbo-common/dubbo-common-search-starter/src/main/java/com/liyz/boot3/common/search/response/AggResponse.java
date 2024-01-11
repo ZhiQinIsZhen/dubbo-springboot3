@@ -21,12 +21,12 @@ public class AggResponse implements Serializable {
 
     private String name;
 
-    private long count;
+    private Object value;
 
-    public static AggResponse of(String name, long count) {
+    public static AggResponse of(String name, Object value) {
         AggResponse aggResponse = new AggResponse();
         aggResponse.setName(name);
-        aggResponse.setCount(count);
+        aggResponse.setValue(value);
         return aggResponse;
     }
 }

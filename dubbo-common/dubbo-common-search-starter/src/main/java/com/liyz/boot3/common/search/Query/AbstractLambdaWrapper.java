@@ -32,7 +32,8 @@ public class AbstractLambdaWrapper<T, Children extends AbstractLambdaWrapper<T, 
 
     @Override
     protected String columnToString(SFunction<T, ?> column) {
-        return columnToString(false, column);
+        String columnStr = columnToString(false, column);
+        return columnStr.equals("company_name_tag") ? "company_name_tag.raw" : columnStr;
     }
 
     protected String columnToString(boolean onlyColumn, SFunction<T, ?> column) {

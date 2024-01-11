@@ -42,7 +42,7 @@ public class GlobalControllerExceptionAdvice {
     public Result<String> remoteServiceException(RemoteServiceException exception) {
         return Result.error(exception.getCode(),
                 I18nMessageUtil.getMessage(
-                        exception.getCodeService().getName(),
+                        exception.getMessage(),
                         exception.getMessage(),
                         null)
         );

@@ -1,5 +1,6 @@
 package com.liyz.boot3.service.search.remote.company;
 
+import com.liyz.boot3.service.search.bo.agg.AggBO;
 import com.liyz.boot3.service.search.bo.company.CompanyFinancingBO;
 
 import java.util.List;
@@ -16,4 +17,8 @@ public interface RemoteCompanyFinancingService {
     CompanyFinancingBO selectOne(CompanyFinancingBO financingBO);
 
     void export(List<String> companyIds);
+
+    void export1(List<String> companyNames);
+
+    List<AggBO> agg(CompanyFinancingBO financingBO);
 }

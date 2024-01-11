@@ -33,4 +33,8 @@ public class CompanyFinancingBO implements Serializable {
     private String valuation;
 
     private Integer useFlag;
+
+    private String ssqyFlag;
+
+    private String ipo;
 }

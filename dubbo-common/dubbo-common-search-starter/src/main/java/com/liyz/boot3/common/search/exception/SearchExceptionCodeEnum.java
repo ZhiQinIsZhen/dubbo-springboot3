@@ -14,6 +14,7 @@ public enum SearchExceptionCodeEnum implements IExceptionService {
     DEFAULT_INVOKER_FAIL("15002", "EsMapper默认方法调用失败"),
     NOT_EXIST_MAPPER("15003", "未继承EsMapper"),
     NOT_INDEX_NAME("15004", "没有明确的Index名称"),
+    NOT_SUPPORT_AGG_TYPE("15005", "不支持的聚合查询"),
     ;
 
     private final String code;

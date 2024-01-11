@@ -84,4 +84,18 @@ public class CompanyController {
             }
         }));
     }
+
+    @Anonymous
+    @Operation(summary = "查询公司信息")
+    @GetMapping("/selectOne")
+    public Result<CompanyVO> selectOne(@RequestParam("companyName") String companyName) {
+        CompanyBO bo = new CompanyBO();
+        bo.setCompanyNameTag(companyName);
+        CompanyBO companyBO = remoteCompanyService.selectOne(bo);
+        return Result.success(BeanUtil.copyProperties(companyBO, CompanyVO::new, (s, t) -> {
+            if (Objects.nonNull(s.getEstablishmentTime())) {
+                t.setEstablishmentTime(new Date(s.getEstablishmentTime() * 1000));
+            }
+        }));
+    }
 }

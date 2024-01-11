@@ -12,4 +12,6 @@ import com.liyz.boot3.service.search.remote.SearchService;
  * @date 2023/11/14 10:37
  */
 public interface RemoteCompanyService extends SearchService<CompanyBO, CompanyPageQuery> {
+
+    CompanyBO selectOne(CompanyBO companyBO);
 }

@@ -1,6 +1,7 @@
 package com.liyz.boot3.common.search.mapper;
 
 import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
+import com.liyz.boot3.common.search.response.AggResponse;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -60,4 +61,12 @@ public interface EsMapper<T> {
      * @return 数据结果
      */
     T selectOne(LambdaQueryWrapper<T> queryWrapper);
+
+    /**
+     * 聚合查询
+     *
+     * @param queryWrapper 查询字段
+     * @return 聚合结果
+     */
+    List<AggResponse> agg(LambdaQueryWrapper<T> queryWrapper);
 }

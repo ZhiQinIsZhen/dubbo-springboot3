@@ -9,6 +9,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Desc:
@@ -30,7 +31,7 @@ public class CompanyDO implements Serializable {
     @Field(name = "company_id", type = FieldType.Keyword)
     private String companyId;
 
-    @Field(name = "company_name_tag", type = FieldType.Text)
+    @Field(name = "company_name_tag.raw", type = FieldType.Text)
     private String companyNameTag;
 
     @Field(name = "company_code", type = FieldType.Keyword)
@@ -47,4 +48,10 @@ public class CompanyDO implements Serializable {
 
     @Field(name = "establishment_time", type = FieldType.Long)
     private Long establishmentTime;
+
+    @Field(name = "honor_flag")
+    private List<String> honorFlag;
+
+    @Field(name = "ssqy_flag")
+    private String ssqyFlag;
 }

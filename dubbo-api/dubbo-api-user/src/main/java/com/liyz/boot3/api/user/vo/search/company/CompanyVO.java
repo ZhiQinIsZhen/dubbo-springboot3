@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Desc:
@@ -46,4 +47,10 @@ public class CompanyVO implements Serializable {
     @Schema(description = "注册时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date establishmentTime;
+
+    @Schema(description = "荣誉")
+    private List<String> honorFlag;
+
+    @Schema(description = "上市企业")
+    private String ssqyFlag;
 }

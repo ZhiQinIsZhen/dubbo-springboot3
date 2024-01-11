@@ -1,6 +1,9 @@
 package com.liyz.boot3.common.search.Query;
 
 
+import co.elastic.clients.elasticsearch._types.SortOrder;
+import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,7 @@ public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, 
     private Class<T> entityClass;
     private QueryCondition queryCondition;
     private List<QuerySort> sorts = new ArrayList<>();
+    private List<QueryAgg> aggs = new ArrayList<>();
 
     public Class<T> getEntityClass() {
         if (entityClass == null && entity != null) {
@@ -53,6 +57,10 @@ public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, 
 
     public List<QuerySort> getSorts() {
         return sorts;
+    }
+
+    public List<QueryAgg> getAggs() {
+        return aggs;
     }
 
     /**
@@ -114,4 +122,17 @@ public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, 
      * 获取 columnName
      */
     protected abstract String columnToString(R column);
+
+    public Children agg(R column, Aggregation.Kind kind) {
+        return agg(column, kind, EsSortField.KEY, SortOrder.Desc, 1, 1000);
+    }
+
+    public Children agg(R column, Aggregation.Kind kind, EsSortField esSortField, SortOrder esSort) {
+        return agg(column, kind, esSortField, esSort, 1, 1000);
+    }
+
+    public Children agg(R column, Aggregation.Kind kind, EsSortField esSortField, SortOrder esSort, int minDocCount, int maxCount) {
+        aggs.add(new QueryAgg(columnToString(column), kind, esSortField, esSort, minDocCount, maxCount));
+        return typedThis;
+    }
 }

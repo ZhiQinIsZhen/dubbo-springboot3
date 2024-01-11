@@ -4,10 +4,16 @@ import cn.hutool.core.util.ReflectUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
+import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
+import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
+import co.elastic.clients.elasticsearch._types.aggregations.DateHistogramAggregation;
+import co.elastic.clients.elasticsearch._types.aggregations.TermsAggregation;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.util.DateTime;
+import co.elastic.clients.util.NamedValue;
 import com.liyz.boot3.common.remote.page.RemotePage;
 import com.liyz.boot3.common.search.Query.EsKeyword;
 import com.liyz.boot3.common.search.Query.EsSort;
@@ -32,6 +38,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -92,12 +99,18 @@ public abstract class AbstractEsMethod implements IEsMethod {
                 if (aClass.equals(aaClass)) {
                     return remotePage.getList();
                 }
+                if (aaClass.equals(AggResponse.class)) {
+                    List<AggResponse> aggList = new ArrayList<>();
+                    if (!CollectionUtils.isEmpty(esResponse.getAggData())) {
+                        esResponse.getAggData().values().forEach(aggList::addAll);
+                    }
+                    return aggList;
+                }
             }
         } else if (returnClass.equals(RemotePage.class)) {
             return remotePage;
         }
-        //todo 判断是否是agg
-        return esResponse.getAggData();
+        return null;
     }
 
     protected SearchRequest.Builder buildRequest(Object[] args) {
@@ -138,6 +151,33 @@ public abstract class AbstractEsMethod implements IEsMethod {
                     .map(item -> SortOptions.of(so -> so.field(sof -> sof.field(item.getColum()).order(item.getEsSort() == EsSort.ASC ? SortOrder.Asc : SortOrder.Desc))))
                     .collect(Collectors.toList()));
         }
+        //agg
+        if (!CollectionUtils.isEmpty(wrapper.getAggs())) {
+            Map<String, Aggregation> map = wrapper.getAggs().stream().collect(Collectors.toMap(agg -> agg.getColum().concat("_").concat(agg.getKind().jsonValue()), agg -> {
+                switch (agg.getKind()) {
+                    case Aggregation.Kind.Terms -> {
+                        return TermsAggregation.of(tgg -> tgg
+                                        .field(agg.getColum())
+                                        .size(agg.getMaxCount())
+                                        .minDocCount(agg.getMinDocCount())
+                                        .order(NamedValue.of(agg.getEsSortField().getSortField(), agg.getEsSort()))
+                                )
+                                ._toAggregation();
+                    }
+                    case Aggregation.Kind.DateHistogram -> {
+                        return DateHistogramAggregation.of(dhAgg -> dhAgg
+                                .field(agg.getColum())
+                                .fixedInterval(fi -> fi.time("year"))
+                                .format("yyyy")
+                                .missing(DateTime.of("1000-01-01", DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                                .order(NamedValue.of(agg.getEsSortField().getSortField(), agg.getEsSort()))
+                        )._toAggregation();
+                    }
+                }
+                throw new SearchException(SearchExceptionCodeEnum.NOT_SUPPORT_AGG_TYPE);
+            }));
+            builder.aggregations(map);
+        }
         return builder;
     }
 
@@ -167,8 +207,8 @@ public abstract class AbstractEsMethod implements IEsMethod {
                     response.took(), end - start);
             Map<String, List<AggResponse>> aggData = new HashMap<>();
             if (!CollectionUtils.isEmpty(response.aggregations())) {
-                for (String key : response.aggregations().keySet()) {
-                    aggData.put(key, response.aggregations().get(key).sterms().buckets().array()
+                for (Map.Entry<String, Aggregate> entry : response.aggregations().entrySet()) {
+                    aggData.put(entry.getKey(), entry.getValue().sterms().buckets().array()
                             .stream()
                             .map(item -> AggResponse.of(item.key().stringValue(), item.docCount()))
                             .collect(Collectors.toList())

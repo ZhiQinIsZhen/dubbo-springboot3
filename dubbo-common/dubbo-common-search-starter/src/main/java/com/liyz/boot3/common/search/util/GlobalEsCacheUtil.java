@@ -1,9 +1,6 @@
 package com.liyz.boot3.common.search.util;
 
-import com.liyz.boot3.common.search.method.AbstractEsMethod;
-import com.liyz.boot3.common.search.method.SelectBatchIds;
-import com.liyz.boot3.common.search.method.SelectById;
-import com.liyz.boot3.common.search.method.SelectOne;
+import com.liyz.boot3.common.search.method.*;
 import lombok.experimental.UtilityClass;
 
 import java.util.Map;
@@ -29,6 +26,7 @@ public class GlobalEsCacheUtil {
         addEsMethod(new SelectById());
         addEsMethod(new SelectBatchIds());
         addEsMethod(new SelectOne());
+        addEsMethod(new Agg());
     }
 
     public static void addEsMethod(AbstractEsMethod esMethod) {

@@ -83,7 +83,7 @@ public class GlobalJWTFilter implements GlobalFilter {
             }
             log.info("AuthUserBO : {}", JsonMapperUtil.toJSONString(authUserBO));
         } catch (RemoteServiceException e) {
-            return ResponseUtil.response(resp, e.getCodeService());
+            return ResponseUtil.response(resp, e.getCode(), e.getMessage());
         } catch (Exception e) {
             log.error("parse token error", e);
             return ResponseUtil.response(resp, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);

@@ -1,15 +1,22 @@
 package com.liyz.boot3.service.search.provider.company;
 
+import cn.hutool.core.collection.CollectionUtil;
+import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
 import com.alibaba.excel.EasyExcel;
 import com.liyz.boot3.common.search.Query.EsSort;
 import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
+import com.liyz.boot3.common.search.response.AggResponse;
 import com.liyz.boot3.common.service.util.BeanUtil;
+import com.liyz.boot3.service.search.bo.agg.AggBO;
 import com.liyz.boot3.service.search.bo.company.CompanyFinancingBO;
 import com.liyz.boot3.service.search.excel.CompanyFinancingExcel;
 import com.liyz.boot3.service.search.mapper.CompanyFinancingMapper;
+import com.liyz.boot3.service.search.mapper.CompanyMapper;
+import com.liyz.boot3.service.search.model.CompanyDO;
 import com.liyz.boot3.service.search.model.CompanyFinancingDO;
 import com.liyz.boot3.service.search.remote.company.RemoteCompanyFinancingService;
 import jakarta.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboService;
 
 import java.util.ArrayList;
@@ -53,5 +60,51 @@ public class RemoteCompanyFinancingServiceImpl implements RemoteCompanyFinancing
             }
             return boList;
         });
+    }
+
+    @Resource
+    private CompanyMapper companyMapper;
+
+    @Override
+    public void export1(List<String> companyNames) {
+        CompanyFinancingBO financingBO = new CompanyFinancingBO();
+        financingBO.setFinancingRounds("Pre-IPO");
+        String fileName = "C:\\Users\\liyangzhen\\Downloads\\excel\\" + System.currentTimeMillis() + ".xlsx";
+        EasyExcel.write(fileName, CompanyFinancingExcel.class).sheet("融资历程").doWrite(() -> {
+            List<CompanyFinancingBO> boList = new ArrayList<>();
+            for (String companyName : companyNames) {
+                CompanyDO companyDO = companyMapper.selectOne(new LambdaQueryWrapper<>(CompanyDO.class)
+                        .select(CompanyDO::getCompanyId, CompanyDO::getHonorFlag, CompanyDO::getSsqyFlag)
+                        .term(CompanyDO::getCompanyNameTag, companyName.trim()));
+                if (companyDO == null) {
+                    CompanyFinancingBO financingBO1 = new CompanyFinancingBO();
+                    financingBO1.setCompanyName(companyName.trim());
+                    financingBO1.setSsqyFlag("0");
+                    financingBO1.setIpo("0");
+                    boList.add(financingBO1);
+                    continue;
+                }
+                financingBO.setCompanyId(companyDO.getCompanyId());
+                CompanyFinancingBO financingBO1 = selectOne(financingBO);
+                if (financingBO1 == null) {
+                    financingBO1 = new CompanyFinancingBO();
+                    financingBO1.setCompanyName(companyName.trim());
+                    financingBO1.setSsqyFlag("0");
+                    financingBO1.setIpo("0");
+                } else {
+                    financingBO1.setIpo("1");
+                }
+                financingBO1.setSsqyFlag(StringUtils.isNotBlank(companyDO.getSsqyFlag()) && "1".equals(companyDO.getSsqyFlag()) ? "1" : "0");
+                boList.add(financingBO1);
+            }
+            return boList;
+        });
+    }
+
+    public List<AggBO> agg(CompanyFinancingBO financingBO) {
+        List<AggResponse> list = companyFinancingMapper.agg(new LambdaQueryWrapper<>(CompanyFinancingDO.class)
+                .term(CompanyFinancingDO::getCompanyId, financingBO.getCompanyId())
+                .agg(CompanyFinancingDO::getFinancingRounds, Aggregation.Kind.Terms));
+        return BeanUtil.copyList(list, AggBO::new);
     }
 }
