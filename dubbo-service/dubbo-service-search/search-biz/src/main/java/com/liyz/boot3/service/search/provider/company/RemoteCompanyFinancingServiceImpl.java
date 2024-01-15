@@ -1,9 +1,8 @@
 package com.liyz.boot3.service.search.provider.company;
 
-import cn.hutool.core.collection.CollectionUtil;
+import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
 import com.alibaba.excel.EasyExcel;
-import com.liyz.boot3.common.search.Query.EsSort;
 import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
 import com.liyz.boot3.common.search.response.AggResponse;
 import com.liyz.boot3.common.service.util.BeanUtil;
@@ -42,7 +41,7 @@ public class RemoteCompanyFinancingServiceImpl implements RemoteCompanyFinancing
                         .term(Objects.nonNull(financingBO.getCompanyId()), CompanyFinancingDO::getCompanyId, financingBO.getCompanyId())
                         .term(Objects.nonNull(financingBO.getFinancingRounds()), CompanyFinancingDO::getFinancingRounds, financingBO.getFinancingRounds())
 //                        .terms(Objects.isNull(financingBO.getFinancingRounds()), CompanyFinancingDO::getFinancingRounds, List.of("IPO", "上市", "主板", "新三板", "新四板"))
-                        .sort(CompanyFinancingDO::getFinancingDate, EsSort.DESC)
+                        .sort(CompanyFinancingDO::getFinancingDate, SortOrder.Desc)
                 ), CompanyFinancingBO::new
         );
     }
@@ -75,7 +74,7 @@ public class RemoteCompanyFinancingServiceImpl implements RemoteCompanyFinancing
             for (String companyName : companyNames) {
                 CompanyDO companyDO = companyMapper.selectOne(new LambdaQueryWrapper<>(CompanyDO.class)
                         .select(CompanyDO::getCompanyId, CompanyDO::getHonorFlag, CompanyDO::getSsqyFlag)
-                        .term(CompanyDO::getCompanyNameTag, companyName.trim()));
+                        .term("company_name_tag.raw", companyName.trim()));
                 if (companyDO == null) {
                     CompanyFinancingBO financingBO1 = new CompanyFinancingBO();
                     financingBO1.setCompanyName(companyName.trim());

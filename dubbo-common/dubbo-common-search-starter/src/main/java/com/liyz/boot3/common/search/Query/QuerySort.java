@@ -1,5 +1,6 @@
 package com.liyz.boot3.common.search.Query;
 
+import co.elastic.clients.elasticsearch._types.SortOrder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,11 +20,11 @@ public class QuerySort implements Serializable {
     @Serial
     private static final long serialVersionUID = -7983820262285665051L;
 
-    private EsSort esSort;
+    private SortOrder esSort;
 
     private String colum;
 
-    public QuerySort(EsSort esSort, String colum) {
+    public QuerySort(SortOrder esSort, String colum) {
         this.esSort = esSort;
         this.colum = colum;
     }

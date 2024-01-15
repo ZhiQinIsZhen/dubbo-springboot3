@@ -45,6 +45,10 @@
             <artifactId>hutool-all</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.liyz.boot3</groupId>
             <artifactId>dubbo-common-remote</artifactId>
         </dependency>

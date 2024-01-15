@@ -4,15 +4,14 @@ import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
 import com.liyz.boot3.common.service.util.BeanUtil;
 import com.liyz.boot3.service.search.bo.company.CompanyBO;
 import com.liyz.boot3.service.search.constant.SearchType;
-import com.liyz.boot3.service.search.mapper.CompanyHolderMapper;
 import com.liyz.boot3.service.search.mapper.CompanyMapper;
 import com.liyz.boot3.service.search.model.CompanyDO;
 import com.liyz.boot3.service.search.query.company.CompanyPageQuery;
 import com.liyz.boot3.service.search.remote.company.RemoteCompanyService;
 import com.liyz.boot3.service.search.service.SearchServiceImpl;
+import jakarta.annotation.Resource;
 import org.apache.dubbo.config.annotation.DubboService;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -27,8 +26,6 @@ public class RemoteCompanyServiceImpl extends SearchServiceImpl<CompanyBO, Compa
 
     @Resource
     private CompanyMapper companyMapper;
-    @Resource
-    private CompanyHolderMapper companyHolderMapper;
 
     @Override
     protected SearchType getSearchType() {
@@ -37,7 +34,8 @@ public class RemoteCompanyServiceImpl extends SearchServiceImpl<CompanyBO, Compa
 
     @Override
     public CompanyBO getById(String id) {
-        CompanyDO companyDO = companyMapper.selectById(id, new LambdaQueryWrapper<>(CompanyDO.class).select(CompanyDO::getCompanyId, CompanyDO::getCompanyCode));
+        CompanyDO companyDO = companyMapper.selectById(id, new LambdaQueryWrapper<>(CompanyDO.class)
+                .select(CompanyDO::getCompanyId, CompanyDO::getCompanyCode));
         return BeanUtil.copyProperties(companyDO, CompanyBO::new);
     }
 

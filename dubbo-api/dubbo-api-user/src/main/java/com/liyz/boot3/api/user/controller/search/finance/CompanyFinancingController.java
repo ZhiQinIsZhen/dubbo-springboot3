@@ -1,7 +1,7 @@
 package com.liyz.boot3.api.user.controller.search.finance;
 
 import com.liyz.boot3.api.user.dto.search.finance.CompanyFinancingDTO;
-import com.liyz.boot3.api.user.dto.search.finance.ExportDTO;
+import com.liyz.boot3.api.user.dto.search.export.ExportDTO;
 import com.liyz.boot3.api.user.vo.search.AggVO;
 import com.liyz.boot3.api.user.vo.search.finance.CompanyFinancingVO;
 import com.liyz.boot3.common.api.result.Result;

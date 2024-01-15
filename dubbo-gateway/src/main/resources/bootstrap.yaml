@@ -127,6 +127,7 @@ anonymous:
         - /user/user/register
         - /user/user/login
         - /user/test/**
+        - /user/export/**
         - /user/search/company/**
         - /user/search/investor/**
         - /user/search/financing/**

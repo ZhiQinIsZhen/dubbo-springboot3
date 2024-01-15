@@ -3,7 +3,6 @@ package com.liyz.boot3.common.search.method;
 import cn.hutool.core.util.ReflectUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.SortOptions;
-import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
 import co.elastic.clients.elasticsearch._types.aggregations.DateHistogramAggregation;
@@ -16,7 +15,6 @@ import co.elastic.clients.util.DateTime;
 import co.elastic.clients.util.NamedValue;
 import com.liyz.boot3.common.remote.page.RemotePage;
 import com.liyz.boot3.common.search.Query.EsKeyword;
-import com.liyz.boot3.common.search.Query.EsSort;
 import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
 import com.liyz.boot3.common.search.Query.QueryCondition;
 import com.liyz.boot3.common.search.exception.SearchException;
@@ -148,7 +146,7 @@ public abstract class AbstractEsMethod implements IEsMethod {
         if (!CollectionUtils.isEmpty(wrapper.getSorts())) {
             builder.sort(wrapper.getSorts()
                     .stream()
-                    .map(item -> SortOptions.of(so -> so.field(sof -> sof.field(item.getColum()).order(item.getEsSort() == EsSort.ASC ? SortOrder.Asc : SortOrder.Desc))))
+                    .map(item -> SortOptions.of(so -> so.field(sof -> sof.field(item.getColum()).order(item.getEsSort()))))
                     .collect(Collectors.toList()));
         }
         //agg

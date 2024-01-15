@@ -75,6 +75,14 @@ public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, 
     }
 
     public Children term(boolean condition, R column, Object val) {
+        return addCondition(condition, columnToString(column), EsKeyword.TERM, val);
+    }
+
+    public Children term(String column, Object val) {
+        return term(true, column, val);
+    }
+
+    public Children term(boolean condition, String column, Object val) {
         return addCondition(condition, column, EsKeyword.TERM, val);
     }
 
@@ -90,28 +98,36 @@ public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, 
     }
 
     public Children terms(boolean condition, R column, List<Object> vals) {
+        return addCondition(condition, columnToString(column), EsKeyword.TERMS, vals);
+    }
+
+    public Children terms(String column, List<Object> vals) {
+        return terms(true, column, vals);
+    }
+
+    public Children terms(boolean condition, String column, List<Object> vals) {
         return addCondition(condition, column, EsKeyword.TERMS, vals);
     }
 
-    protected Children addCondition(boolean condition, R column, EsKeyword esKeyword, Object val) {
+    protected Children addCondition(boolean condition, String column, EsKeyword esKeyword, Object val) {
         if (condition) {
             if (queryCondition == null) {
                 queryCondition = new QueryCondition(EsKeyword.MUST);
             }
-            queryCondition.getChildren().add(new QueryCondition(esKeyword, columnToString(column), val));
+            queryCondition.getChildren().add(new QueryCondition(esKeyword, column, val));
         }
         return typedThis;
     }
 
-    public Children sort(R column, EsSort esSort) {
+    public Children sort(R column, SortOrder esSort) {
         return sort(true, column, esSort);
     }
 
-    public Children sort(boolean condition, R column, EsSort esSort) {
+    public Children sort(boolean condition, R column, SortOrder esSort) {
         return addSort(condition, column, esSort);
     }
 
-    protected Children addSort(boolean condition, R column, EsSort esSort) {
+    protected Children addSort(boolean condition, R column, SortOrder esSort) {
         if (condition) {
             sorts.add(new QuerySort(esSort, columnToString(column)));
         }
