@@ -1,6 +1,8 @@
 package com.liyz.boot3.common.search.mapper;
 
 import com.liyz.boot3.common.search.proxy.EsMapperProxyFactory;
+import com.liyz.boot3.common.search.util.IndexInfoUtil;
+import com.liyz.boot3.common.util.resolver.TypeParameterResolver;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,7 +43,10 @@ public class EsMapperRegistry {
             if (hasMapper(type)) {
                 return;
             }
+            //开始缓存
             knownMappers.put(type, new EsMapperProxyFactory<>(type));
+            Class<?> modelClass = (Class<?>) TypeParameterResolver.resolveClassIndexedParameter(type, EsMapper.class, 0);
+            IndexInfoUtil.getIndexInfo(modelClass);
         }
     }
 

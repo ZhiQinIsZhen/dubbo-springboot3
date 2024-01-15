@@ -35,6 +35,5 @@ public class EsMapperFactoryBean<T> implements FactoryBean<T>, InitializingBean 
         if (!this.esMapperRegistry.hasMapper(this.mapperInterface)) {
             this.esMapperRegistry.addMapper(this.mapperInterface);
         }
-
     }
 }

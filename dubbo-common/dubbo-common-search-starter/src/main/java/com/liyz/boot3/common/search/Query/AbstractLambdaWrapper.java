@@ -49,13 +49,15 @@ public class AbstractLambdaWrapper<T, Children extends AbstractLambdaWrapper<T, 
     }
 
     private void tryInitCache(Class<?> lambdaClass) {
-        final Class<T> entityClass = getEntityClass();
-        if (entityClass != null) {
-            lambdaClass = entityClass;
+        if (!initColumnMap) {
+            final Class<T> entityClass = getEntityClass();
+            if (entityClass != null) {
+                lambdaClass = entityClass;
+            }
+            columnMap = LambdaUtils.getColumnMap(lambdaClass);
+            Assert.notNull(columnMap, String.format("can not find lambda cache for this entity [%s]", lambdaClass.getName()));
+            initColumnMap = true;
         }
-        columnMap = LambdaUtils.getColumnMap(lambdaClass);
-        Assert.notNull(columnMap, String.format("can not find lambda cache for this entity [%s]", lambdaClass.getName()));
-        initColumnMap = true;
     }
 
     private ColumnCache getColumnCache(String fieldName, Class<?> lambdaClass) {
