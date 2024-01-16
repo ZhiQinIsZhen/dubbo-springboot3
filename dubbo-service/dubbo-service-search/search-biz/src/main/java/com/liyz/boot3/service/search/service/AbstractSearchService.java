@@ -24,6 +24,7 @@ import java.util.Objects;
  * @version 1.0.0
  * @date 2023/11/14 10:41
  */
+@Deprecated
 public abstract class AbstractSearchService<BO extends BaseBO, BaseQuery extends PageQuery>
         implements SearchService<BO, BaseQuery>, ApplicationListener<ContextRefreshedEvent> {
 

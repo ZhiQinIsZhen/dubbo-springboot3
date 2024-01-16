@@ -28,4 +28,11 @@ public class PageBO implements Serializable {
      * 每页条数
      */
     private Long pageSize = 10L;
+
+    public static PageBO of(long pageNum, long pageSize) {
+        PageBO pageBO = new PageBO();
+        pageBO.setPageSize(Math.max(pageNum, 1L));
+        pageBO.setPageSize(Math.max(pageSize, 1L));
+        return pageBO;
+    }
 }

@@ -15,6 +15,7 @@ import java.util.List;
  * @version 1.0.0
  * @date 2023/8/17 15:22
  */
+@Deprecated
 public interface SearchService<BO extends BaseBO, BaseQuery extends PageQuery> {
 
     /**

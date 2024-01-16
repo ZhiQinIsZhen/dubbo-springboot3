@@ -1,5 +1,7 @@
 package com.liyz.boot3.common.search.mapper;
 
+import com.liyz.boot3.common.remote.page.PageBO;
+import com.liyz.boot3.common.remote.page.RemotePage;
 import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
 import com.liyz.boot3.common.search.response.AggResponse;
 
@@ -61,6 +63,15 @@ public interface EsMapper<T> {
      * @return 数据结果
      */
     T selectOne(LambdaQueryWrapper<T> queryWrapper);
+
+    /**
+     * 分页查询
+     *
+     * @param pageBO 分页信息
+     * @param queryWrapper 查询字段
+     * @return 数据结果
+     */
+    RemotePage<T> selectPage(PageBO pageBO, LambdaQueryWrapper<T> queryWrapper);
 
     /**
      * 聚合查询

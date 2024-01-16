@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
  * @date 2023/11/14 10:58
  */
 @Slf4j
+@Deprecated
 public abstract class SearchServiceImpl<BO extends BaseBO, BaseQuery extends PageQuery> extends AbstractSearchService<BO, BaseQuery> {
 
     @Resource

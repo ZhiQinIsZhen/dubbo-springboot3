@@ -26,6 +26,7 @@ public class GlobalEsCacheUtil {
         addEsMethod(new SelectById());
         addEsMethod(new SelectBatchIds());
         addEsMethod(new SelectOne());
+        addEsMethod(new SelectPage());
         addEsMethod(new Agg());
     }
 

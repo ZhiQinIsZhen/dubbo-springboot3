@@ -1,9 +1,12 @@
 package com.liyz.boot3.service.search.provider.investor;
 
+import com.liyz.boot3.common.remote.page.PageBO;
 import com.liyz.boot3.common.remote.page.RemotePage;
+import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
 import com.liyz.boot3.common.service.util.BeanUtil;
 import com.liyz.boot3.service.search.bo.investor.CompanyInvestorBO;
 import com.liyz.boot3.service.search.mapper.CompanyInvestorMapper;
+import com.liyz.boot3.service.search.model.CompanyInvestorDO;
 import com.liyz.boot3.service.search.query.PageQuery;
 import com.liyz.boot3.service.search.remote.investor.RemoteCompanyInvestorService;
 import jakarta.annotation.Resource;
@@ -29,6 +32,7 @@ public class RemoteCompanyInvestorServiceImpl implements RemoteCompanyInvestorSe
 
     @Override
     public RemotePage<CompanyInvestorBO> page(PageQuery pageQuery) {
-        return null;
+        RemotePage<CompanyInvestorDO> doRemotePage = companyInvestorMapper.selectPage(PageBO.of(pageQuery.getPageNum(), pageQuery.getPageSize()), new LambdaQueryWrapper<>(CompanyInvestorDO.class).term(CompanyInvestorDO::getCompanyId, pageQuery.getCompanyId()));
+        return BeanUtil.copyRemotePage(doRemotePage, CompanyInvestorBO::new);
     }
 }

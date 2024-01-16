@@ -13,6 +13,7 @@ import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.util.DateTime;
 import co.elastic.clients.util.NamedValue;
+import com.liyz.boot3.common.remote.page.PageBO;
 import com.liyz.boot3.common.remote.page.RemotePage;
 import com.liyz.boot3.common.search.Query.EsKeyword;
 import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
@@ -112,10 +113,15 @@ public abstract class AbstractEsMethod implements IEsMethod {
     }
 
     protected SearchRequest.Builder buildRequest(Object[] args) {
-        SearchRequest.Builder builder = new SearchRequest.Builder().from(0).size(100);
-        if (args == null) {
-            return builder;
+        Object page;
+        PageBO pageBO;
+        if (args == null || (page = Arrays.stream(args).filter(arg -> arg instanceof PageBO).findFirst().orElse(null)) == null) {
+            pageBO = PageBO.of(1, 20);
+        } else {
+            pageBO = (PageBO) page;
         }
+        int from = (pageBO.getPageNum().intValue() - 1) * pageBO.getPageSize().intValue();
+        SearchRequest.Builder builder = new SearchRequest.Builder().from(from).size(pageBO.getPageSize().intValue());
         Object obj = Arrays.stream(args).filter(arg -> arg instanceof LambdaQueryWrapper<?>).findFirst().orElse(null);
         if (obj == null) {
             return builder;
