@@ -113,6 +113,14 @@ knife4j:
       version: openapi3
     tags-sorter: order
     operations-sorter: order
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
 # 免鉴权
 anonymous:
   mapping:

@@ -34,7 +34,7 @@ public class PageResult<T> {
     }
 
     public PageResult(IExceptionService codeEnum) {
-        this(codeEnum.getCode(), I18nMessageUtil.getMessage(codeEnum.getName(), codeEnum.getMessage(), null));
+        this(codeEnum.getCode(), I18nMessageUtil.getMessage(codeEnum.getName(), codeEnum.getMessage()));
     }
 
     public PageResult(RemotePage<T> data) {

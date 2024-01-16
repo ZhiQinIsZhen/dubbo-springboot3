@@ -21,11 +21,22 @@ public class I18nMessageUtil implements ApplicationListener<ContextRefreshedEven
      *
      * @param code code
      * @param defaultMessage 默认消息
+     * @return 国际化消息
+     */
+    public static String getMessage(String code, String defaultMessage) {
+        return getMessage(code, defaultMessage, null);
+    }
+
+    /**
+     * 获取国际化消息
+     *
+     * @param code code
+     * @param defaultMessage 默认消息
      * @param args 参数
      * @return 国际化消息
      */
     public static String getMessage(String code, String defaultMessage, String... args) {
-        return messageSource.getMessage(code, args, defaultMessage, LocaleContextHolder.getLocale());
+        return messageSource == null ? defaultMessage : messageSource.getMessage(code, args, defaultMessage, LocaleContextHolder.getLocale());
     }
 
     /**
@@ -36,11 +47,13 @@ public class I18nMessageUtil implements ApplicationListener<ContextRefreshedEven
      * @return 国际化消息
      */
     public static String getMessage(String code, String... args) {
-        return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
+        return messageSource == null ? code : messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
     }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        messageSource = event.getApplicationContext().getBean(ResourceBundleMessageSource.class);
+        try {
+            messageSource = event.getApplicationContext().getBean(ResourceBundleMessageSource.class);
+        } catch (Exception ignored) {}
     }
 }

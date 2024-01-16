@@ -31,7 +31,7 @@ public class Result<T> {
     }
 
     public Result(IExceptionService codeEnum) {
-        this(codeEnum.getCode(), I18nMessageUtil.getMessage(codeEnum.getName(), codeEnum.getMessage(), null));
+        this(codeEnum.getCode(), I18nMessageUtil.getMessage(codeEnum.getName(), codeEnum.getMessage()));
     }
 
     @Schema(description = "code码")

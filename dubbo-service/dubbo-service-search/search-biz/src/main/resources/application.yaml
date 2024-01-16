@@ -1,5 +1,8 @@
 server:
+  port: 7077
   shutdown: graceful
+  error:
+    path: /liyz/error
 # spring
 spring:
   application:
@@ -49,9 +52,19 @@ dubbo:
 # index
 company:
   search:
-    index: search-company-auto-20231216
+    index: search-company-auto-20240113
     search-type: company
 bid:
   detail:
     index: bidding-v0830
     search-type: bid_detail
+# actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+

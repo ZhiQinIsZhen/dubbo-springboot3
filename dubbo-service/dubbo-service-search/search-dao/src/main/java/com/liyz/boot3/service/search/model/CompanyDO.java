@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-@Document(indexName = "search-company-auto-20231230", createIndex = false)
+@Document(indexName = "search-company-auto-20240113", createIndex = false)
 public class CompanyDO implements Serializable {
     @Serial
     private static final long serialVersionUID = 170535601509514115L;
@@ -31,7 +31,7 @@ public class CompanyDO implements Serializable {
     @Field(name = "company_id", type = FieldType.Keyword)
     private String companyId;
 
-    @Field(name = "company_name_tag.raw", type = FieldType.Text)
+    @Field(name = "company_name_tag", type = FieldType.Text)
     private String companyNameTag;
 
     @Field(name = "company_code", type = FieldType.Keyword)

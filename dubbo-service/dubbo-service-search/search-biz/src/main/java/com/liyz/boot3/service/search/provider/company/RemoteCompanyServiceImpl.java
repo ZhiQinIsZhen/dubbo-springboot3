@@ -51,7 +51,7 @@ public class RemoteCompanyServiceImpl extends SearchServiceImpl<CompanyBO, Compa
     @Override
     public CompanyBO selectOne(CompanyBO companyBO) {
         CompanyDO companyDO = companyMapper.selectOne(new LambdaQueryWrapper<>(CompanyDO.class)
-                .term(CompanyDO::getCompanyNameTag, companyBO.getCompanyNameTag()));
+                .term("company_name_tag.raw", companyBO.getCompanyNameTag()));
         return BeanUtil.copyProperties(companyDO, CompanyBO::new);
     }
 }

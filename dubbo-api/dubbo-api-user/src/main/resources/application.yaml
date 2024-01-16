@@ -110,3 +110,11 @@ knife4j:
 auth:
   advice:
     enable: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
