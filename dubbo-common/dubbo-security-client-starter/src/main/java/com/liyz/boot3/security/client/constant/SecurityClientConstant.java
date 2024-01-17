@@ -22,6 +22,11 @@ public interface SecurityClientConstant {
             "/swagger-resources"
     };
 
+    /**
+     * 监控资源
+     */
+    String[] ACTUATOR_RESOURCES = new String[] {"/actuator/**"};
+
     String DUBBO_AUTH_GROUP = "auth";
 
     String OPTIONS_PATTERNS = "/**";

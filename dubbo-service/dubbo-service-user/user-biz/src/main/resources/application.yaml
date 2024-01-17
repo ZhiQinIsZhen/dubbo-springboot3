@@ -1,5 +1,8 @@
 server:
   shutdown: graceful
+  port: 7075
+  error:
+    path: /liyz/error
 # spring
 spring:
   application:
@@ -71,3 +74,11 @@ dubbo:
 desensitization:
   database:
     enable: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always

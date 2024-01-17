@@ -1,6 +1,8 @@
 server:
   shutdown: graceful
   port: 7070
+  error:
+    path: /liyz/error
 # spring
 spring:
   application:
@@ -72,3 +74,11 @@ dubbo:
     address: nacos://localhost:8848?namespace=liyz
   scan:
     base-packages: com.liyz.boot3.service.auth.provider
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
