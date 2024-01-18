@@ -92,7 +92,7 @@ public class AuthSecurityClientAutoConfig implements InitializingBean {
                         .requestMatchers(HttpMethod.OPTIONS, SecurityClientConstant.OPTIONS_PATTERNS).permitAll()
                         .requestMatchers(HttpMethod.GET, SecurityClientConstant.KNIFE4J_IGNORE_RESOURCES).permitAll()
                         .requestMatchers(HttpMethod.GET, SecurityClientConstant.ACTUATOR_RESOURCES).permitAll()
-                        .requestMatchers(AnonymousMappingConfig.getAnonymousMappings().toArray(new String[0])).permitAll()
+                        .requestMatchers(AnonymousMappingConfig.getAnonymousMappings()).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationTokenFilter(SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY),
                         UsernamePasswordAuthenticationFilter.class)

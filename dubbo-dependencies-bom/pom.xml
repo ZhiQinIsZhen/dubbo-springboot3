@@ -23,6 +23,7 @@
         <io.jwt.version>0.12.3</io.jwt.version>
         <elasticjob.version>3.0.4</elasticjob.version>
         <excel.version>3.3.3</excel.version>
+        <springboot.admin.version>3.2.1</springboot.admin.version>
     </properties>
 
     <dependencyManagement>
@@ -80,6 +81,11 @@
                 <version>${apache.dubbo.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-spring-boot-actuator</artifactId>
+                <version>${apache.dubbo.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
                 <version>${io.jwt.version}</version>
@@ -103,6 +109,16 @@
                 <groupId>org.apache.shardingsphere.elasticjob</groupId>
                 <artifactId>elasticjob-lite-spring-boot-starter</artifactId>
                 <version>${elasticjob.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-server</artifactId>
+                <version>${springboot.admin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
+                <version>${springboot.admin.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.liyz.boot3</groupId>

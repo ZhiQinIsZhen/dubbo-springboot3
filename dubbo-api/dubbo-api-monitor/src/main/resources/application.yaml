@@ -1,0 +1,68 @@
+# spring
+spring:
+  application:
+    name: &application_name dubbo-api-monitor
+    admin:
+      enabled: true
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  threads:
+    virtual:
+      enabled: true
+  boot:
+    admin:
+      instance-auth:
+        default-user-name: liyz
+        default-password: liyz
+      ui:
+        title: Liyz Admin
+      server:
+        enabled: true
+#server
+server:
+  port: 7060
+  tomcat:
+    accept-count: 10
+    threads:
+      max: 10
+      min-spare: 5
+  error:
+    path: /liyz/error
+  shutdown: graceful
+# log
+logging:
+  pattern:
+#    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5level) %clr(${PID:-}){magenta} %clr([%t]){faint} %clr([%F:%L]){cyan} %clr(:){faint} %m%n%throwable'
+# dubbo
+dubbo:
+  application:
+    name: *application_name
+    qos-enable: false
+  protocol:
+    port: 20760
+    threads: 1
+  provider:
+    filter: remoteServiceExceptionFilter,-exception
+    version: 1.0.0
+  consumer:
+    version: 1.0.0
+    check: false
+    cluster: failfast
+    timeout: 60000
+    validation: jvalidationNew
+  registry:
+    timeout: 5000
+    address: nacos://localhost:8848?namespace=liyz
+  metadata-report:
+    address: nacos://localhost:8848?namespace=liyz
+# management
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+# admin

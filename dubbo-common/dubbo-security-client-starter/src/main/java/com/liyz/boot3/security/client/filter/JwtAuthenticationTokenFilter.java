@@ -43,7 +43,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader(this.tokenHeaderKey);
         try {
-            if (!AnonymousMappingConfig.getAnonymousMappings().contains(request.getServletPath()) && StringUtils.isNotBlank(token)) {
+            if (!AnonymousMappingConfig.pathMatch(request.getServletPath()) && StringUtils.isNotBlank(token)) {
                 token = URLDecoder.decode(token, String.valueOf(Charsets.UTF_8));
                 final AuthUserBO authUser = AuthContext.JwtService.parseToken(token);
                 AuthUserDetails authUserDetails = AuthUserDetails.build(authUser);

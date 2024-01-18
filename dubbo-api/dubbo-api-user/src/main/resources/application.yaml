@@ -19,6 +19,10 @@ spring:
         pool:
           enabled: true
           max-active: 1
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:7060
   messages:
     basename: i18n.message
 #server

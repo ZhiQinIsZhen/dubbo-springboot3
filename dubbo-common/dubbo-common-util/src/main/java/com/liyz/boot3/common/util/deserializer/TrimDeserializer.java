@@ -37,6 +37,9 @@ public class TrimDeserializer extends JsonDeserializer<String> implements Contex
 
     @Override
     public JsonDeserializer<?> createContextual(DeserializationContext deserializationContext, BeanProperty beanProperty) throws JsonMappingException {
+        if (Objects.isNull(beanProperty)) {
+            return this;
+        }
         Trim trim = beanProperty.getAnnotation(Trim.class);
         return Objects.isNull(trim) ? this : new TrimDeserializer(trim);
     }

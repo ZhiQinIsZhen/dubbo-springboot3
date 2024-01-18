@@ -60,6 +60,10 @@ spring:
       database: 2
       host: 127.0.0.1
       port: 6379
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:7060
   messages:
     basename: i18n.message
 # dubbo

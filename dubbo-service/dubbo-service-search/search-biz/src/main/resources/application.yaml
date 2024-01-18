@@ -13,6 +13,10 @@ spring:
   threads:
     virtual:
       enabled: true
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:7060
 # elasticsearch
   elasticsearch:
     uris: http://127.0.0.1:9200
@@ -34,6 +38,7 @@ dubbo:
     qos-enable: false
   protocol:
     port: 20777
+    threads: 2
   provider:
     filter: remoteServiceExceptionFilter,-exception
     version: 1.0.0
