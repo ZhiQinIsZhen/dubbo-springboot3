@@ -47,6 +47,7 @@ ORM框架选用了[Mybatis-plus](https://baomidou.com/)，
 
 1. `dubbo-api-admin`: 管理后台网关层，鉴权基于spring-security
 2. `dubbo-api-user`: 客户前台网关层，鉴权基于spring-security
+3. `dubbo-api-monitor`: 监控平台
 
 ## common结构说明
 
