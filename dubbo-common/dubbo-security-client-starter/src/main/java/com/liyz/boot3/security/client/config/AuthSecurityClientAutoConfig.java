@@ -79,6 +79,7 @@ public class AuthSecurityClientAutoConfig implements InitializingBean {
 
     @Bean
     @DependsOn({"anonymousMappingConfig"})
+    @ConditionalOnMissingBean(SecurityFilterChain.class)
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)

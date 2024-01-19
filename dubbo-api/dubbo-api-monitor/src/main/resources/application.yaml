@@ -10,11 +10,6 @@ spring:
   threads:
     virtual:
       enabled: true
-  boot:
-    admin:
-      instance-auth:
-        default-user-name: liyz
-        default-password: liyz
       ui:
         title: Liyz Admin
       server:
