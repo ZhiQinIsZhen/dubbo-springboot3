@@ -59,7 +59,12 @@ public class IndexFieldInfo implements Serializable {
         this.property = field.getName();
         this.propertyType = reflector.getGetterType(this.property);
         this.isPrimitive = this.propertyType.isPrimitive();
-        this.column = IndexInfoUtil.camelToUnderline(property);
+        org.springframework.data.elasticsearch.annotations.Field annotationField = field.getAnnotation(org.springframework.data.elasticsearch.annotations.Field.class);
+        if (annotationField == null || StringUtils.isBlank(annotationField.name())) {
+            this.column = IndexInfoUtil.camelToUnderline(property);
+        } else {
+            this.column = annotationField.name();
+        }
     }
 
 

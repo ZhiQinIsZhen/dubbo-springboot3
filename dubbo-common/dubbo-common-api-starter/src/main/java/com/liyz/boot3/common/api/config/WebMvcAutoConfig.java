@@ -15,6 +15,7 @@ import com.liyz.boot3.common.util.serializer.DesensitizationSerializer;
 import com.liyz.boot3.common.util.serializer.DoubleSerializer;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +41,10 @@ import java.util.TimeZone;
  * condition {ConditionalOnMissingBean({WebMvcConfigurationSupport.class})}，使用support则springboot原生的config则不会
  * 创建，并且在{@link org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration.EnableWebMvcConfiguration}
  * 的父类{@link DelegatingWebMvcConfiguration}中会找出所有的{@link WebMvcConfigurer}进行逐步配置
+ * <p>
+ *     静态资源默认四个位置{@link WebProperties}
+ *     webjars资源默认两个位置 "/webjars/**", "classpath:/META-INF/resources/webjars/"
+ * </p>
  *
  * 注: 所以建议大家使用{@link WebMvcConfigurer}来或者自己的mvc配置
  *

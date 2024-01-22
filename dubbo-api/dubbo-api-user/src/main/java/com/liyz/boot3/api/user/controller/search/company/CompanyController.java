@@ -3,6 +3,7 @@ package com.liyz.boot3.api.user.controller.search.company;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.liyz.boot3.api.user.dto.search.company.CompanyDTO;
 import com.liyz.boot3.api.user.event.SearchEvent;
+import com.liyz.boot3.api.user.vo.search.company.CompanyBasicVO;
 import com.liyz.boot3.api.user.vo.search.company.CompanyVO;
 import com.liyz.boot3.common.api.result.PageResult;
 import com.liyz.boot3.common.api.result.Result;
@@ -10,7 +11,9 @@ import com.liyz.boot3.common.remote.page.RemotePage;
 import com.liyz.boot3.common.service.util.BeanUtil;
 import com.liyz.boot3.security.client.annotation.Anonymous;
 import com.liyz.boot3.service.search.bo.company.CompanyBO;
+import com.liyz.boot3.service.search.bo.company.CompanyBasicBO;
 import com.liyz.boot3.service.search.query.company.CompanyPageQuery;
+import com.liyz.boot3.service.search.remote.company.RemoteCompanyBasicService;
 import com.liyz.boot3.service.search.remote.company.RemoteCompanyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -97,5 +100,18 @@ public class CompanyController {
                 t.setEstablishmentTime(new Date(s.getEstablishmentTime() * 1000));
             }
         }));
+    }
+
+    @DubboReference
+    private RemoteCompanyBasicService remoteCompanyBasicService;
+
+    @Anonymous
+    @Operation(summary = "查询公司信息")
+    @GetMapping("/basic")
+    public Result<CompanyBasicVO> basic(@RequestParam("creditCode") String creditCode) {
+        CompanyBasicBO bo = new CompanyBasicBO();
+        bo.setCreditCode(creditCode);
+        CompanyBasicBO companyBasicBO = remoteCompanyBasicService.selectOne(bo);
+        return Result.success(BeanUtil.copyProperties(companyBasicBO, CompanyBasicVO::new));
     }
 }

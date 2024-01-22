@@ -93,15 +93,13 @@ public class AnonymousMappingConfig implements ApplicationContextAware, Initiali
     public void afterPropertiesSet() {
         Map<String, RequestMappingHandlerMapping> map = applicationContext.getBeansOfType(RequestMappingHandlerMapping.class);
         if (!CollectionUtils.isEmpty(map)) {
-            map.values().forEach(handlerMapping -> {
-                handlerMapping.getHandlerMethods().forEach((k, v) -> {
-                    if (v.getBeanType().isAnnotationPresent(Anonymous.class) || (v.hasMethodAnnotation(Anonymous.class))) {
-                        if (Objects.nonNull(k.getPathPatternsCondition())) {
-                            anonymousMappings.addAll(k.getPathPatternsCondition().getPatternValues());
-                        }
+            map.values().forEach(handlerMapping -> handlerMapping.getHandlerMethods().forEach((k, v) -> {
+                if (v.getBeanType().isAnnotationPresent(Anonymous.class) || (v.hasMethodAnnotation(Anonymous.class))) {
+                    if (Objects.nonNull(k.getPathPatternsCondition())) {
+                        anonymousMappings.addAll(k.getPathPatternsCondition().getPatternValues());
                     }
-                });
-            });
+                }
+            }));
         }
         log.info("Anonymous mappings : {}", JsonMapperUtil.toJSONString(anonymousMappings));
     }

@@ -74,7 +74,7 @@ public class LambdaUtils {
         }
 
         info.getFieldList().forEach(i ->
-                map.put(formatKey(i.getProperty()), new ColumnCache(i.getColumn(), i.getColumn()))
+                map.put(formatKey(i.getProperty()), new ColumnCache(i.getProperty(), i.getColumn()))
         );
         return map;
     }

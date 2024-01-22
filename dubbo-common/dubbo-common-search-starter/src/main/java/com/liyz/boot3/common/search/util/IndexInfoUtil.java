@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collectors;
 
 /**
  * Desc:
@@ -102,14 +101,7 @@ public class IndexInfoUtil {
         }
         List<IndexFieldInfo> fieldList = new ArrayList<>();
         for (Field item : fields) {
-            org.springframework.data.elasticsearch.annotations.Field annotationField = item.getAnnotation(org.springframework.data.elasticsearch.annotations.Field.class);
-            if (annotationField != null) {
-                if (annotationField.enabled()) {
-                    fieldList.add(new IndexFieldInfo(indexInfo, item, indexInfo.getReflector()));
-                }
-            } else {
-                fieldList.add(new IndexFieldInfo(indexInfo, item, indexInfo.getReflector()));
-            }
+            fieldList.add(new IndexFieldInfo(indexInfo, item, indexInfo.getReflector()));
         }
         indexInfo.setFieldList(fieldList);
         return indexInfo;

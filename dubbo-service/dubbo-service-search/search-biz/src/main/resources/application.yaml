@@ -19,9 +19,9 @@ spring:
         url: http://127.0.0.1:7060
 # elasticsearch
   elasticsearch:
-    uris: http://127.0.0.1:9200
-    username: liyz
-    password: liyz
+    uris: http://127.0.0.1:9200,http://127.0.0.1:9201,http://127.0.0.1:9202
+#    username: liyz
+#    password: liyz
     connection-timeout: 5000ms
     socket-timeout: 30000ms
     pool:
@@ -38,7 +38,7 @@ dubbo:
     qos-enable: false
   protocol:
     port: 20777
-    threads: 2
+    threads: 100
   provider:
     filter: remoteServiceExceptionFilter,-exception
     version: 1.0.0

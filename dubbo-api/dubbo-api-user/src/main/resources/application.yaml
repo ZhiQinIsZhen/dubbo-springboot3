@@ -49,7 +49,7 @@ dubbo:
     qos-enable: false
   protocol:
     port: 20772
-    threads: 1
+    threads: 100
   provider:
     filter: remoteServiceExceptionFilter,-exception
     version: 1.0.0
