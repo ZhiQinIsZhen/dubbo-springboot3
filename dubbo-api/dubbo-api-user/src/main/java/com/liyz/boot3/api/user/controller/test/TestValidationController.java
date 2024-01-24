@@ -1,5 +1,7 @@
 package com.liyz.boot3.api.user.controller.test;
 
+import cn.hutool.extra.validation.BeanValidationResult;
+import cn.hutool.extra.validation.ValidationUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.liyz.boot3.api.user.dto.test.TestDTO;
 import com.liyz.boot3.api.user.vo.test.TestVO;
@@ -106,5 +108,21 @@ public class TestValidationController {
         TestVO testVO = new TestVO();
         testVO.setName(name);
         return Result.success(testVO);
+    }
+
+    @ApiOperationSupport(order = 10)
+    @Operation(summary = "手动验证Validated--no group")
+    @GetMapping("/from/manual")
+    public Result<BeanValidationResult> fromManual() {
+        TestDTO testDTO = new TestDTO();
+        return Result.success(ValidationUtil.warpValidate(testDTO));
+    }
+
+    @ApiOperationSupport(order = 11)
+    @Operation(summary = "手动验证Validated--have group")
+    @GetMapping("/from/manual/group")
+    public Result<BeanValidationResult> fromManualGroup() {
+        TestDTO testDTO = new TestDTO();
+        return Result.success(ValidationUtil.warpValidate(testDTO, TestDTO.Test1.class));
     }
 }

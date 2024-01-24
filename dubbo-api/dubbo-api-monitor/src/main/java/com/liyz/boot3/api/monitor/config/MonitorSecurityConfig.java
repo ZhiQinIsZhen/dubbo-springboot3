@@ -2,8 +2,10 @@ package com.liyz.boot3.api.monitor.config;
 
 import com.liyz.boot3.security.client.constant.SecurityClientConstant;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+
+import java.util.List;
 
 /**
  * Desc:
@@ -42,7 +46,17 @@ public class MonitorSecurityConfig {
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .ignoringRequestMatchers(SecurityClientConstant.ACTUATOR_RESOURCES)
-                        .ignoringRequestMatchers("/liyz/error", "/logout", "/instances/**", "/assets/**"));
+                        .ignoringRequestMatchers("/liyz/error", "/logout", "/logout", "/instances/**", "/assets/**"));
         return http.build();
+    }
+
+    @Bean
+    @Order(2)
+    public FilterRegistrationBean configFilter() {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        filterRegistrationBean.setFilter(new RedirectFilter());
+        filterRegistrationBean.setUrlPatterns(List.of("/*"));
+        filterRegistrationBean.setBeanName("directorFilter");
+        return filterRegistrationBean;
     }
 }
