@@ -25,7 +25,7 @@ public class AuthJwtServiceImpl extends ServiceImpl<AuthJwtMapper, AuthJwtDO> im
      * @return JWT配置信息
      */
     @Override
-    @Cacheable(cacheNames = {"test"}, key = "'authJwt:clientId:' + #clientId", unless = "#result == null")
+    @Cacheable(cacheNames = {"test"}, key = "'authJwt:clientId:' + #p0", unless = "#result == null")
     public AuthJwtDO getByClientId(String clientId) {
         return getOne(Wrappers.lambdaQuery(AuthJwtDO.class).eq(AuthJwtDO::getClientId, clientId));
     }

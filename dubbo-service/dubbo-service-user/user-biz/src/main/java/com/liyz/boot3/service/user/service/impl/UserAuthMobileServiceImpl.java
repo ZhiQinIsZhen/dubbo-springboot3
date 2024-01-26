@@ -30,19 +30,19 @@ public class UserAuthMobileServiceImpl extends ServiceImpl<UserAuthMobileMapper,
      * @return 认证信息
      */
     @Override
-    @Cacheable(cacheNames = {"userInfo"}, key = "'mobile:' + #username", unless = "#result == null")
+    @Cacheable(cacheNames = {"userInfo"}, key = "'mobile:' + #p0", unless = "#result == null")
     public UserAuthBaseDO getByUsername(String username) {
         return getOne(Wrappers.lambdaQuery(UserAuthMobileDO.builder().mobile(username).build()));
     }
 
     @Override
-    @CacheEvict(cacheNames = {"userInfo"}, key = "'mobile:' + #entity.mobile")
+    @CacheEvict(cacheNames = {"userInfo"}, key = "'mobile:' + #p0.mobile")
     public boolean save(UserAuthMobileDO entity) {
         return super.save(entity);
     }
 
     @Override
-    @Cacheable(cacheNames = {"userInfo"}, key = "'mobile:id:' + #id", unless = "#result == null")
+    @Cacheable(cacheNames = {"userInfo"}, key = "'mobile:id:' + #p0", unless = "#result == null")
     public UserAuthMobileDO getById(Serializable id) {
         return super.getById(id);
     }

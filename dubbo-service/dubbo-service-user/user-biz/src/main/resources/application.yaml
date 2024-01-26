@@ -19,14 +19,20 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     username: root
     password: root
-# hikari
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /h2
+    # hikari
     hikari:
       minimum-idle: 2
       maximum-pool-size: 5
       idle-timeout: 30000
       connection-timeout: 30000
       max-lifetime: 1800000
-# cache
+  # cache
   cache:
     cache-names: userInfo
     type: redis

@@ -25,7 +25,7 @@ public class AuthSourceServiceImpl extends ServiceImpl<AuthSourceMapper, AuthSou
      * @return 资源配置信息
      */
     @Override
-    @Cacheable(cacheNames = {"bug"}, key = "'authSource:clientId:' + #clientId", unless = "#result == null")
+    @Cacheable(cacheManager = "caffeineCacheManager", cacheNames = {"bug"}, key = "'authSource:clientId:' + #clientId", unless = "#result == null")
     public AuthSourceDO getByClientId(String clientId) {
         return getOne(Wrappers.lambdaQuery(AuthSourceDO.class)
                 .select(AuthSourceDO::getClientId, AuthSourceDO::getClientTag)

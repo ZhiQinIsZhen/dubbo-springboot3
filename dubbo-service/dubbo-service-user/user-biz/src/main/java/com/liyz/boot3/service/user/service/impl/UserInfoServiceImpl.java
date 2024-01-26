@@ -20,7 +20,7 @@ import java.io.Serializable;
 public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfoDO> implements UserInfoService {
 
     @Override
-    @Cacheable(cacheNames = {"userInfo"}, key = "'id:' + #id", unless = "#result == null")
+    @Cacheable(cacheNames = {"userInfo"}, key = "'id:' + #p0", unless = "#result == null")
     public UserInfoDO getById(Serializable id) {
         return super.getById(id);
     }

@@ -30,7 +30,7 @@ public class UserLogoutLogServiceImpl extends ServiceImpl<UserLogoutLogMapper, U
      * @return 上次登出时间
      */
     @Override
-    @Cacheable(cacheNames = {"userInfo"}, key = "'lastLogoutTime:' + #device.type + ':' + #userId", unless = "#result == null")
+    @Cacheable(cacheNames = {"userInfo"}, key = "'lastLogoutTime:' + #p1.type + ':' + #p0", unless = "#result == null")
     public Date lastLogoutTime(Long userId, Device device) {
         UserLogoutLogDO userLogoutLogDO = lambdaQuery()
                 .select(UserLogoutLogDO::getLogoutTime)
@@ -43,7 +43,7 @@ public class UserLogoutLogServiceImpl extends ServiceImpl<UserLogoutLogMapper, U
     }
 
     @Override
-    @CacheEvict(cacheNames = {"userInfo"}, key = "'lastLogoutTime:' + #entity.device + ':' + #entity.userId")
+    @CacheEvict(cacheNames = {"userInfo"}, key = "'lastLogoutTime:' + #p0.device + ':' + #entity.userId")
     public boolean save(UserLogoutLogDO entity) {
         return super.save(entity);
     }
