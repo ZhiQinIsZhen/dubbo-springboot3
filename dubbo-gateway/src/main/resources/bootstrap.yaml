@@ -2,6 +2,8 @@
 server:
   port: 8080
   shutdown: graceful
+  netty:
+    connection-timeout: 1000ms
 #spring
 spring:
   main:
@@ -143,3 +145,9 @@ anonymous:
         - /user/search/company/**
         - /user/search/investor/**
         - /user/search/financing/**
+non:
+  limit:
+    mapping:
+      server:
+        dubbo-api-user:
+          - /user/test/**

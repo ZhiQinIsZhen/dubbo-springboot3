@@ -62,6 +62,7 @@ dubbo:
     serialize-check-status: STRICT
   protocol:
     port: 20770
+    threads: 200
   provider:
     filter: remoteServiceExceptionFilter,-exception
     version: 1.0.0

@@ -1,8 +1,10 @@
 package com.liyz.boot3.gateway.filter;
 
 import com.liyz.boot3.common.remote.exception.CommonExceptionCodeEnum;
+import com.liyz.boot3.gateway.properties.NonLimitMappingProperties;
 import com.liyz.boot3.gateway.util.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.RequestRateLimiterGatewayFilterFactory;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
@@ -10,8 +12,11 @@ import org.springframework.cloud.gateway.filter.ratelimit.RateLimiter;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Desc:
@@ -22,10 +27,14 @@ import java.util.Map;
  */
 @Slf4j
 @Component
+@EnableConfigurationProperties(NonLimitMappingProperties.class)
 public class GlobalLimitFilterGatewayFilterFactory extends RequestRateLimiterGatewayFilterFactory {
 
-    public GlobalLimitFilterGatewayFilterFactory(RateLimiter defaultRateLimiter, KeyResolver defaultKeyResolver) {
+    private final NonLimitMappingProperties properties;
+
+    public GlobalLimitFilterGatewayFilterFactory(RateLimiter defaultRateLimiter, KeyResolver defaultKeyResolver, NonLimitMappingProperties properties) {
         super(defaultRateLimiter, defaultKeyResolver);
+        this.properties = properties;
     }
 
     @Override
@@ -33,6 +42,12 @@ public class GlobalLimitFilterGatewayFilterFactory extends RequestRateLimiterGat
         KeyResolver resolver = getDefaultKeyResolver();
         RateLimiter<Object> limiter = getDefaultRateLimiter();
         return (exchange, chain) -> resolver.resolve(exchange).flatMap(key -> {
+            String path = exchange.getRequest().getURI().getPath();
+            String clientId = new AntPathMatcher().match("/admin/**", path) ? "dubbo-api-admin" : "dubbo-api-user";
+            Set<String> mappingSet = properties.getServer().get(clientId);
+            if (!CollectionUtils.isEmpty(mappingSet) && (mappingSet.contains(path) || pathMatch(path, mappingSet))) {
+                return chain.filter(exchange);
+            }
             String routeId = config.getRouteId();
             if (routeId == null) {
                 Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
@@ -50,5 +65,18 @@ public class GlobalLimitFilterGatewayFilterFactory extends RequestRateLimiterGat
                 return ResponseUtil.response(exchange.getResponse(), CommonExceptionCodeEnum.OUT_LIMIT_COUNT);
             });
         });
+    }
+
+    private boolean pathMatch(String path, Set<String> mappingSet) {
+        if (CollectionUtils.isEmpty(mappingSet)) {
+            return false;
+        }
+        for (String mapping : mappingSet) {
+            if (new AntPathMatcher().match(mapping, path)) {
+                mappingSet.add(path);
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -33,8 +33,8 @@ server:
   tomcat:
     accept-count: 10
     threads:
-      max: 10
-      min-spare: 5
+      max: 200
+      min-spare: 50
   error:
     path: /liyz/error
   shutdown: graceful
@@ -49,7 +49,7 @@ dubbo:
     qos-enable: false
   protocol:
     port: 20772
-    threads: 100
+    threads: 200
   provider:
     filter: remoteServiceExceptionFilter,-exception
     version: 1.0.0

@@ -66,6 +66,7 @@ dubbo:
     serialize-check-status: WARN
   protocol:
     port: 20775
+    threads: 200
   provider:
     filter: remoteServiceExceptionFilter,-exception
     version: 1.0.0
