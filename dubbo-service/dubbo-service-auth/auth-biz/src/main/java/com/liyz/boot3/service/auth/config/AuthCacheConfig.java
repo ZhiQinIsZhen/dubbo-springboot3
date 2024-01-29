@@ -24,6 +24,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Desc:
@@ -78,7 +79,11 @@ public class AuthCacheConfig {
     CaffeineCacheManager caffeineCacheManager(CacheProperties cacheProperties) {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
         cacheManager.setCacheNames(cacheProperties.getCacheNames());
-        Caffeine<Object, Object> caffeine = Caffeine.newBuilder();
+        Caffeine<Object, Object> caffeine = Caffeine
+                .newBuilder()
+                .maximumSize(1000)
+                .initialCapacity(10)
+                .expireAfterWrite(5, TimeUnit.MINUTES);
         cacheManager.setCaffeine(caffeine);
         return cacheManager;
     }

@@ -2,7 +2,10 @@ package com.liyz.boot3.common.util;
 
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,8 +37,8 @@ public class PatternUtil {
     /**
      * 匹配手机
      *
-     * @param mobile
-     * @return
+     * @param mobile 手机号码
+     * @return boolean
      */
     public static boolean matchMobile(String mobile) {
         if (StringUtils.isBlank(mobile)) {
@@ -49,8 +52,8 @@ public class PatternUtil {
     /**
      * 匹配邮箱
      *
-     * @param email
-     * @return
+     * @param email 邮箱
+     * @return boolean
      */
     public static boolean matchEmail(String email) {
         if (StringUtils.isBlank(email)) {
@@ -64,7 +67,7 @@ public class PatternUtil {
     /**
      * 校验地址是否是邮件或者手机号码格式，如果不是，则抛出异常
      *
-     * @param address
+     * @param address 地址
      * @return 1：手机号码；2：邮件；-1：无法判断
      */
     public static int checkMobileEmail(String address) {
@@ -75,5 +78,25 @@ public class PatternUtil {
             type = 2;
         }
         return type;
+    }
+
+    /**
+     * 地址与目标集合是否匹配
+     *
+     * @param path 地址
+     * @param mappingSet 目标集合
+     * @return boolean
+     */
+    public static boolean pathMatch(String path, Set<String> mappingSet) {
+        if (CollectionUtils.isEmpty(mappingSet)) {
+            return false;
+        }
+        for (String mapping : mappingSet) {
+            if (new AntPathMatcher().match(mapping, path)) {
+                mappingSet.add(path);
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 public enum AuthExceptionCodeEnum implements IExceptionService {
     FORBIDDEN("401", "登录后进行操作"),
     NO_RIGHT("403", "暂无权限"),
+    NOT_FOUND("404", "NOT_FOUND"),
     LOGIN_FAIL("20001", "用户名或者密码错误"),
     AUTHORIZATION_FAIL("20002", "认证失败"),
     AUTHORIZATION_TIMEOUT("20003", "认证过期"),

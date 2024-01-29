@@ -1,7 +1,8 @@
 package com.liyz.boot3.gateway.filter;
 
 import com.liyz.boot3.common.remote.exception.RemoteServiceException;
-import com.liyz.boot3.common.util.JsonMapperUtil;
+import com.liyz.boot3.common.util.PatternUtil;
+import com.liyz.boot3.gateway.constant.GatewayConstant;
 import com.liyz.boot3.gateway.properties.AnonymousMappingProperties;
 import com.liyz.boot3.gateway.util.ResponseUtil;
 import com.liyz.boot3.service.auth.bo.AuthUserBO;
@@ -15,10 +16,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
-import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.cloud.gateway.route.Route;
+import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
+import org.springframework.core.Ordered;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -27,7 +29,10 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Desc:
+ * Desc:Jwt全局过滤器
+ * <p>
+ *     gateway的filter中的顺序是由接口{@link Ordered}来决定的
+ * </p>
  *
  * @author lyz
  * @version 1.0.0
@@ -37,7 +42,7 @@ import java.util.Set;
 @Component
 @RefreshScope
 @EnableConfigurationProperties(AnonymousMappingProperties.class)
-public class GlobalJWTFilter implements GlobalFilter {
+public class GlobalJWTFilter implements GlobalFilter, Ordered {
 
     @Value(value = "${test}")
     private String test;
@@ -61,27 +66,27 @@ public class GlobalJWTFilter implements GlobalFilter {
      */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        log.info("test:{}", test);
-        ServerHttpRequest req = exchange.getRequest();
         ServerHttpResponse resp = exchange.getResponse();
-        String path = req.getURI().getPath();
-        log.info("path : {}", path);
-        String clientId = new AntPathMatcher().match("/admin/**", path) ? "dubbo-api-admin" : "dubbo-api-user";
+        Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
+        if (route == null) {
+            return ResponseUtil.response(resp, AuthExceptionCodeEnum.NOT_FOUND);
+        }
+        String path = exchange.getRequest().getURI().getPath();
+        String clientId = route.getId();
         Set<String> mappingSet = properties.getServer().get(clientId);
-        if (!CollectionUtils.isEmpty(mappingSet) && (mappingSet.contains(path) || pathMatch(path, mappingSet))) {
+        if (!CollectionUtils.isEmpty(mappingSet) && (mappingSet.contains(path) || PatternUtil.pathMatch(path, mappingSet))) {
             return chain.filter(exchange);
         }
-        String jwt = req.getHeaders().getFirst("Authorization");
+        String jwt = exchange.getRequest().getHeaders().getFirst(GatewayConstant.AUTHORIZATION);
         if (StringUtils.isBlank(jwt)) {
             return ResponseUtil.response(resp, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
-        log.info("JWT : {}", jwt);
         try {
             AuthUserBO authUserBO = remoteJwtParseService.parseToken(jwt, clientId);
             if (Objects.isNull(authUserBO)) {
                 return ResponseUtil.response(resp, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
             }
-            log.info("AuthUserBO : {}", JsonMapperUtil.toJSONString(authUserBO));
+            exchange.getAttributes().put(GatewayConstant.AUTH_ID, authUserBO.getAuthId());
         } catch (RemoteServiceException e) {
             return ResponseUtil.response(resp, e.getCode(), e.getMessage());
         } catch (Exception e) {
@@ -91,16 +96,8 @@ public class GlobalJWTFilter implements GlobalFilter {
         return chain.filter(exchange);
     }
 
-    private boolean pathMatch(String path, Set<String> mappingSet) {
-        if (CollectionUtils.isEmpty(mappingSet)) {
-            return false;
-        }
-        for (String mapping : mappingSet) {
-            if (new AntPathMatcher().match(mapping, path)) {
-                mappingSet.add(path);
-                return true;
-            }
-        }
-        return false;
+    @Override
+    public int getOrder() {
+        return 0;
     }
 }

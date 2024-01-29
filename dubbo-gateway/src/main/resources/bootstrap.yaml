@@ -36,7 +36,7 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
-        - id: api-admin
+        - id: dubbo-api-admin
           uri: http://localhost:7071
           predicates:
             - Path=/admin/**
@@ -46,7 +46,7 @@ spring:
                 key-resolver: '#{@keyResolver}'
                 redis-rate-limiter.replenishRate: 1
                 redis-rate-limiter.burstCapacity: 3
-        - id: api-user
+        - id: dubbo-api-user
           uri: http://localhost:7072
           predicates:
             - Path=/user/**
@@ -97,22 +97,22 @@ knife4j:
     routes:
       - name: 后台管理服务
         url: /admin/v3/api-docs?group=default
-        service-name: api-admin
+        service-name: dubbo-api-admin
         context-path: /admin
         order: 1
       - name: 后台管理服务-鉴权
         url: /admin/v3/api-docs/authentication?group=default
-        service-name: api-admin
+        service-name: dubbo-api-admin
         context-path: /admin
         order: 2
       - name: 用户前台服务
         url: /user/v3/api-docs?group=default
-        service-name: api-user
+        service-name: dubbo-api-user
         context-path: /user
         order: 101
       - name: 用户前台服务-鉴权
         url: /user/v3/api-docs/authen?group=default
-        service-name: api-user
+        service-name: dubbo-api-user
         context-path: /user
         order: 102
     discover:

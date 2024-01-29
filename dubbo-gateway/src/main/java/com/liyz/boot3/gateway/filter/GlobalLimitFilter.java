@@ -1,8 +1,10 @@
 package com.liyz.boot3.gateway.filter;
 
 import com.liyz.boot3.common.remote.exception.CommonExceptionCodeEnum;
+import com.liyz.boot3.common.util.PatternUtil;
 import com.liyz.boot3.gateway.properties.NonLimitMappingProperties;
 import com.liyz.boot3.gateway.util.ResponseUtil;
+import com.liyz.boot3.service.auth.exception.AuthExceptionCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -11,15 +13,18 @@ import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.gateway.filter.ratelimit.RateLimiter;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Map;
 import java.util.Set;
 
 /**
- * Desc:
+ * Desc:限流过滤器
+ * <p>
+ *     如果用户登陆，则限流key = authId + _ + mapping，否则限流key = ip + _ + mapping
+ * </p>
  *
  * @author lyz
  * @version 1.0.0
@@ -28,11 +33,11 @@ import java.util.Set;
 @Slf4j
 @Component
 @EnableConfigurationProperties(NonLimitMappingProperties.class)
-public class GlobalLimitFilterGatewayFilterFactory extends RequestRateLimiterGatewayFilterFactory {
+public class GlobalLimitFilter extends RequestRateLimiterGatewayFilterFactory implements Ordered {
 
     private final NonLimitMappingProperties properties;
 
-    public GlobalLimitFilterGatewayFilterFactory(RateLimiter defaultRateLimiter, KeyResolver defaultKeyResolver, NonLimitMappingProperties properties) {
+    public GlobalLimitFilter(RateLimiter defaultRateLimiter, KeyResolver defaultKeyResolver, NonLimitMappingProperties properties) {
         super(defaultRateLimiter, defaultKeyResolver);
         this.properties = properties;
     }
@@ -43,40 +48,30 @@ public class GlobalLimitFilterGatewayFilterFactory extends RequestRateLimiterGat
         RateLimiter<Object> limiter = getDefaultRateLimiter();
         return (exchange, chain) -> resolver.resolve(exchange).flatMap(key -> {
             String path = exchange.getRequest().getURI().getPath();
-            String clientId = new AntPathMatcher().match("/admin/**", path) ? "dubbo-api-admin" : "dubbo-api-user";
+            Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
+            if (route == null) {
+                return ResponseUtil.response(exchange.getResponse(), AuthExceptionCodeEnum.NOT_FOUND);
+            }
+            String clientId = route.getId();
             Set<String> mappingSet = properties.getServer().get(clientId);
-            if (!CollectionUtils.isEmpty(mappingSet) && (mappingSet.contains(path) || pathMatch(path, mappingSet))) {
+            if (!CollectionUtils.isEmpty(mappingSet) && (mappingSet.contains(path) || PatternUtil.pathMatch(path, mappingSet))) {
                 return chain.filter(exchange);
             }
-            String routeId = config.getRouteId();
-            if (routeId == null) {
-                Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
-                routeId = route.getId();
-            }
-            String finalRouteId = routeId;
-            return limiter.isAllowed(routeId, key).flatMap((response) -> {
-                for (Map.Entry<String, String> header : response.getHeaders().entrySet()) {
+            return limiter.isAllowed(clientId, key).flatMap((response) -> {
+                /*for (Map.Entry<String, String> header : response.getHeaders().entrySet()) {
                     exchange.getResponse().getHeaders().add(header.getKey(), header.getValue());
-                }
+                }*/
                 if (response.isAllowed()) {
                     return chain.filter(exchange);
                 }
-                log.warn("已限流: {}, key : {}", finalRouteId, key);
+                log.warn("已限流: {}, key : {}", clientId, key);
                 return ResponseUtil.response(exchange.getResponse(), CommonExceptionCodeEnum.OUT_LIMIT_COUNT);
             });
         });
     }
 
-    private boolean pathMatch(String path, Set<String> mappingSet) {
-        if (CollectionUtils.isEmpty(mappingSet)) {
-            return false;
-        }
-        for (String mapping : mappingSet) {
-            if (new AntPathMatcher().match(mapping, path)) {
-                mappingSet.add(path);
-                return true;
-            }
-        }
-        return false;
+    @Override
+    public int getOrder() {
+        return 10;
     }
 }

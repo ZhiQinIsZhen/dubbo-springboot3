@@ -71,7 +71,7 @@ ORM框架选用了[Mybatis-plus](https://baomidou.com/)，
 ## gateway结构说明
 
 1. `GlobalJWTFilter`: 自定义全局JWT过滤器
-2. `GlobalLimitFilterGatewayFilterFactory`: 自定义限流过滤器
+2. `GlobalLimitFilter`: 自定义限流过滤器
 
 ## task结构说明
 1. `dubbo-task-elastic`：使用的是基于elastic job为框架

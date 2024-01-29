@@ -1,6 +1,7 @@
 package com.liyz.boot3.gateway.config;
 
 import com.google.common.base.Joiner;
+import com.liyz.boot3.gateway.constant.GatewayConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -9,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /**
  * Desc:
@@ -30,11 +33,12 @@ public class GatewayConfig {
     @Bean("keyResolver")
     public KeyResolver keyResolver() {
         return exchange -> {
-            log.info("test:{}", test);
+//            log.info("test:{}", test);
+            Long authId = exchange.getAttribute(GatewayConstant.AUTH_ID);
             String ip = exchange.getRequest().getRemoteAddress().getAddress().getHostAddress();
             String path = exchange.getRequest().getURI().getPath();
-            log.info("ip : {}, path : {}", ip, path);
-            return Mono.just(Joiner.on("_").join(ip, path));
+//            log.info("ip : {}, path : {}", ip, path);
+            return Mono.just(Joiner.on("_").join(Objects.isNull(authId) ? ip : authId.toString(), path));
         };
     }
 }
