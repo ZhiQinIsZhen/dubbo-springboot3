@@ -46,7 +46,7 @@ public class UserLoginLogServiceImpl extends ServiceImpl<UserLoginLogMapper, Use
     }
 
     @Override
-    @CacheEvict(cacheNames = {"userInfo"}, key = "'lastLoginTime:' + #p0.device + ':' + #entity.userId")
+    @CacheEvict(cacheNames = {"userInfo"}, key = "'lastLoginTime:' + #p0.device + ':' + #p0.userId")
     public boolean save(UserLoginLogDO entity) {
         return super.save(entity);
     }

@@ -56,6 +56,13 @@ spring:
                 key-resolver: '#{@keyResolver}'
                 redis-rate-limiter.replenishRate: 1
                 redis-rate-limiter.burstCapacity: 3
+            - name: GlobalAuthIdHeaderFilter
+              args:
+                name: AUTH_ID
+                value: -1
+            - name: GlobalCacheBodyFilter
+              args:
+                body-class: java.lang.Object
   # redis
   data:
     redis:
