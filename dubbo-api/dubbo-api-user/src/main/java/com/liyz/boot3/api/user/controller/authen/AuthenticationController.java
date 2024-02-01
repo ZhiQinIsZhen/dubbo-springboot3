@@ -2,8 +2,10 @@ package com.liyz.boot3.api.user.controller.authen;
 
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.google.common.eventbus.EventBus;
 import com.liyz.boot3.api.user.dto.authen.UserLoginDTO;
 import com.liyz.boot3.api.user.dto.authen.UserRegisterDTO;
+import com.liyz.boot3.api.user.event.guava.LoginEvent;
 import com.liyz.boot3.api.user.vo.authen.AuthLoginVO;
 import com.liyz.boot3.common.api.result.Result;
 import com.liyz.boot3.common.api.util.HttpServletContext;
@@ -15,12 +17,11 @@ import com.liyz.boot3.service.auth.bo.AuthUserBO;
 import com.liyz.boot3.service.auth.bo.AuthUserLoginBO;
 import com.liyz.boot3.service.auth.bo.AuthUserRegisterBO;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -60,6 +61,9 @@ public class AuthenticationController {
         return Result.success(AuthContext.AuthService.registry(BeanUtil.copyProperties(staffRegister, AuthUserRegisterBO::new)));
     }
 
+    @Resource
+    private EventBus eventBus;
+
     @ApiOperationSupport(order = 2)
     @Anonymous
     @Operation(summary = "登录", tags = "1000")
@@ -74,13 +78,13 @@ public class AuthenticationController {
             response.setHeader(SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY, authLoginVO.getToken());
             response.sendRedirect(loginDTO.getRedirect());
         }
+        eventBus.post(new LoginEvent(authUserBO.getUsername()));
         return Result.success(authLoginVO);
     }
 
     @ApiOperationSupport(order = 3)
     @Operation(summary = "登出", tags = "1000")
     @PostMapping("/logout")
-//    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
     public Result<Boolean> logout() {
         return Result.success(AuthContext.AuthService.logout());
     }

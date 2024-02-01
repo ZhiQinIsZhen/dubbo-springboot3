@@ -24,8 +24,8 @@ public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, 
     private T entity;
     private Class<T> entityClass;
     private QueryCondition queryCondition;
-    private List<QuerySort> sorts = new ArrayList<>();
-    private List<QueryAgg> aggs = new ArrayList<>();
+    private final List<QuerySort> sorts = new ArrayList<>();
+    private final List<QueryAgg> aggs = new ArrayList<>();
 
     public Class<T> getEntityClass() {
         if (entityClass == null && entity != null) {

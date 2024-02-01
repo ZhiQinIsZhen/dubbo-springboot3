@@ -1,4 +1,4 @@
-package com.liyz.boot3.api.user.event;
+package com.liyz.boot3.api.user.event.spring;
 
 import lombok.Getter;
 import lombok.Setter;

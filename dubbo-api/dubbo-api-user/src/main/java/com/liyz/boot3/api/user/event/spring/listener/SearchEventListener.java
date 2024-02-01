@@ -1,6 +1,6 @@
-package com.liyz.boot3.api.user.event.listener;
+package com.liyz.boot3.api.user.event.spring.listener;
 
-import com.liyz.boot3.api.user.event.SearchEvent;
+import com.liyz.boot3.api.user.event.spring.SearchEvent;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.PropertyResourceConfigurer;
