@@ -7,17 +7,13 @@ import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
 import co.elastic.clients.elasticsearch._types.aggregations.DateHistogramAggregation;
 import co.elastic.clients.elasticsearch._types.aggregations.TermsAggregation;
-import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.util.DateTime;
 import co.elastic.clients.util.NamedValue;
 import com.liyz.boot3.common.remote.page.PageBO;
 import com.liyz.boot3.common.remote.page.RemotePage;
-import com.liyz.boot3.common.search.Query.EsKeyword;
 import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
-import com.liyz.boot3.common.search.Query.QueryCondition;
 import com.liyz.boot3.common.search.exception.SearchException;
 import com.liyz.boot3.common.search.exception.SearchExceptionCodeEnum;
 import com.liyz.boot3.common.search.mapper.EsMapper;
@@ -131,22 +127,9 @@ public abstract class AbstractEsMethod implements IEsMethod {
         if (!CollectionUtils.isEmpty(wrapper.getIncludes())) {
             builder.source(s -> s.filter(sf -> sf.includes(wrapper.getIncludes())));
         }
-        //查询条件  todo 未解决递归问题
-        if (wrapper.getQueryCondition() != null) {
-            BoolQuery.Builder boolBuild = new BoolQuery.Builder();
-            List<Query> queries = new ArrayList<>();
-            for (QueryCondition item : wrapper.getQueryCondition().getChildren()) {
-                if (item.getEsKeyword() == EsKeyword.TERM) {
-                    queries.add(new Query.Builder().term(tm -> tm.field(item.getColum()).value(item.getVal().toString())).build());
-                } else if (item.getEsKeyword() == EsKeyword.TERMS) {
-                    queries.add(new Query.Builder().terms(tms -> tms.field(item.getColum()).terms(tqf -> tqf.value(item.valToList()))).build());
-                }
-            }
-            switch (wrapper.getQueryCondition().getEsKeyword()) {
-                case MUST -> builder.query(new Query.Builder().bool(boolBuild.filter(queries).build()).build());
-                case SHOULD -> builder.query(new Query.Builder().bool(boolBuild.should(queries).build()).build());
-                case NOT_MUST -> builder.query(new Query.Builder().bool(boolBuild.mustNot(queries).build()).build());
-            }
+        //查询条件
+        if (wrapper.getQuery() != null) {
+            builder.query(wrapper.getQuery());
         }
         //排序
         if (!CollectionUtils.isEmpty(wrapper.getSorts())) {

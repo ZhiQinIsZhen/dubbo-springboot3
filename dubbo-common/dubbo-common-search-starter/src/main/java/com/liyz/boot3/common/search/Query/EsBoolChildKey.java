@@ -7,14 +7,12 @@ import lombok.AllArgsConstructor;
  *
  * @author lyz
  * @version 1.0.0
- * @date 2024/1/9 9:49
+ * @date 2024/2/1 16:25
  */
 @AllArgsConstructor
-public enum EsKeyword {
+public enum EsBoolChildKey {
     TERM,
     TERMS,
-    MUST,
-    NOT_MUST,
-    SHOULD,
+
     ;
 }

@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-@Document(indexName = "search-company-auto-20240113", createIndex = false)
+@Document(indexName = "search-company-simple-auto-20240127", createIndex = false)
 public class CompanyDO implements Serializable {
     @Serial
     private static final long serialVersionUID = 170535601509514115L;

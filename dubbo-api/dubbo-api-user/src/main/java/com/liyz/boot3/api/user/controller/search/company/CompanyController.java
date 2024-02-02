@@ -49,6 +49,7 @@ public class CompanyController {
     @DubboReference
     private RemoteCompanyService remoteCompanyService;
 
+    @Anonymous
     @Operation(summary = "分页查询公司")
     @GetMapping("/page")
     public PageResult<CompanyVO> companyPage(@ParameterObject @Valid CompanyDTO companyDTO) {
