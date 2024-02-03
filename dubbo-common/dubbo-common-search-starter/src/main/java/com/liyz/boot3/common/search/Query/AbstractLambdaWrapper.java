@@ -31,7 +31,7 @@ public class AbstractLambdaWrapper<T, Children extends AbstractLambdaWrapper<T, 
     }
 
     @Override
-    protected String columnToString(SFunction<T, ?> column) {
+    public String columnToString(SFunction<T, ?> column) {
         return columnToString(false, column);
     }
 

@@ -7,6 +7,7 @@ import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,8 @@ import java.util.stream.Collectors;
  * @version 1.0.0
  * @date 2024/1/4 14:36
  */
-public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, R, Children>> extends Wrapper<T> {
+public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, R, Children>> extends Wrapper<T>
+        implements Condition<Children, R> {
 
     /**
      * 占位符
@@ -28,6 +30,9 @@ public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, 
 
     private T entity;
     private Class<T> entityClass;
+    @Getter
+    @Setter
+    private List<String> includes = new ArrayList<>();
     @Getter
     private Query query;
     @Getter
@@ -59,48 +64,12 @@ public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, 
         return typedThis;
     }
 
-    /**
-     * 等于 =
-     *
-     * @param column    字段
-     * @param val       值
-     * @return children
-     */
-    public Children term(R column, Object val) {
-        return term(true, column, val);
-    }
-
-    public Children term(boolean condition, R column, Object val) {
-        return term(condition, columnToString(column), val);
-    }
-
-    public Children term(String column, Object val) {
-        return term(true, column, val);
-    }
-
+    @Override
     public Children term(boolean condition, String column, Object val) {
         return addQuery(condition, EsBoolKey.MUST, getChildQuery(column, val, EsBoolChildKey.TERM));
     }
 
-    /**
-     * 等于 in
-     *
-     * @param column    字段
-     * @param vals       值
-     * @return children
-     */
-    public Children terms(R column, List<Object> vals) {
-        return terms(true, column, vals);
-    }
-
-    public Children terms(boolean condition, R column, List<Object> vals) {
-        return terms(condition, columnToString(column), vals);
-    }
-
-    public Children terms(String column, List<Object> vals) {
-        return terms(true, column, vals);
-    }
-
+    @Override
     public Children terms(boolean condition, String column, List<Object> vals) {
         return addQuery(condition, EsBoolKey.MUST, getChildQuery(column, vals, EsBoolChildKey.TERMS));
     }
@@ -152,19 +121,16 @@ public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, 
         return result;
     }
 
-    public Children sort(R column, SortOrder esSort) {
-        return sort(true, column, esSort);
-    }
-
-    public Children sort(boolean condition, R column, SortOrder esSort) {
-        return addSort(condition, column, esSort);
-    }
-
-    protected Children addSort(boolean condition, R column, SortOrder esSort) {
-        if (condition) {
-            sorts.add(new QuerySort(esSort, columnToString(column)));
-        }
+    @Override
+    public Children sort(boolean condition, String column, SortOrder esSort) {
+        addSort(condition, column, esSort);
         return typedThis;
+    }
+
+    private void addSort(boolean condition, String column, SortOrder esSort) {
+        if (condition) {
+            sorts.add(new QuerySort(esSort, column));
+        }
     }
 
     public Children agg(R column, Aggregation.Kind kind) {
@@ -183,11 +149,6 @@ public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, 
         this.query = query;
         return typedThis;
     }
-
-    /**
-     * 获取 columnName
-     */
-    protected abstract String columnToString(R column);
 
     protected FieldValue getFieldValue(Object value) {
         if (value == null) {

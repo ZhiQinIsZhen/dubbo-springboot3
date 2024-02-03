@@ -2,10 +2,7 @@ package com.liyz.boot3.common.search.Query;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.liyz.boot3.common.search.toolkit.SFunction;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,12 +12,8 @@ import java.util.List;
  * @version 1.0.0
  * @date 2024/1/3 11:29
  */
-@Getter
-@Setter
 public class LambdaQueryWrapper<T> extends AbstractLambdaWrapper<T, LambdaQueryWrapper<T>>
         implements Query<LambdaQueryWrapper<T>, T, SFunction<T, ?>> {
-
-    private List<String> includes = new ArrayList<>();
 
     public LambdaQueryWrapper() {
         this((T) null);
