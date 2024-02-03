@@ -7,6 +7,7 @@ import com.liyz.boot3.api.user.vo.search.company.CompanyBasicVO;
 import com.liyz.boot3.api.user.vo.search.company.CompanyVO;
 import com.liyz.boot3.common.api.result.PageResult;
 import com.liyz.boot3.common.api.result.Result;
+import com.liyz.boot3.common.remote.page.PageBO;
 import com.liyz.boot3.common.remote.page.RemotePage;
 import com.liyz.boot3.common.service.util.BeanUtil;
 import com.liyz.boot3.security.client.annotation.Anonymous;
@@ -54,7 +55,9 @@ public class CompanyController {
     @GetMapping("/page")
     public PageResult<CompanyVO> companyPage(@ParameterObject @Valid CompanyDTO companyDTO) {
         applicationContext.publishEvent(new SearchEvent(this));
-        RemotePage<CompanyBO> remotePage = remoteCompanyService.searchPage(BeanUtil.copyProperties(companyDTO, CompanyPageQuery::new));
+        CompanyBO companyBO = new CompanyBO();
+        companyBO.setCompanyNameTag(companyDTO.getCompanyName());
+        RemotePage<CompanyBO> remotePage = remoteCompanyService.selectPage(PageBO.of(companyDTO.getPageNum(), companyDTO.getPageSize()), companyBO);
         return PageResult.success(BeanUtil.copyRemotePage(remotePage, CompanyVO::new, (s, t) -> {
             if (Objects.nonNull(s.getEstablishmentTime())) {
                     t.setEstablishmentTime(new Date(s.getEstablishmentTime() * 1000));

@@ -54,15 +54,6 @@ dubbo:
     address: nacos://localhost:8848?namespace=liyz
   scan:
     base-packages: com.liyz.boot3.service.search.provider
-# index
-company:
-  search:
-    index: search-company-auto-20240113
-    search-type: company
-bid:
-  detail:
-    index: bidding-v0830
-    search-type: bid_detail
 # actuator
 management:
   endpoints:
