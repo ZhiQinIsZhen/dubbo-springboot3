@@ -18,4 +18,6 @@ import java.io.Serial;
 public class CompanyPageQuery extends PageQuery {
     @Serial
     private static final long serialVersionUID = -1225057130309668169L;
+
+    private String companyName;
 }

@@ -3,14 +3,13 @@ package com.liyz.boot3.api.admin.controller.search;
 import com.liyz.boot3.api.admin.dto.search.company.CompanyDTO;
 import com.liyz.boot3.api.admin.vo.search.company.CompanyVO;
 import com.liyz.boot3.common.api.result.PageResult;
+import com.liyz.boot3.common.remote.page.PageBO;
 import com.liyz.boot3.common.remote.page.RemotePage;
 import com.liyz.boot3.common.service.util.BeanUtil;
+import com.liyz.boot3.security.client.annotation.Anonymous;
 import com.liyz.boot3.service.search.bo.company.CompanyBO;
-import com.liyz.boot3.service.search.query.company.CompanyPageQuery;
 import com.liyz.boot3.service.search.remote.company.RemoteCompanyService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -37,11 +36,13 @@ public class SearchController {
     @DubboReference
     private RemoteCompanyService remoteCompanyService;
 
+    @Anonymous
     @Operation(summary = "分页查询公司")
     @GetMapping("/company/page")
-//    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
     public PageResult<CompanyVO> companyPage(@ParameterObject @Valid CompanyDTO companyDTO) {
-        RemotePage<CompanyBO> remotePage = remoteCompanyService.searchPage(BeanUtil.copyProperties(companyDTO, CompanyPageQuery::new));
+        CompanyBO companyBO = new CompanyBO();
+        companyBO.setCompanyNameTag(companyDTO.getCompanyName());
+        RemotePage<CompanyBO> remotePage = remoteCompanyService.selectPage(PageBO.of(companyDTO.getPageNum(), companyDTO.getPageSize()), companyBO);
         return PageResult.success(BeanUtil.copyRemotePage(remotePage, CompanyVO::new, (s, t) -> {
             if (Objects.nonNull(s.getEstablishmentTime())) {
                     t.setEstablishmentTime(new Date(s.getEstablishmentTime() * 1000));
