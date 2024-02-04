@@ -2,7 +2,7 @@ package com.liyz.boot3.common.search.mapper;
 
 import com.liyz.boot3.common.remote.page.PageBO;
 import com.liyz.boot3.common.remote.page.RemotePage;
-import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
+import com.liyz.boot3.common.search.query.LambdaQueryWrapper;
 import com.liyz.boot3.common.search.response.AggResponse;
 
 import java.io.Serializable;

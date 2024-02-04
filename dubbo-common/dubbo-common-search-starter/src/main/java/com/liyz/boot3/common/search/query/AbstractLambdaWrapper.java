@@ -1,4 +1,4 @@
-package com.liyz.boot3.common.search.Query;
+package com.liyz.boot3.common.search.query;
 
 import com.liyz.boot3.common.search.toolkit.ColumnCache;
 import com.liyz.boot3.common.search.toolkit.LambdaMeta;

@@ -1,4 +1,4 @@
-package com.liyz.boot3.common.search.Query;
+package com.liyz.boot3.common.search.query;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -2,7 +2,7 @@ package com.liyz.boot3.service.search.provider.company;
 
 import com.liyz.boot3.common.remote.page.PageBO;
 import com.liyz.boot3.common.remote.page.RemotePage;
-import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
+import com.liyz.boot3.common.search.query.LambdaQueryWrapper;
 import com.liyz.boot3.common.service.util.BeanUtil;
 import com.liyz.boot3.service.search.bo.company.CompanyBO;
 import com.liyz.boot3.service.search.mapper.CompanyMapper;

@@ -13,7 +13,7 @@ import co.elastic.clients.util.DateTime;
 import co.elastic.clients.util.NamedValue;
 import com.liyz.boot3.common.remote.page.PageBO;
 import com.liyz.boot3.common.remote.page.RemotePage;
-import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
+import com.liyz.boot3.common.search.query.LambdaQueryWrapper;
 import com.liyz.boot3.common.search.exception.SearchException;
 import com.liyz.boot3.common.search.exception.SearchExceptionCodeEnum;
 import com.liyz.boot3.common.search.mapper.EsMapper;

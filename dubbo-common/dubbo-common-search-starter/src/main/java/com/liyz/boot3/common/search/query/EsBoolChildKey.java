@@ -1,4 +1,4 @@
-package com.liyz.boot3.common.search.Query;
+package com.liyz.boot3.common.search.query;
 
 import lombok.AllArgsConstructor;
 
@@ -10,9 +10,9 @@ import lombok.AllArgsConstructor;
  * @date 2024/2/1 16:25
  */
 @AllArgsConstructor
-public enum EsBoolKey {
-    FILTER,
-    MUST,
-    NOT_MUST,
-    SHOULD;
+public enum EsBoolChildKey {
+    TERM,
+    TERMS,
+
+    ;
 }

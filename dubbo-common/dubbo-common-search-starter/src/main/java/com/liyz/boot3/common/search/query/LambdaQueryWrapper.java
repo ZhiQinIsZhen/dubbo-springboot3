@@ -1,4 +1,4 @@
-package com.liyz.boot3.common.search.Query;
+package com.liyz.boot3.common.search.query;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.liyz.boot3.common.search.toolkit.SFunction;

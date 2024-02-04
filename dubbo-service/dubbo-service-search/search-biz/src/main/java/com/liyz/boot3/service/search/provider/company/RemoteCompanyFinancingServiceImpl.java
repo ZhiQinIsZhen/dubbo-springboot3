@@ -3,7 +3,7 @@ package com.liyz.boot3.service.search.provider.company;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
 import com.alibaba.excel.EasyExcel;
-import com.liyz.boot3.common.search.Query.LambdaQueryWrapper;
+import com.liyz.boot3.common.search.query.LambdaQueryWrapper;
 import com.liyz.boot3.common.search.response.AggResponse;
 import com.liyz.boot3.common.service.util.BeanUtil;
 import com.liyz.boot3.service.search.bo.agg.AggBO;
