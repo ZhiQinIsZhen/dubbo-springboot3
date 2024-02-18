@@ -13,17 +13,17 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <springboot.version>3.2.1</springboot.version>
-        <hutool.version>5.8.24</hutool.version>
+        <springboot.version>3.2.2</springboot.version>
+        <hutool.version>5.8.26</hutool.version>
         <google.guava.version>33.0.0-jre</google.guava.version>
-        <knife4j.version>4.4.0</knife4j.version>
+        <knife4j.version>4.5.0</knife4j.version>
         <apache.dubbo.version>3.3.0-beta.1</apache.dubbo.version>
         <mybatis.plus.version>3.5.5</mybatis.plus.version>
-        <redisson.version>3.25.2</redisson.version>
-        <io.jwt.version>0.12.3</io.jwt.version>
+        <redisson.version>3.26.1</redisson.version>
+        <io.jwt.version>0.12.5</io.jwt.version>
         <elasticjob.version>3.0.4</elasticjob.version>
         <excel.version>3.3.3</excel.version>
-        <springboot.admin.version>3.2.1</springboot.admin.version>
+        <springboot.admin.version>3.2.2</springboot.admin.version>
     </properties>
 
     <dependencyManagement>

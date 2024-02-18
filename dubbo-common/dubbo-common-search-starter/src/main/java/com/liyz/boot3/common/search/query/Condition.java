@@ -13,6 +13,10 @@ import java.util.List;
  */
 public interface Condition<Children, R> extends Column<R> {
 
+    default Children match(R column, Object value) {
+        return null;
+    }
+
     /**
      * term condition
      *
