@@ -14,10 +14,6 @@
 
 详细介绍下项目中使用的框架：基础架构是[SpringBoot3](https://spring.io/projects/spring-boot)，服务治理是[Apache Dubbo](https://cn.dubbo.apache.org/zh-cn/index.html)，ORM框架选用了[Mybatis-plus](https://baomidou.com/)，注册中心以及配置中心使用了[Nacos](https://nacos.io/zh-cn/)，网关选用了[Gateway](https://spring.io/projects/spring-cloud-gateway)，认证以及资源框架使用了[Spring Security](https://spring.io/projects/spring-security)，接口文档选用了[knife4j](https://doc.xiaominfo.com)，分布式定时任务选用了[ElasticJob](https://shardingsphere.apache.org/elasticjob)，链路追踪使用的是[Skywalking](https://skywalking.apache.org/)。
 
-## 认证流程
-
-![认证流程](https://github.com/ZhiQinIsZhen/dubbo-springboot3/tree/main/document/认证过程.jpg)
-
 ## Skywalking配置
 
 [Skywalking配置文档](https://github.com/ZhiQinIsZhen/dubbo-springboot3/tree/main/document/README.md)
