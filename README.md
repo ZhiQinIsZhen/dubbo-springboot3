@@ -1,4 +1,4 @@
-# Dubbo Springboot3 Project
+# Dubbo3 Springboot3 Project
 
 [![Build Status](https://img.shields.io/badge/Build-ZhiQinlsZhen-red)](https://github.com/ZhiQinIsZhen/dubbo-springboot3)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/ZhiQinIsZhen/dubbo-springboot3/blob/main/LICENSE)
@@ -10,29 +10,16 @@
 ![Swagger Version](https://img.shields.io/badge/knife4j-4.4.0-brightgreen)
 ![Elasticjob Version](https://img.shields.io/badge/elasticjob-3.0.4-brightgreen)
 
-这是一个Springboot3项目的脚手架，基于Jdk21。
-使用的是[SpringBoot3](https://spring.io/projects/spring-boot) + 
-[Apache Dubbo](https://cn.dubbo.apache.org/zh-cn/index.html)，
-ORM框架选用了[Mybatis-plus](https://baomidou.com/)，
-注册中心以及配置中心使用了[Nacos](https://nacos.io/zh-cn/)，
-网关选用了[Gateway](https://spring.io/projects/spring-cloud-gateway)，
-认证以及资源框架使用了[Spring Security](https://spring.io/projects/spring-security)，
-分布式定时任务选用了[ElasticJob](https://shardingsphere.apache.org/elasticjob)，
-链路追踪使用的是[Skywalking](https://skywalking.apache.org/)。
+这是一个基于Jdk21，框架是Dubbo3 + Springboot3的脚手架。
+
+详细介绍下项目中使用的框架：基础架构是[SpringBoot3](https://spring.io/projects/spring-boot)，服务治理是[Apache Dubbo](https://cn.dubbo.apache.org/zh-cn/index.html)，ORM框架选用了[Mybatis-plus](https://baomidou.com/)，注册中心以及配置中心使用了[Nacos](https://nacos.io/zh-cn/)，网关选用了[Gateway](https://spring.io/projects/spring-cloud-gateway)，认证以及资源框架使用了[Spring Security](https://spring.io/projects/spring-security)，接口文档选用了[knife4j](https://doc.xiaominfo.com)，分布式定时任务选用了[ElasticJob](https://shardingsphere.apache.org/elasticjob)，链路追踪使用的是[Skywalking](https://skywalking.apache.org/)。
+
+## 认证流程
+
 
 ## Skywalking配置
 
-```properties
--javaagent:C:\skywalking-java\skywalking-agent\skywalking-agent.jar
--Dskywalking.agent.keep_tracing=true
--Dskywalking.agent.service_name=dubbo-service-auth
--Dskywalking.collector.backend_service=localhost:11800
-```
-## Remote Debug配置监听
-
-```properties
--agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=6666
-```
+[Skywalking配置文档](https://github.com/ZhiQinIsZhen/dubbo-springboot3/docment/README.md)
 
 ## 项目结构
 
