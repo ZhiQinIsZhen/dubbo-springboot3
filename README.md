@@ -19,7 +19,7 @@
 
 ## Skywalking配置
 
-[Skywalking配置文档](https://github.com/ZhiQinIsZhen/dubbo-springboot3/docment/README.md)
+[Skywalking配置文档](https://github.com/ZhiQinIsZhen/dubbo-springboot3/tree/main/document/README.md)
 
 ## 项目结构
 
