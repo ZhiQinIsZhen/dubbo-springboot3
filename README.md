@@ -16,6 +16,7 @@
 
 ## 认证流程
 
+![认证流程](https://github.com/ZhiQinIsZhen/dubbo-springboot3/tree/main/document/认证过程.jpg)
 
 ## Skywalking配置
 
