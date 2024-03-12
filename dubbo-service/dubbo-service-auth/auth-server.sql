@@ -16,7 +16,7 @@ CREATE TABLE `auth_source`  (
 -- ----------------------------
 -- Records of auth_application
 -- ----------------------------
-INSERT INTO `auth_application` VALUES
+INSERT INTO `auth_source` VALUES
 (1, 'dubbo-api-admin', 'staff', -1, -1, now(), now(), 0, 0),
 (2, 'dubbo-api-user', 'user', -1, -1, now(), now(), 0, 0);
 
@@ -39,7 +39,7 @@ CREATE TABLE `auth_jwt1` (
     UNIQUE KEY `uniq_client_id` (`client_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='认证服务jwt信息配置表';
 
-INSERT INTO `auth`.`auth_jwt` VALUES
+INSERT INTO `auth`.`auth_jwt1` VALUES
 (1, 'dubbo-api-admin', 'Bearer ', 'Bonnie', 604800, 'HS512', 0, 1, -1, -1, now(), now(), 0, 0),
 (2, 'dubbo-api-user', 'Bearer ', 'Bonnie', 604800, 'HS512', 0, 1, -1, -1, now(), now(), 0, 0),
 (3, 'dubbo-service-auth', 'Bearer ', 'Bonnie', 604800, 'HS512', 0, 1, -1, -1, now(), now(), 0, 0);
