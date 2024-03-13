@@ -54,6 +54,7 @@ logging:
 #    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5level) %clr(${PID:-}){magenta} %clr([%t]){faint} %clr([%F:%L]){cyan} %clr(:){faint} %m%n%throwable'
   level:
     com.liyz.boot3.service.auth.dao: debug
+    org.apache.dubbo.spring.security.jackson.ObjectMapperCodec: error
 # dubbo
 dubbo:
   application:

@@ -27,10 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -84,7 +81,7 @@ public class AuthenticationController {
 
     @ApiOperationSupport(order = 3)
     @Operation(summary = "登出", tags = "1000")
-    @PostMapping("/logout")
+    @GetMapping(value = "/logout")
     public Result<Boolean> logout() {
         return Result.success(AuthContext.AuthService.logout());
     }
