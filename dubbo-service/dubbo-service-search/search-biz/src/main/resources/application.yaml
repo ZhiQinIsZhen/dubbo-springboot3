@@ -27,9 +27,16 @@ spring:
     pool:
       max-conn-total: 100
       max-conn-per-route: 20
+  data:
+    mongodb:
+      uri: mongodb://liyz:liyz@127.0.0.1:27018/liyz?authSource=admin
+      driver:
+        log-wire: true
 # log
 logging:
   pattern:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: debug
 #    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5level) %clr(${PID:-}){magenta} %clr([%t]){faint} %clr([%F:%L]){cyan} %clr(:){faint} %m%n%throwable'
 # dubbo
 dubbo:
