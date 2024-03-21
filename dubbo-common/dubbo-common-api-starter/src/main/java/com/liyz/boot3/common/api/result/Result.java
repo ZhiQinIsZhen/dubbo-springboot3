@@ -20,6 +20,10 @@ import lombok.Setter;
 @JsonPropertyOrder({"code", "message", "data"})
 public class Result<T> {
 
+    public Result() {
+        this((T) null);
+    }
+
     public Result(String code, String message) {
         this.code = code;
         this.message = message;
