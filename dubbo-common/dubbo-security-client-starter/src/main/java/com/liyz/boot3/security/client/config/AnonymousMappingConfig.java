@@ -101,6 +101,6 @@ public class AnonymousMappingConfig implements ApplicationContextAware, Initiali
                 }
             }));
         }
-        log.info("Anonymous mappings : {}", JsonMapperUtil.toJSONString(anonymousMappings));
+        log.warn("Anonymous mappings : {}", JsonMapperUtil.toJSONString(anonymousMappings));
     }
 }

@@ -19,12 +19,16 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpCookie;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.util.UriUtils;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Set;
 
@@ -66,32 +70,40 @@ public class GlobalJWTFilter implements GlobalFilter, Ordered {
      */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        ServerHttpResponse resp = exchange.getResponse();
+        ServerHttpRequest request = exchange.getRequest();
+        ServerHttpResponse response = exchange.getResponse();
         Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
         if (route == null) {
-            return ResponseUtil.response(resp, AuthExceptionCodeEnum.NOT_FOUND);
+            return ResponseUtil.response(response, AuthExceptionCodeEnum.NOT_FOUND);
         }
-        String path = exchange.getRequest().getURI().getPath();
+        String path = request.getURI().getPath();
         String clientId = route.getId();
         Set<String> mappingSet = properties.getServer().get(clientId);
         if (!CollectionUtils.isEmpty(mappingSet) && (mappingSet.contains(path) || PatternUtil.pathMatch(path, mappingSet))) {
             return chain.filter(exchange);
         }
-        String jwt = exchange.getRequest().getHeaders().getFirst(GatewayConstant.AUTHORIZATION);
+        String jwt = Objects.requireNonNullElse(request.getCookies()
+                .getFirst(GatewayConstant.AUTHORIZATION), new HttpCookie(GatewayConstant.AUTHORIZATION, null))
+                .getValue();
         if (StringUtils.isBlank(jwt)) {
-            return ResponseUtil.response(resp, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
+            jwt = request.getHeaders().getFirst(GatewayConstant.AUTHORIZATION);
+        } else {
+            jwt = UriUtils.decode(jwt, StandardCharsets.UTF_8);
+        }
+        if (StringUtils.isBlank(jwt)) {
+            return ResponseUtil.response(response, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
         try {
             AuthUserBO authUserBO = remoteJwtParseService.parseToken(jwt, clientId);
             if (Objects.isNull(authUserBO)) {
-                return ResponseUtil.response(resp, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
+                return ResponseUtil.response(response, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
             }
             exchange.getAttributes().put(GatewayConstant.AUTH_ID, authUserBO.getAuthId());
         } catch (RemoteServiceException e) {
-            return ResponseUtil.response(resp, e.getCode(), e.getMessage());
+            return ResponseUtil.response(response, e.getCode(), e.getMessage());
         } catch (Exception e) {
             log.error("parse token error", e);
-            return ResponseUtil.response(resp, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
+            return ResponseUtil.response(response, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
         return chain.filter(exchange);
     }

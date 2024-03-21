@@ -2,6 +2,7 @@ package com.liyz.boot3.security.client.filter;
 
 import com.google.common.base.Charsets;
 import com.liyz.boot3.common.api.result.Result;
+import com.liyz.boot3.common.api.util.CookieUtil;
 import com.liyz.boot3.common.remote.exception.RemoteServiceException;
 import com.liyz.boot3.common.util.JsonMapperUtil;
 import com.liyz.boot3.security.client.config.AnonymousMappingConfig;
@@ -19,9 +20,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.UriUtils;
 
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Desc:
@@ -41,7 +44,12 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = request.getHeader(this.tokenHeaderKey);
+        String token = CookieUtil.getCookie(this.tokenHeaderKey);
+        if (StringUtils.isBlank(token)) {
+            token = request.getHeader(this.tokenHeaderKey);
+        } else {
+            token = UriUtils.decode(token, StandardCharsets.UTF_8);
+        }
         try {
             if (!AnonymousMappingConfig.pathMatch(request.getServletPath()) && StringUtils.isNotBlank(token)) {
                 token = URLDecoder.decode(token, String.valueOf(Charsets.UTF_8));
