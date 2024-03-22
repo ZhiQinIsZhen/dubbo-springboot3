@@ -57,14 +57,20 @@ public class RemoteJwtParseServiceImpl implements RemoteJwtParseService {
     public AuthUserBO parseToken(String token, String clientId) {
         AuthJwtDO authJwtDO = authJwtService.getByClientId(clientId);
         if (Objects.isNull(authJwtDO)) {
-            log.warn("解析token失败, 没有找到该应用下jwt配置信息，clientId：{}", clientId);
+            log.error("解析token失败, 没有找到该应用下jwt配置信息，clientId：{}", clientId);
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
         if (StringUtils.isBlank(token) || !token.startsWith(authJwtDO.getJwtPrefix())) {
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
         final String authToken = token.substring(authJwtDO.getJwtPrefix().length()).trim();
-        Claims unSignClaims = parseClaimsJws(authToken);
+        Claims unSignClaims;
+        try {
+            unSignClaims = this.parseClaimsJws(authToken);
+        } catch (Exception e) {
+            log.error("解析token失败,method:com.liyz.boot3.service.auth.provider.RemoteJwtParseServiceImpl.parseClaimsJws(java.lang.String)");
+            throw new RemoteAuthServiceException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
+        }
         AuthUserBO authUser = remoteAuthService.loadByUsername(Joiner.on(CommonServiceConstant.DEFAULT_JOINER)
                 .join(clientId, unSignClaims.getSubject()), Device.getByType(unSignClaims.get(CLAIM_DEVICE, Integer.class)));
         if (Objects.isNull(authUser)) {
@@ -104,12 +110,12 @@ public class RemoteJwtParseServiceImpl implements RemoteJwtParseService {
     @Override
     public String generateToken(AuthUserBO authUser) {
         if (StringUtils.isBlank(authUser.getClientId())) {
-            log.warn("创建token失败，原因 : clientId is blank");
+            log.error("创建token失败，原因 : clientId is blank");
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.LOGIN_ERROR);
         }
         AuthJwtDO authJwtDO = authJwtService.getByClientId(authUser.getClientId());
         if (Objects.isNull(authJwtDO)) {
-            log.warn("生成token失败, 没有找到该应用下jwt配置信息，clientId : {}", authUser.getClientId());
+            log.error("生成token失败, 没有找到该应用下jwt配置信息，clientId : {}", authUser.getClientId());
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.LOGIN_ERROR);
         }
         return JwtUtil.builder()
