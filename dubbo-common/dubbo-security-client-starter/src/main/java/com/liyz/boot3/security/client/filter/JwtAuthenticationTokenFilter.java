@@ -6,11 +6,13 @@ import com.liyz.boot3.common.api.util.CookieUtil;
 import com.liyz.boot3.common.remote.exception.RemoteServiceException;
 import com.liyz.boot3.common.util.JsonMapperUtil;
 import com.liyz.boot3.security.client.config.AnonymousMappingConfig;
+import com.liyz.boot3.security.client.constant.SecurityClientConstant;
 import com.liyz.boot3.security.client.context.AuthContext;
 import com.liyz.boot3.security.client.user.AuthUserDetails;
 import com.liyz.boot3.service.auth.bo.AuthUserBO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ import org.springframework.web.util.UriUtils;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * Desc:
@@ -44,12 +47,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = CookieUtil.getCookie(this.tokenHeaderKey);
-        if (StringUtils.isBlank(token)) {
-            token = request.getHeader(this.tokenHeaderKey);
-        } else {
-            token = UriUtils.decode(token, StandardCharsets.UTF_8);
-        }
+        Cookie cookie = CookieUtil.getCookie(this.tokenHeaderKey);
+        //UriUtils、URLDecoder、URLEncoder
+        String token = Objects.isNull(cookie) ? request.getHeader(this.tokenHeaderKey) : UriUtils.decode(cookie.getValue(), StandardCharsets.UTF_8);
         try {
             if (!AnonymousMappingConfig.pathMatch(request.getServletPath()) && StringUtils.isNotBlank(token)) {
                 token = URLDecoder.decode(token, String.valueOf(Charsets.UTF_8));
@@ -63,6 +63,21 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 AuthContext.setAuthUser(authUser);
+            }
+            //todo cookie续期
+            String start;
+            if (Objects.nonNull(cookie)
+                    /*&& StringUtils.isNotBlank(start = cookie.getAttribute("start"))
+                    && NumberUtil.isLong(start)
+                    && DateUtil.currentDate().getTime() - NumberUtil.binaryToLong(start) <= 900000*/
+            ) {
+                CookieUtil.addCookie(
+                        response,
+                        SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY,
+                        token,
+                        30 * 60,
+                        null
+                );
             }
             //处理下一个过滤器
             filterChain.doFilter(request, response);

@@ -25,6 +25,8 @@ spring:
         url: http://127.0.0.1:7060
   messages:
     basename: i18n.message
+  session:
+    timeout: 1800s
 #server
 server:
   port: 7072

@@ -8,12 +8,15 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.liyz.boot3.common.api.advice.GlobalControllerExceptionAdvice;
 import com.liyz.boot3.common.api.error.ErrorApiController;
+import com.liyz.boot3.common.api.util.CookieUtil;
 import com.liyz.boot3.common.api.util.I18nMessageUtil;
 import com.liyz.boot3.common.util.DateUtil;
 import com.liyz.boot3.common.util.deserializer.TrimDeserializer;
 import com.liyz.boot3.common.util.serializer.DesensitizationSerializer;
 import com.liyz.boot3.common.util.serializer.DoubleSerializer;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.boot.autoconfigure.session.SessionProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -53,9 +56,11 @@ import java.util.TimeZone;
  * @date 2023/12/18 9:45
  */
 @Configuration
-@EnableConfigurationProperties({ServerProperties.class})
+@EnableConfigurationProperties({ServerProperties.class, SessionProperties.class})
 @AutoConfigureOrder(value = Ordered.HIGHEST_PRECEDENCE)
-public class WebMvcAutoConfig implements WebMvcConfigurer {
+public class WebMvcAutoConfig implements WebMvcConfigurer, InitializingBean {
+
+
 
     @Bean
     public GlobalControllerExceptionAdvice globalControllerExceptionAdvice() {
@@ -131,5 +136,10 @@ public class WebMvcAutoConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LocaleChangeInterceptor());
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        //do nothing
     }
 }

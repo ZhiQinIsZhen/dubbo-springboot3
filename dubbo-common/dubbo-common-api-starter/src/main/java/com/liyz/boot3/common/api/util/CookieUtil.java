@@ -1,5 +1,6 @@
 package com.liyz.boot3.common.api.util;
 
+import com.liyz.boot3.common.util.DateUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -9,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.util.UriUtils;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * Desc:
@@ -27,14 +29,36 @@ public class CookieUtil {
      * @param cookieName cookie
      * @return 值
      */
-    public static String getCookie(HttpServletRequest request, String cookieName) {
+    public static String getCookieValue(HttpServletRequest request, String cookieName) {
+        Cookie cookie = getCookie(request, cookieName);
+        return Objects.isNull(cookie) ? null : cookie.getValue();
+    }
+
+    /**
+     * 获得指定cookie中的值
+     *
+     * @param cookieName cookie
+     * @return 值
+     */
+    public static String getCookieValue(String cookieName) {
+        return getCookieValue(HttpServletContext.getRequest(), cookieName);
+    }
+
+    /**
+     * 获得指定cookie中的值
+     *
+     * @param request http request
+     * @param cookieName cookie
+     * @return 值
+     */
+    public static Cookie getCookie(HttpServletRequest request, String cookieName) {
         Cookie[] cookies = request.getCookies();
-        if (cookies == null || cookies.length == 0) {
+        if (cookies == null) {
             return null;
         }
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals(cookieName)) {
-                return cookie.getValue();
+                return cookie;
             }
         }
         return null;
@@ -46,7 +70,7 @@ public class CookieUtil {
      * @param cookieName cookie
      * @return 值
      */
-    public static String getCookie(String cookieName) {
+    public static Cookie getCookie(String cookieName) {
         return getCookie(HttpServletContext.getRequest(), cookieName);
     }
 
@@ -68,6 +92,7 @@ public class CookieUtil {
         if (StringUtils.isNotBlank(domain)) {
             cookie.setDomain(domain);
         }
+        cookie.setAttribute("start", String.valueOf(DateUtil.currentDate().getTime()));
         response.addCookie(cookie);
     }
 
@@ -81,6 +106,25 @@ public class CookieUtil {
      */
     public static void addCookie(String cookieName, String value, int time, String domain) {
         addCookie(HttpServletContext.getResponse(), cookieName, value, time, domain);
+    }
+
+    /**
+     * 添加一个cookie
+     *
+     * @param response http response
+     * @param cookie cookie
+     */
+    public static void addCookie(HttpServletResponse response, Cookie cookie) {
+        response.addCookie(cookie);
+    }
+
+    /**
+     * 添加一个cookie
+     *
+     * @param cookie cookie
+     */
+    public static void addCookie(Cookie cookie) {
+        addCookie(HttpServletContext.getResponse(), cookie);
     }
 
     /**
