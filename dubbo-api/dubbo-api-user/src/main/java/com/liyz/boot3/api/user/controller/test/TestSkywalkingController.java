@@ -1,5 +1,6 @@
 package com.liyz.boot3.api.user.controller.test;
 
+import cn.hutool.extra.pinyin.PinyinUtil;
 import com.liyz.boot3.api.user.dto.test.TestDTO;
 import com.liyz.boot3.api.user.vo.test.TestVO;
 import com.liyz.boot3.common.api.result.Result;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Duration;
@@ -46,5 +48,11 @@ public class TestSkywalkingController {
         Thread.sleep(Duration.of(5, ChronoUnit.SECONDS));
         log.info("traceId : {}", TraceIdUtil.getTraceId());
         return Result.success(TraceIdUtil.getTraceId());
+    }
+
+    @Operation(summary = "你好2")
+    @GetMapping("/hello2")
+    public Result<Boolean> hello2(@RequestParam("str") String str) {
+        return Result.success(str.chars().anyMatch(c -> PinyinUtil.isChinese((char) c)));
     }
 }

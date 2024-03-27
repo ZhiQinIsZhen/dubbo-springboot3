@@ -23,8 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/test/version")
 public class TestVersionController {
 
+    private static final String HEADER_KEY_PREFIX = "I-VERSION=";
+    private static final String I_VERSION_1 = "1";
+
     @Operation(summary = "版本1")
-    @GetMapping(value = "/getTest", headers = "i-version=1")
+    @GetMapping(value = "/getTest", headers = HEADER_KEY_PREFIX + I_VERSION_1)
     public Result<Boolean> v1() {
         log.info("{}", "v1");
         return Result.success(Boolean.TRUE);

@@ -32,9 +32,10 @@ public class GlobalAuthIdHeaderFilter extends AddRequestHeaderGatewayFilterFacto
             public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
                 Long authId = exchange.getAttribute(GatewayConstant.AUTH_ID);
                 String value = authId == null ? config.getValue() : authId.toString();
-                ServerHttpRequest request = exchange.getRequest().mutate()
+                ServerHttpRequest request = exchange
+                        .getRequest()
+                        .mutate()
                         .headers(httpHeaders -> httpHeaders.add(config.getName(), value)).build();
-
                 return chain.filter(exchange.mutate().request(request).build());
             }
 

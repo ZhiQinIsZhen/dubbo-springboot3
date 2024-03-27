@@ -13,7 +13,7 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <springboot.version>3.2.3</springboot.version>
+        <springboot.version>3.2.4</springboot.version>
         <hutool.version>5.8.26</hutool.version>
         <google.guava.version>33.0.0-jre</google.guava.version>
         <knife4j.version>4.5.0</knife4j.version>
