@@ -6,6 +6,7 @@ import com.liyz.boot3.service.auth.dao.AuthSourceMapper;
 import com.liyz.boot3.service.auth.model.AuthSourceDO;
 import com.liyz.boot3.service.auth.service.AuthSourceService;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,7 +26,11 @@ public class AuthSourceServiceImpl extends ServiceImpl<AuthSourceMapper, AuthSou
      * @return 资源配置信息
      */
     @Override
-    @Cacheable(cacheManager = "caffeineCacheManager", cacheNames = {"bug"}, key = "'authSource:clientId:' + #p0", unless = "#result == null")
+    @Caching(cacheable = {
+            @Cacheable(cacheManager = "caffeineCacheManager", cacheNames = {"bug"}, key = "'authSource:clientId:' + #p0",
+                    unless = "#result == null"),
+            @Cacheable(cacheNames = {"bug"}, key = "'authSource:clientId:' + #p0", unless = "#result == null")
+    })
     public AuthSourceDO getByClientId(String clientId) {
         return getOne(Wrappers.lambdaQuery(AuthSourceDO.class)
                 .select(AuthSourceDO::getClientId, AuthSourceDO::getClientTag)

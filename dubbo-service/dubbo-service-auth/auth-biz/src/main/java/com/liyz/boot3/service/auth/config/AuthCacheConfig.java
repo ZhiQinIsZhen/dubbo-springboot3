@@ -76,7 +76,7 @@ public class AuthCacheConfig {
     }
 
     @Bean("caffeineCacheManager")
-    CaffeineCacheManager caffeineCacheManager(CacheProperties cacheProperties) {
+    public CaffeineCacheManager caffeineCacheManager(CacheProperties cacheProperties) {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
         cacheManager.setCacheNames(cacheProperties.getCacheNames());
         Caffeine<Object, Object> caffeine = Caffeine
