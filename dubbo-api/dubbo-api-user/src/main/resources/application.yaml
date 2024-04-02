@@ -8,6 +8,8 @@ spring:
   threads:
     virtual:
       enabled: true
+  lifecycle:
+    timeout-per-shutdown-phase: 60s
   data:
     # redis
     redis:
@@ -27,6 +29,20 @@ spring:
     basename: i18n.message
   session:
     timeout: 1800s
+  kafka:
+    bootstrap-servers: 127.0.01:9092
+    producer:
+      acks: all
+      retries: 3
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      batch-size: 1024
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: *application_name
+      max-poll-records: 100
+      auto-offset-reset: earliest
 #server
 server:
   port: 7072
@@ -66,6 +82,12 @@ dubbo:
     address: nacos://localhost:8848?namespace=liyz
   metadata-report:
     address: nacos://localhost:8848?namespace=liyz
+# rocket mq
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: *application_name
+    enable-msg-trace: true
 # springdoc
 springdoc:
   default-flat-param-object: true

@@ -67,5 +67,31 @@ public class TestThreadController {
         return Result.success(Boolean.TRUE);
     }
 
+    @ApiOperationSupport(order = 3)
+    @Operation(summary = "优雅停机")
+    @GetMapping("/graceful")
+    public Result<Boolean> graceful() {
+        log.info("开始测试");
+        try {
+            Thread.sleep(80000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        log.info("测试结束");
+        return Result.success(Boolean.TRUE);
+    }
 
+    @ApiOperationSupport(order = 4)
+    @Operation(summary = "优雅停机1")
+    @GetMapping("/graceful1")
+    public Result<Boolean> graceful1() {
+        log.info("开始测试");
+        try {
+            Thread.sleep(40000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        log.info("测试结束");
+        return Result.success(Boolean.TRUE);
+    }
 }
