@@ -59,6 +59,8 @@ server:
 # log
 logging:
   pattern:
+  file:
+    path: C:\srv\logs\${spring.application.name}
 #    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5level) %clr(${PID:-}){magenta} %clr([%t]){faint} %clr([%F:%L]){cyan} %clr(:){faint} %m%n%throwable'
 # dubbo
 dubbo:
@@ -146,3 +148,8 @@ management:
   endpoint:
     health:
       show-details: always
+# ssc
+ssc:
+  base-url: https://openapi.sscha.com
+  auth-header: Authorization
+  auth-value: 736fe7a1-6bc4-4663-b1f3-fc99aa1af2b0

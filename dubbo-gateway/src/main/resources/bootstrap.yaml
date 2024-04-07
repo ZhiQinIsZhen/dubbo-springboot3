@@ -160,3 +160,6 @@ non:
       server:
         dubbo-api-user:
           - /user/test/**
+logging:
+  file:
+    path: C:\srv\logs\${spring.application.name}
