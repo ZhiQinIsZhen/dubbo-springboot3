@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/test/mq")
 public class TestMqController implements ApplicationListener<ContextRefreshedEvent> {
 
-    @Resource
+    /*@Resource
     private KafkaTemplate<String, String> kafkaTemplate;
 
     @Operation(summary = "kafka发送消息")
@@ -45,7 +45,7 @@ public class TestMqController implements ApplicationListener<ContextRefreshedEve
     @KafkaListener(topics = {"nc-beta"})
     public void consumerKafka(ConsumerRecord<String, String> record) {
         log.info("topic:{}, partition:{}, msg:{}", record.topic(), record.partition(), record.value());
-    }
+    }*/
 
     @Resource
     private RocketMQTemplate rocketMQTemplate;

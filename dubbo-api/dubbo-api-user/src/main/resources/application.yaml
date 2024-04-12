@@ -60,7 +60,7 @@ server:
 logging:
   pattern:
   file:
-    path: C:\srv\logs\${spring.application.name}
+    path: \srv\logs\${spring.application.name}\${spring.application.name}.log
 #    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5level) %clr(${PID:-}){magenta} %clr([%t]){faint} %clr([%F:%L]){cyan} %clr(:){faint} %m%n%throwable'
 # dubbo
 dubbo:

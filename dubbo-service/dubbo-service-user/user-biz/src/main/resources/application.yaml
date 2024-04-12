@@ -14,7 +14,7 @@ spring:
     virtual:
       enabled: true
   lifecycle:
-    timeout-per-shutdown-phase: 60s
+    timeout-per-shutdown-phase: 180s
 # datasource
   datasource:
     url: jdbc:mysql://localhost:3306/user3?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
@@ -61,7 +61,7 @@ logging:
   level:
     com.liyz.boot3.service.user.dao: debug
   file:
-    path: C:\srv\logs\${spring.application.name}
+    path: \srv\logs\${spring.application.name}\${spring.application.name}.log
 # dubbo
 dubbo:
   application:

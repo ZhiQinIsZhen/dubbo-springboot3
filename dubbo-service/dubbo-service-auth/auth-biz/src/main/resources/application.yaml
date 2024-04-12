@@ -58,7 +58,7 @@ logging:
     com.liyz.boot3.service.auth.dao: debug
     org.apache.dubbo.spring.security.jackson.ObjectMapperCodec: error
   file:
-    path: C:\srv\logs\${spring.application.name}
+    path: \srv\logs\${spring.application.name}\${spring.application.name}.log
 # dubbo
 dubbo:
   application:

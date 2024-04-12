@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 
 import javax.annotation.Resource;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,11 +41,21 @@ public class RemoteUserLoginLogServiceImpl implements RemoteUserLoginLogService 
      */
     @Override
     public RemotePage<UserLoginLogBO> page(Long userId, PageBO pageBO) {
+        try {
+            log.warn("test shutdown graceful start ...");
+            Thread.sleep(Duration.ofSeconds(90));
+            log.warn("test shutdown graceful end ...");
+        } catch (Exception ignored) {
+            log.warn("test shutdown graceful exception ...");
+        }
+        log.warn("test shutdown graceful end ...");
         Page<UserLoginLogDO> page = userLoginLogService.page(
                 Page.of(pageBO.getPageNum(), pageBO.getPageSize()),
                 Wrappers.lambdaQuery(UserLoginLogDO.class)
-                        .select(UserLoginLogDO::getUserId)
+                        .select(UserLoginLogDO::getUserId, UserLoginLogDO::getLoginType, UserLoginLogDO::getDevice,
+                                UserLoginLogDO::getLoginTime, UserLoginLogDO::getIp)
                         .eq(UserLoginLogDO::getUserId, userId)
+                        .orderByDesc(UserLoginLogDO::getLoginTime)
         );
         return RemotePage.of(BeanUtil.copyList(page.getRecords(), UserLoginLogBO::new), page.getTotal(), pageBO.getPageNum(), pageBO.getPageSize());
     }

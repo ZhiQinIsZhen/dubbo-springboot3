@@ -6,7 +6,7 @@
 ![Gateway Version](https://img.shields.io/badge/Gateway-4.3.0-brightgreen)
 ![jjwt Version](https://img.shields.io/badge/jjwt-0.12.5-brightgreen)
 ![Dubbo Version](https://img.shields.io/badge/Dubbo-3.3.0(beta2)-brightgreen)
-![Mybatis-plus Version](https://img.shields.io/badge/MybatisPlus-3.5.5-brightgreen)
+![Mybatis-plus Version](https://img.shields.io/badge/MybatisPlus-3.5.6-brightgreen)
 ![Swagger Version](https://img.shields.io/badge/knife4j-4.4.0-brightgreen)
 ![Elasticjob Version](https://img.shields.io/badge/elasticjob-3.0.4-brightgreen)
 
