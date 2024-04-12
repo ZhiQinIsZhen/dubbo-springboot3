@@ -61,7 +61,7 @@ logging:
   level:
     com.liyz.boot3.service.user.dao: debug
   file:
-    path: \srv\logs\${spring.application.name}\${spring.application.name}.log
+    name: '\srv\logs\${spring.application.name}\${spring.application.name}.log'
 # dubbo
 dubbo:
   application:

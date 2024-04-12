@@ -162,4 +162,4 @@ non:
           - /user/test/**
 logging:
   file:
-    path: \srv\logs\${spring.application.name}\${spring.application.name}.log
+    name: '\srv\logs\${spring.application.name}\${spring.application.name}.log'
