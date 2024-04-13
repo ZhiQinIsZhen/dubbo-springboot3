@@ -8,7 +8,6 @@ import com.liyz.boot3.api.user.dto.authen.UserRegisterDTO;
 import com.liyz.boot3.api.user.event.guava.LoginEvent;
 import com.liyz.boot3.api.user.vo.authen.AuthLoginVO;
 import com.liyz.boot3.common.api.result.Result;
-import com.liyz.boot3.common.api.util.CookieUtil;
 import com.liyz.boot3.common.api.util.HttpServletContext;
 import com.liyz.boot3.common.service.util.BeanUtil;
 import com.liyz.boot3.security.client.annotation.Anonymous;
@@ -72,13 +71,6 @@ public class AuthenticationController {
         AuthLoginVO authLoginVO = new AuthLoginVO();
         authLoginVO.setToken(authUserBO.getToken());
         authLoginVO.setExpiration(AuthContext.JwtService.getExpiration(authUserBO.getToken()));
-        CookieUtil.addCookie(
-                response,
-                SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY,
-                "Bearer " + authUserBO.getToken(),
-                30 * 60,
-                null
-                );
         if (StringUtils.isNotBlank(loginDTO.getRedirect())) {
             response.setHeader(SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY, authLoginVO.getToken());
             response.sendRedirect(loginDTO.getRedirect());
@@ -91,7 +83,6 @@ public class AuthenticationController {
     @Operation(summary = "登出", tags = "1000")
     @GetMapping(value = "/logout")
     public Result<Boolean> logout() {
-        CookieUtil.removeCookie(SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY);
         return Result.success(AuthContext.AuthService.logout());
     }
 }

@@ -1,6 +1,7 @@
 package com.liyz.boot3.security.client.context;
 
 import com.google.common.base.Joiner;
+import com.liyz.boot3.common.api.util.CookieUtil;
 import com.liyz.boot3.common.api.util.HttpServletContext;
 import com.liyz.boot3.common.service.constant.CommonServiceConstant;
 import com.liyz.boot3.common.service.util.BeanUtil;
@@ -114,12 +115,19 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
                             .device(authUserLoginBO.getDevice())
                             .ip(authUserLoginBO.getIp())
                             .build());
-            return BeanUtil.copyProperties(authUserDetails.getAuthUser(), AuthUserBO::new, (s, t) -> {
+            AuthUserBO authUserBO = BeanUtil.copyProperties(authUserDetails.getAuthUser(), AuthUserBO::new, (s, t) -> {
                 t.setPassword(null);
                 t.setSalt(null);
                 s.setCheckTime(checkTime);
                 t.setToken(JwtService.generateToken(s));
             });
+            CookieUtil.addCookie(
+                    SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY,
+                    "Bearer " + authUserBO.getToken(),
+                    30 * 60,
+                    null
+            );
+            return authUserBO;
         }
 
         /**
@@ -148,6 +156,7 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
                 t.setDevice(s.getDevice());
                 t.setIp(HttpServletContext.getIpAddress());
             });
+            CookieUtil.removeCookie(SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY);
             return remoteAuthService.logout(authUserLogoutBO);
         }
     }
