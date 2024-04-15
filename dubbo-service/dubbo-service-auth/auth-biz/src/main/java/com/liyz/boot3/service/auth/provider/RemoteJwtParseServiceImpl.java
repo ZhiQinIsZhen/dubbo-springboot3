@@ -22,6 +22,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.dubbo.config.annotation.DubboService;
 
 import javax.annotation.Resource;
@@ -108,7 +109,7 @@ public class RemoteJwtParseServiceImpl implements RemoteJwtParseService {
      * @return jwt token
      */
     @Override
-    public String generateToken(AuthUserBO authUser) {
+    public Pair<String, String> generateToken(AuthUserBO authUser) {
         if (StringUtils.isBlank(authUser.getClientId())) {
             log.error("创建token失败，原因 : clientId is blank");
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.LOGIN_ERROR);
@@ -118,18 +119,19 @@ public class RemoteJwtParseServiceImpl implements RemoteJwtParseService {
             log.error("生成token失败, 没有找到该应用下jwt配置信息，clientId : {}", authUser.getClientId());
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.LOGIN_ERROR);
         }
-        return JwtUtil.builder()
-                .id(authUser.getAuthId().toString())
-                .subject(authUser.getUsername())
-                .audience().add(authUser.getClientId()).and()
-                .expiration(new Date(System.currentTimeMillis() + authJwtDO.getExpiration() * 1000))
-                .notBefore(authUser.getCheckTime())
-                .claim(CLAIM_DEVICE, authUser.getDevice().getType())
-                .signWith(
-                        SignatureAlgorithm.forName(authJwtDO.getSignatureAlgorithm()),
-                        Keys.hmacShaKeyFor(Decoders.BASE64.decode(Joiner.on(CommonServiceConstant.DEFAULT_PADDING).join(authJwtDO.getSigningKey(), authUser.getSalt())))
-                )
-                .compact();
+        return Pair.ofNonNull(authJwtDO.getJwtPrefix(),
+                JwtUtil.builder()
+                        .id(authUser.getAuthId().toString())
+                        .subject(authUser.getUsername())
+                        .audience().add(authUser.getClientId()).and()
+                        .expiration(new Date(System.currentTimeMillis() + authJwtDO.getExpiration() * 1000))
+                        .notBefore(authUser.getCheckTime())
+                        .claim(CLAIM_DEVICE, authUser.getDevice().getType())
+                        .signWith(
+                                SignatureAlgorithm.forName(authJwtDO.getSignatureAlgorithm()),
+                                Keys.hmacShaKeyFor(Decoders.BASE64.decode(Joiner.on(CommonServiceConstant.DEFAULT_PADDING).join(authJwtDO.getSigningKey(), authUser.getSalt())))
+                        )
+                        .compact());
     }
 
     /**

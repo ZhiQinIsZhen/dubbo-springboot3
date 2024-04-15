@@ -1,6 +1,7 @@
 package com.liyz.boot3.service.auth.remote;
 
 import com.liyz.boot3.service.auth.bo.AuthUserBO;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Desc:JWT parse service
@@ -26,7 +27,7 @@ public interface RemoteJwtParseService {
      * @param authUser 用户信息
      * @return jwt token
      */
-    String generateToken(final AuthUserBO authUser);
+    Pair<String, String> generateToken(final AuthUserBO authUser);
 
     /**
      * 获取失效时间

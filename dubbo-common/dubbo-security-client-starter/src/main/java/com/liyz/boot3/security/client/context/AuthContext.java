@@ -16,6 +16,7 @@ import com.liyz.boot3.service.auth.enums.Device;
 import com.liyz.boot3.service.auth.enums.LoginType;
 import com.liyz.boot3.service.auth.remote.RemoteAuthService;
 import com.liyz.boot3.service.auth.remote.RemoteJwtParseService;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -115,15 +116,16 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
                             .device(authUserLoginBO.getDevice())
                             .ip(authUserLoginBO.getIp())
                             .build());
+            Pair<String, String> pair = JwtService.generateToken(authUserDetails.getAuthUser());
             AuthUserBO authUserBO = BeanUtil.copyProperties(authUserDetails.getAuthUser(), AuthUserBO::new, (s, t) -> {
                 t.setPassword(null);
                 t.setSalt(null);
                 s.setCheckTime(checkTime);
-                t.setToken(JwtService.generateToken(s));
+                t.setToken(pair.getRight());
             });
             CookieUtil.addCookie(
                     SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY,
-                    "Bearer " + authUserBO.getToken(),
+                    pair.getLeft() + authUserBO.getToken(),
                     30 * 60,
                     null
             );
@@ -182,7 +184,7 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
          * @param authUser 认证用户信息
          * @return jwt
          */
-        public static String generateToken(final AuthUserBO authUser) {
+        public static Pair<String, String> generateToken(final AuthUserBO authUser) {
             authUser.setClientId(clientId);
             return remoteJwtParseService.generateToken(authUser);
         }
