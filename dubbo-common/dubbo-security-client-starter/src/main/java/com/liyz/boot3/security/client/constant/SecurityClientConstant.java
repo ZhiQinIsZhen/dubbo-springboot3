@@ -1,5 +1,7 @@
 package com.liyz.boot3.security.client.constant;
 
+import org.springframework.http.HttpHeaders;
+
 /**
  * Desc:
  *
@@ -31,7 +33,7 @@ public interface SecurityClientConstant {
 
     String OPTIONS_PATTERNS = "/**";
 
-    String DEFAULT_TOKEN_HEADER_KEY = "Authorization";
+    String DEFAULT_TOKEN_HEADER_KEY = HttpHeaders.AUTHORIZATION;
 
     String DUBBO_APPLICATION_NAME_PROPERTY = "dubbo.application.name";
 

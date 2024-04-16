@@ -64,13 +64,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 AuthContext.setAuthUser(authUser);
             }
-            //todo cookie续期
-            String start;
-            if (Objects.nonNull(cookie)
-                    /*&& StringUtils.isNotBlank(start = cookie.getAttribute("start"))
-                    && NumberUtil.isLong(start)
-                    && DateUtil.currentDate().getTime() - NumberUtil.binaryToLong(start) <= 900000*/
-            ) {
+            //cookie续期
+            if (Objects.nonNull(cookie)) {
                 CookieUtil.addCookie(
                         response,
                         SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY,
