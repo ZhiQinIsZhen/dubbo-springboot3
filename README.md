@@ -1,7 +1,7 @@
 # Dubbo3 Springboot3 Project
 
-[![Build Status](https://img.shields.io/badge/Build-ZhiQinlsZhen-red)](https://github.com/ZhiQinIsZhen/dubbo-springboot3)
-[![License](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/ZhiQinIsZhen/dubbo-springboot3/blob/main/LICENSE)
+[![Build Status](https://img.shields.io/badge/Build-ZhiQinlsZhen-red)](https://github.com/ZhiQinIsZhen)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/ZhiQinIsZhen/auth-netty/blob/main/LICENSE)
 ![Springboot Version](https://img.shields.io/badge/Springboot-3.2.4-brightgreen)
 ![Gateway Version](https://img.shields.io/badge/Gateway-4.3.0-brightgreen)
 ![jjwt Version](https://img.shields.io/badge/jjwt-0.12.5-brightgreen)
