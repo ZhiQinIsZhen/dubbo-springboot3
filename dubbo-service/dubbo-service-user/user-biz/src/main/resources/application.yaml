@@ -86,6 +86,9 @@ dubbo:
     address: nacos://localhost:8848?namespace=liyz
   scan:
     base-packages: com.liyz.boot3.service.user.provider
+#  service:
+#    com.liyz.boot3.service.auth.remote.RemoteAuthService:
+#      tag: user1
 desensitization:
   database:
     enable: true
