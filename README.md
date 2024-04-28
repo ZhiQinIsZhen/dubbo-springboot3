@@ -2,8 +2,8 @@
 
 [![Build Status](https://img.shields.io/badge/Build-ZhiQinlsZhen-red)](https://github.com/ZhiQinIsZhen)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/ZhiQinIsZhen/auth-netty/blob/main/LICENSE)
-![Springboot Version](https://img.shields.io/badge/Springboot-3.2.4-brightgreen)
-![Gateway Version](https://img.shields.io/badge/Gateway-4.3.0-brightgreen)
+![Springboot Version](https://img.shields.io/badge/Springboot-3.2.5-brightgreen)
+![Gateway Version](https://img.shields.io/badge/Gateway-4.1.3-brightgreen)
 ![jjwt Version](https://img.shields.io/badge/jjwt-0.12.5-brightgreen)
 ![Dubbo Version](https://img.shields.io/badge/Dubbo-3.3.0(beta2)-brightgreen)
 ![Mybatis-plus Version](https://img.shields.io/badge/MybatisPlus-3.5.6-brightgreen)
