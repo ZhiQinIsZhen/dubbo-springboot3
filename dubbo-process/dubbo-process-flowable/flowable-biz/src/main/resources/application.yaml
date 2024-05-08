@@ -1,0 +1,92 @@
+server:
+  shutdown: graceful
+  port: 7073
+  error:
+    path: /liyz/error
+# spring
+spring:
+  application:
+    name: &application_name dubbo-process-flowable
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  threads:
+    virtual:
+      enabled: true
+  lifecycle:
+    timeout-per-shutdown-phase: 180s
+# datasource
+  datasource:
+    url: jdbc:mysql://localhost:3306/flowable?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true
+    type: com.zaxxer.hikari.HikariDataSource
+    username: root
+    password: root
+    # hikari
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 5
+      idle-timeout: 30000
+      connection-timeout: 30000
+      max-lifetime: 1800000
+  # cache
+  cache:
+    cache-names: flowable
+    type: redis
+    redis:
+      time-to-live: 300000
+      key-prefix: 'flowable:'
+      cache-null-values: true
+      enable-statistics: true
+      use-key-prefix: true
+  # redis
+  data:
+    redis:
+      database: 0
+      host: 127.0.0.1
+      port: 6379
+# log
+logging:
+  pattern:
+#    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5level) %clr(${PID:-}){magenta} %clr([%t]){faint} %clr([%F:%L]){cyan} %clr(:){faint} %m%n%throwable'
+  level:
+    com.liyz.boot3.process.flowable.dao: debug
+  file:
+    name: '\srv\logs\${spring.application.name}\${spring.application.name}.log'
+# dubbo
+dubbo:
+  application:
+    name: *application_name
+    qos-enable: false
+    serialize-check-status: WARN
+  protocol:
+    port: 20773
+    threads: 200
+  provider:
+    filter: remoteServiceExceptionFilter,-exception
+    version: 1.0.0
+  consumer:
+    version: 1.0.0
+    check: false
+    cluster: failfast
+    timeout: 60000
+  registry:
+    timeout: 5000
+    address: nacos://localhost:8848?namespace=liyz
+  metadata-report:
+    address: nacos://localhost:8848?namespace=liyz
+  scan:
+    base-packages: com.liyz.boot3.process.flowable.provider
+# flowable
+flowable:
+# 只需要第一次开发，初始化成功后这不需要
+  database-schema-update: false
+  async-executor-activate: false
+  rest-api-enabled: true
+  app:
+    enabled: true
+    deploy-resources: true
+    servlet:
+      path: /app-api
+  process:
+    servlet:
+      path: /process-api

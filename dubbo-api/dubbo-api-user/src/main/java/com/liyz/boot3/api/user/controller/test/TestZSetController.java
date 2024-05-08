@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Desc:
@@ -63,5 +65,12 @@ public class TestZSetController {
     public Result<Double> getFirstScore() {
         RScoredSortedSet<Long> sortedSet = redissonClient.getScoredSortedSet(TOC_KEY);
         return Result.success(sortedSet.firstScore());
+    }
+
+    @Operation(summary = "获取所有值")
+    @GetMapping("/getAll")
+    public Result<List<Long>> getAll() {
+        RScoredSortedSet<Long> sortedSet = redissonClient.getScoredSortedSet(TOC_KEY);
+        return Result.success(new ArrayList<>(sortedSet.readAll()));
     }
 }
