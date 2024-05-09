@@ -35,6 +35,21 @@ public class PatternUtil {
     public static final String PASSWORD_STRONG = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$";
 
     /**
+     * html标签
+     */
+    public static final String HTML_REG = "<[^>]*>";
+
+    /**
+     * css标签
+     */
+    public static final String CSS_REG = "<style[^<]*</style>";
+
+    /**
+     * js标签
+     */
+    public static final String JS_REG = "<script[^<]*</script>";
+
+    /**
      * 匹配手机
      *
      * @param mobile 手机号码
