@@ -59,6 +59,7 @@
 
 ## task结构说明
 1. `dubbo-task-elastic`：使用的是基于elastic job为框架
+2. `dubbo-task-xxl`：使用的是基于xxl-job为框架
 
 ## 如需之前版本，请关注tag标签，重新拉取tag代码
 
