@@ -13,8 +13,6 @@ import com.liyz.boot3.service.auth.bo.AuthUserBO;
 import com.liyz.boot3.service.auth.bo.AuthUserLoginBO;
 import com.liyz.boot3.service.auth.bo.AuthUserRegisterBO;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -71,7 +69,6 @@ public class AuthenticationController {
 
     @Operation(summary = "登出")
     @PostMapping("/logout")
-//    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "认证token", required = true, example = "Bearer ")
     public Result<Boolean> logout() {
         return Result.success(AuthContext.AuthService.logout());
     }

@@ -22,6 +22,7 @@
         <redisson.version>3.29.0</redisson.version>
         <io.jwt.version>0.12.5</io.jwt.version>
         <elasticjob.version>3.0.4</elasticjob.version>
+        <xxljob.version>2.4.1</xxljob.version>
         <excel.version>3.3.4</excel.version>
         <springboot.admin.version>3.2.3</springboot.admin.version>
         <rocketmq.version>2.3.0</rocketmq.version>
@@ -113,6 +114,11 @@
                 <groupId>org.apache.shardingsphere.elasticjob</groupId>
                 <artifactId>elasticjob-lite-spring-boot-starter</artifactId>
                 <version>${elasticjob.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xuxueli</groupId>
+                <artifactId>xxl-job-core</artifactId>
+                <version>${xxljob.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.rocketmq</groupId>

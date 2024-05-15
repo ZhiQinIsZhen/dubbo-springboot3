@@ -1,0 +1,26 @@
+server:
+  shutdown: graceful
+  port: 7074
+# spring
+spring:
+  application:
+    name: &application_name dubbo-task-xxl
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  threads:
+    virtual:
+      enabled: true
+# log
+logging:
+  file:
+    name: '\srv\logs\${spring.application.name}\${spring.application.name}.log'
+# xxl-job
+xxl:
+  job:
+    admin-address: http://xxljob.liyz.com/xxl-job-admin
+    app-name: dubbo-task-xxl-executor
+    log-path: '\srv\logs\${spring.application.name}'
+    port: 22882
+    access-token: wls123456
+    log-retention-days: 15
