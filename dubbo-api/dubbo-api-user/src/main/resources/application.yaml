@@ -96,43 +96,14 @@ springdoc:
   api-docs:
     path: /v3/api-docs
     enabled: true
-  group-configs:
-    - group: all
-      display-name: 所有接口
-      paths-to-match:
-        - /**
-      packages-to-scan:
-        - com.liyz.boot3.api.user.controller
-    - group: test
-      display-name: 测试
-      paths-to-match:
-        - /**
-      packages-to-scan:
-        - com.liyz.boot3.api.user.controller.test
-    - group: user
-      display-name: 用户
-      paths-to-match:
-        - /**
-      packages-to-scan:
-        - com.liyz.boot3.api.user.controller.user
-    - group: search
-      display-name: 搜索
-      paths-to-match:
-        - /**
-      packages-to-scan:
-        - com.liyz.boot3.api.user.controller.search
-    - group: authen
-      display-name: 鉴权
-      paths-to-match:
-        - /**
-      packages-to-scan:
-        - com.liyz.boot3.api.user.controller.authen
 # knife4j
 knife4j:
   enable: true
   setting:
     language: zh_cn
     swagger-model-name: 实体类列表
+    footer-custom-content: '<strong>Apache License 2.0 | Copyright ©️ 2021-[杭州至秦科技有限公司](https://github.com/ZhiQinIsZhen)</strong>'
+    enable-footer-custom: true
   basic:
     username: abc
     password: 123
