@@ -13,9 +13,9 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <springboot.version>3.2.5</springboot.version>
+        <springboot.version>3.3.0</springboot.version>
         <hutool.version>5.8.27</hutool.version>
-        <google.guava.version>33.1.0-jre</google.guava.version>
+        <google.guava.version>33.2.0-jre</google.guava.version>
         <knife4j.version>4.5.0</knife4j.version>
         <apache.dubbo.version>3.3.0-beta.2</apache.dubbo.version>
         <mybatis.plus.version>3.5.6</mybatis.plus.version>
