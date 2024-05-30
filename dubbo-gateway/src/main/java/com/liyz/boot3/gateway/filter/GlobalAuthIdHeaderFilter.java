@@ -35,7 +35,8 @@ public class GlobalAuthIdHeaderFilter extends AddRequestHeaderGatewayFilterFacto
                 ServerHttpRequest request = exchange
                         .getRequest()
                         .mutate()
-                        .headers(httpHeaders -> httpHeaders.add(config.getName(), value)).build();
+                        .headers(httpHeaders -> httpHeaders.add(config.getName(), value))
+                        .build();
                 return chain.filter(exchange.mutate().request(request).build());
             }
 
