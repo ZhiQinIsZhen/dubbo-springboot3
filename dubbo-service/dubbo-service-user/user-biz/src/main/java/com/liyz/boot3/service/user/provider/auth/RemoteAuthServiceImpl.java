@@ -1,5 +1,6 @@
 package com.liyz.boot3.service.user.provider.auth;
 
+import com.alibaba.nacos.shaded.com.google.common.collect.Lists;
 import com.liyz.boot3.common.service.util.BeanUtil;
 import com.liyz.boot3.common.util.DateUtil;
 import com.liyz.boot3.common.util.PatternUtil;
@@ -22,6 +23,7 @@ import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -111,6 +113,7 @@ public class RemoteAuthServiceImpl implements RemoteAuthService {
         authUser.setUsername(username);
         authUser.setSalt(staffInfoDO.getSalt());
         authUser.setDevice(device);
+        authUser.setAuthorities(new ArrayList<>());
         Date lastLoginTime = userLoginLogService.lastLoginTime(userId, device);
         Date lastLogoutTime = userLogoutLogService.lastLogoutTime(userId, device);
         authUser.setCheckTime(ObjectUtils.max(lastLoginTime, lastLogoutTime));

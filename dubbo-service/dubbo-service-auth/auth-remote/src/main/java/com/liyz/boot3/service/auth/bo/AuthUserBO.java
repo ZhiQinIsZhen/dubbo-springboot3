@@ -6,7 +6,6 @@ import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -82,7 +81,7 @@ public class AuthUserBO implements Serializable {
     /**
      * 权限列表
      */
-    private List<AuthGrantedAuthorityBO> authorities = new ArrayList<>();
+    private List<AuthGrantedAuthorityBO> authorities;
 
     @Getter
     @Setter

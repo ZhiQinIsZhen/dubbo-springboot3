@@ -45,7 +45,7 @@ dubbo:
     check: false
     cluster: failfast
     timeout: 60000
-    validation: jvalidationNew
+    validation: jvalidation
   registry:
     timeout: 5000
     address: nacos://localhost:8848?namespace=liyz

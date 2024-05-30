@@ -56,7 +56,7 @@ logging:
 #    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5level) %clr(${PID:-}){magenta} %clr([%t]){faint} %clr([%F:%L]){cyan} %clr(:){faint} %m%n%throwable'
   level:
     com.liyz.boot3.service.auth.dao: debug
-    org.apache.dubbo.spring.security.jackson.ObjectMapperCodec: error
+#    org.apache.dubbo.spring.security.jackson.ObjectMapperCodec: error
   file:
     name: '\srv\logs\${spring.application.name}\${spring.application.name}.log'
 # dubbo
@@ -64,7 +64,7 @@ dubbo:
   application:
     name: *application_name
     qos-enable: false
-    serialize-check-status: STRICT
+    serialize-check-status: WARN
   protocol:
     port: 20770
     threads: 200

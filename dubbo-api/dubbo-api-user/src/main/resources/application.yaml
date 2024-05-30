@@ -67,6 +67,7 @@ dubbo:
   application:
     name: *application_name
     qos-enable: false
+    serialize-check-status: WARN
   protocol:
     port: 20772
     threads: 200
@@ -78,7 +79,7 @@ dubbo:
     check: false
     cluster: failfast
     timeout: 60000
-    validation: jvalidationNew
+    validation: jvalidation
   registry:
     timeout: 5000
     address: nacos://localhost:8848?namespace=liyz
