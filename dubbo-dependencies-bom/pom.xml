@@ -28,6 +28,7 @@
         <rocketmq.version>2.3.0</rocketmq.version>
         <kafka.version>3.1.4</kafka.version>
         <flowable.version>7.0.1</flowable.version>
+        <shardingsphere.version>5.5.0</shardingsphere.version>
         <jsoup.version>1.17.2</jsoup.version>
     </properties>
 
@@ -144,6 +145,11 @@
                 <groupId>org.flowable</groupId>
                 <artifactId>flowable-spring-boot-starter</artifactId>
                 <version>${flowable.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>shardingsphere-jdbc</artifactId>
+                <version>${shardingsphere.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jsoup</groupId>

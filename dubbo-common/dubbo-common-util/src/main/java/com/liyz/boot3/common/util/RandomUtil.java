@@ -1,7 +1,10 @@
 package com.liyz.boot3.common.util;
 
+import cn.hutool.core.collection.CollectionUtil;
 import lombok.experimental.UtilityClass;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -26,8 +29,8 @@ public class RandomUtil {
     /**
      * 获取随机数字
      *
-     * @param length
-     * @return
+     * @param length 长度
+     * @return 数字字符串
      */
     public static String randomInteger(int length) {
         StringBuilder sb = new StringBuilder();
@@ -40,9 +43,9 @@ public class RandomUtil {
     /**
      * 根据字符源生产对应长度字符
      *
-     * @param length
-     * @param sources
-     * @return
+     * @param length 长度
+     * @param sources 来源
+     * @return 字符串
      */
     public static String randomChars(int length, String... sources) {
         if (sources == null || sources.length == 0) {
@@ -61,6 +64,13 @@ public class RandomUtil {
         return result.toString();
     }
 
+    /**
+     * 随机emoji表情
+     *
+     * @param length 长度
+     * @param sources 来源
+     * @return emoji表情
+     */
     public static String randomEmoji(int length, String... sources) {
         if (sources == null || sources.length == 0) {
             sources = EMOJI;
@@ -72,5 +82,45 @@ public class RandomUtil {
             result.append(sources[random.nextInt(sourceLength - 1)]);
         }
         return result.toString();
+    }
+
+    /**
+     * 对目标list随机取n个
+     *
+     * @param list 原数据
+     * @param count 随机数量
+     * @return 结果数据
+     * @param <T>
+     */
+    public static <T> List<T> randomList(List<T> list, int count) {
+        if (CollectionUtil.isEmpty(list) || count <= 0) {
+            return new ArrayList<>();
+        }
+        List<T> copyList = new ArrayList<>(list);
+        if (copyList.size() <= count) {
+            return copyList;
+        }
+        List<T> result = new ArrayList<>(count);
+        int listSize = copyList.size();
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        for (int i = 0; i < listSize; i++) {
+            T item = copyList.remove(random.nextInt(listSize - i));
+            result.add(item);
+        }
+        return result;
+    }
+
+    /**
+     * 对目标list随机取一个值
+     *
+     * @param list 原数据
+     * @return 结果数据
+     * @param <T>
+     */
+    public static <T> T randomElement(List<T> list) {
+        if (CollectionUtil.isEmpty(list)) {
+            return null;
+        }
+        return list.get(ThreadLocalRandom.current().nextInt(list.size()));
     }
 }
