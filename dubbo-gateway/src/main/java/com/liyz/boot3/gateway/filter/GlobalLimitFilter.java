@@ -17,7 +17,6 @@ import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -45,7 +44,7 @@ public class GlobalLimitFilter extends RequestRateLimiterGatewayFilterFactory im
     @Override
     public GatewayFilter apply(Config config) {
         KeyResolver resolver = getDefaultKeyResolver();
-        RateLimiter<Object> limiter = getDefaultRateLimiter();
+        RateLimiter<Object> limiter = this.getDefaultRateLimiter();
         return (exchange, chain) -> resolver.resolve(exchange).flatMap(key -> {
             String path = exchange.getRequest().getURI().getPath();
             Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
@@ -58,9 +57,6 @@ public class GlobalLimitFilter extends RequestRateLimiterGatewayFilterFactory im
                 return chain.filter(exchange);
             }
             return limiter.isAllowed(clientId, key).flatMap((response) -> {
-                /*for (Map.Entry<String, String> header : response.getHeaders().entrySet()) {
-                    exchange.getResponse().getHeaders().add(header.getKey(), header.getValue());
-                }*/
                 if (response.isAllowed()) {
                     return chain.filter(exchange);
                 }

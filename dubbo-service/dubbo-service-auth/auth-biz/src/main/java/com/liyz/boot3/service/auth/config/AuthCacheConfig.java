@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Desc:
+ * Desc:如果想使用复合缓存管理器，请使用{@link org.springframework.cache.support.CompositeCacheManager}
  *
  * @author lyz
  * @version 1.0.0
