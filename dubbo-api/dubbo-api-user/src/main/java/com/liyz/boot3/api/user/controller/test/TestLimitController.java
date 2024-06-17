@@ -11,6 +11,7 @@ import org.redisson.api.RateType;
 import org.redisson.api.RedissonClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -36,9 +37,9 @@ public class TestLimitController {
 
     @Operation(summary = "limit")
     @GetMapping("/token")
-    public Result<Boolean> testLimit() {
+    public Result<Boolean> testLimit(@RequestParam("num") Long num) {
         RRateLimiter rRateLimiter = redissonClient.getRateLimiter("token");
-        boolean trySetRate = rRateLimiter.trySetRate(RateType.OVERALL, 5, 1, RateIntervalUnit.MINUTES);
+        boolean trySetRate = rRateLimiter.trySetRate(RateType.OVERALL, Math.max(1, num), 1, RateIntervalUnit.MINUTES);
         boolean expire = rRateLimiter.expire(Duration.of(2, ChronoUnit.MINUTES));
         log.info("expire:{},trySetRate:{}", expire, trySetRate);
         return Result.success(rRateLimiter.tryAcquire());
