@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 import com.liyz.boot3.common.api.result.Result;
 import com.liyz.boot3.common.api.util.CookieUtil;
 import com.liyz.boot3.common.remote.exception.RemoteServiceException;
+import com.liyz.boot3.common.util.DateUtil;
 import com.liyz.boot3.common.util.JsonMapperUtil;
 import com.liyz.boot3.security.client.config.AnonymousMappingConfig;
 import com.liyz.boot3.security.client.constant.SecurityClientConstant;
@@ -66,13 +67,22 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             }
             //cookie续期
             if (Objects.nonNull(cookie)) {
-                CookieUtil.addCookie(
-                        response,
-                        SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY,
-                        token,
-                        30 * 60,
-                        null
-                );
+                boolean renewal = true;
+                //todo 过期时间实际是要配置的
+                int expiry = 30 * 60;
+                Cookie extraCookie = CookieUtil.getCookie(this.tokenHeaderKey + CookieUtil.COOKIE_START_SUFFIX);
+                if (Objects.nonNull(extraCookie) && (expiry/2*1000) > (DateUtil.currentDate().getTime() - Long.parseLong(extraCookie.getValue()))) {
+                    renewal = false;
+                }
+                if (renewal) {
+                    CookieUtil.addCookie(
+                            response,
+                            SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY,
+                            token,
+                            expiry,
+                            null
+                    );
+                }
             }
             //处理下一个过滤器
             filterChain.doFilter(request, response);

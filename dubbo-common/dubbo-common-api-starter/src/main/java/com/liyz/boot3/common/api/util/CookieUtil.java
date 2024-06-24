@@ -22,6 +22,8 @@ import java.util.Objects;
 @UtilityClass
 public class CookieUtil {
 
+    public static final String COOKIE_START_SUFFIX = "-S";
+
     /**
      * 获得指定cookie中的值
      *
@@ -92,8 +94,16 @@ public class CookieUtil {
         if (StringUtils.isNotBlank(domain)) {
             cookie.setDomain(domain);
         }
-        cookie.setAttribute("start", String.valueOf(DateUtil.currentDate().getTime()));
         response.addCookie(cookie);
+        //设置副属性
+        Cookie cookieSta = new Cookie(cookieName + COOKIE_START_SUFFIX, String.valueOf(DateUtil.currentDate().getTime()));
+        cookieSta.setMaxAge(expiry);
+        cookieSta.setSecure(false);
+        cookieSta.setPath("/");
+        if (StringUtils.isNotBlank(domain)) {
+            cookieSta.setDomain(domain);
+        }
+        response.addCookie(cookieSta);
     }
 
     /**
