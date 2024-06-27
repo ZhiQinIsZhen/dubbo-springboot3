@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>dubbo-dependencies-bom</module>
         <module>dubbo-common</module>
         <module>dubbo-api</module>
         <module>dubbo-service</module>
