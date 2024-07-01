@@ -86,11 +86,11 @@ dubbo:
   metadata-report:
     address: nacos://localhost:8848?namespace=liyz
 # rocket mq
-rocketmq:
-  name-server: 127.0.0.1:9876
-  producer:
-    group: *application_name
-    enable-msg-trace: true
+#rocketmq:
+#  name-server: 127.0.0.1:9876
+#  producer:
+#    group: *application_name
+#    enable-msg-trace: true
 # springdoc
 springdoc:
   default-flat-param-object: true

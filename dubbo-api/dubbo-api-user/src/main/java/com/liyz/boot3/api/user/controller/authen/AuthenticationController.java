@@ -38,7 +38,7 @@ import java.io.IOException;
  * @version 1.0.0
  * @date 2023/6/15 16:15
  */
-@SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
+//@SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
 @Tag(name = "客户鉴权")
 @ApiResponses(value = {
         @ApiResponse(responseCode = "0", description = "成功"),

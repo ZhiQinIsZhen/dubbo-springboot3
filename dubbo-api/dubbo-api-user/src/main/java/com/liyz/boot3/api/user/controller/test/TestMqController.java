@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Anonymous
 @Tag(name = "MQ测试")
-@RestController
-@RequestMapping("/test/mq")
+//@RestController
+//@RequestMapping("/test/mq")
 public class TestMqController implements ApplicationListener<ContextRefreshedEvent> {
 
     /*@Resource
@@ -47,7 +47,7 @@ public class TestMqController implements ApplicationListener<ContextRefreshedEve
         log.info("topic:{}, partition:{}, msg:{}", record.topic(), record.partition(), record.value());
     }*/
 
-    @Resource
+    @Resource()
     private RocketMQTemplate rocketMQTemplate;
 
     @Operation(summary = "rocketmq发送消息")

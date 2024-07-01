@@ -45,7 +45,7 @@ import java.util.Objects;
         @ApiResponse(responseCode = "1", description = "失败")
 })
 @Slf4j
-@SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
+//@SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
 @RestController
 @RequestMapping("/user")
 public class UserInfoController {

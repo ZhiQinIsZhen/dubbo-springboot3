@@ -116,6 +116,7 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
                             .device(authUserLoginBO.getDevice())
                             .ip(authUserLoginBO.getIp())
                             .build());
+            authUserDetails.getAuthUser().setCheckTime(checkTime);
             Pair<String, String> pair = JwtService.generateToken(authUserDetails.getAuthUser());
             AuthUserBO authUserBO = BeanUtil.copyProperties(authUserDetails.getAuthUser(), AuthUserBO::new, (s, t) -> {
                 t.setPassword(null);

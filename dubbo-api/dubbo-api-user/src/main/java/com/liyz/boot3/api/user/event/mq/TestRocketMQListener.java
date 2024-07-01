@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @date 2024/4/1 17:50
  */
 @Slf4j
-@Component
+//@Component
 @RocketMQMessageListener(topic = "QJD_NC", selectorExpression = "TEST", consumerGroup = "QJD_NC_TEST", consumeThreadMax = 20)
 public class TestRocketMQListener implements RocketMQListener<String> {
 
