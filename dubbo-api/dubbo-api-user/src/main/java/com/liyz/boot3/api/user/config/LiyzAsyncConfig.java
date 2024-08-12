@@ -1,6 +1,9 @@
 package com.liyz.boot3.api.user.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RBlockingQueue;
+import org.redisson.api.RDelayedQueue;
+import org.redisson.api.RedissonClient;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +11,7 @@ import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import javax.annotation.Resource;
 import java.util.concurrent.Executor;
 
 /**
@@ -21,6 +25,9 @@ import java.util.concurrent.Executor;
 @Configuration
 @EnableAsync
 public class LiyzAsyncConfig implements AsyncConfigurer {
+
+    @Resource
+    private RedissonClient redissonClient;
 
     @Bean
     public ThreadPoolTaskExecutor liyzAsyncExecutor() {
@@ -45,5 +52,15 @@ public class LiyzAsyncConfig implements AsyncConfigurer {
         return (ex, method, params) -> {
             log.error("error", ex);
         };
+    }
+
+    @Bean
+    public RBlockingQueue<String> blockingQueue() {
+        return redissonClient.getBlockingQueue("test");
+    }
+
+    @Bean
+    public RDelayedQueue<String> delayedQueue(RBlockingQueue<String> blockingQueue) {
+        return redissonClient.getDelayedQueue(blockingQueue);
     }
 }

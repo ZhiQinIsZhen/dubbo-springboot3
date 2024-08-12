@@ -7,15 +7,18 @@ import com.liyz.boot3.security.client.annotation.Anonymous;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RAtomicLong;
-import org.redisson.api.RedissonClient;
+import org.redisson.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Desc:
@@ -49,5 +52,32 @@ public class TestRedisController {
             atomicLong.expire(Duration.ofDays(1));
         }
         return Result.success(value);
+    }
+
+    @Autowired
+    private RBlockingQueue<String> blockingQueue;
+
+    @PostConstruct
+    public void init() {
+        new Thread(() -> {
+            while (true) {
+                try {
+                    log.info(blockingQueue.take().toString());
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
+    }
+
+    @Autowired
+    private RDelayedQueue<String> delayedQueue;
+
+    @Operation(summary = "延迟队列")
+    @GetMapping("/offer")
+    public Result offer(@RequestParam("value") String value, @RequestParam("time") Integer time) {
+        log.info("开始时间:{}， 过期时间:{}", System.currentTimeMillis(), System.currentTimeMillis() + time * 1000);
+        delayedQueue.offerAsync(value, time, TimeUnit.SECONDS);
+        return Result.success();
     }
 }

@@ -8,6 +8,7 @@ import com.liyz.boot3.service.user.service.UserLogoutLogService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Objects;
@@ -44,7 +45,9 @@ public class UserLogoutLogServiceImpl extends ServiceImpl<UserLogoutLogMapper, U
 
     @Override
     @CacheEvict(cacheNames = {"userInfo"}, key = "'lastLogoutTime:' + #p0.device + ':' + #p0.userId")
+    @Transactional(rollbackFor = Exception.class)
     public boolean save(UserLogoutLogDO entity) {
-        return super.save(entity);
+        boolean success = super.save(entity);
+        return success;
     }
 }

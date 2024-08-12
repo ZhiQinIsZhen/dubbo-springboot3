@@ -31,4 +31,6 @@ public interface RemoteUserLoginLogService {
      * @return 用户登录日志
      */
     RemotePage<UserLoginLogBO> pageStream(@NotNull Long userId, @NotNull PageBO pageBO);
+
+    void insert(@NotNull UserLoginLogBO userLoginLogBO);
 }

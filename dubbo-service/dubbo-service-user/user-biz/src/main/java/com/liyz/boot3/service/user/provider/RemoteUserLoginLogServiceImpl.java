@@ -5,13 +5,18 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liyz.boot3.common.remote.page.PageBO;
 import com.liyz.boot3.common.remote.page.RemotePage;
 import com.liyz.boot3.common.service.util.BeanUtil;
+import com.liyz.boot3.common.util.DateUtil;
 import com.liyz.boot3.common.util.JsonMapperUtil;
 import com.liyz.boot3.service.user.bo.UserLoginLogBO;
 import com.liyz.boot3.service.user.model.UserLoginLogDO;
+import com.liyz.boot3.service.user.model.UserLogoutLogDO;
 import com.liyz.boot3.service.user.remote.RemoteUserLoginLogService;
 import com.liyz.boot3.service.user.service.UserLoginLogService;
+import com.liyz.boot3.service.user.service.UserLogoutLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.Duration;
@@ -31,6 +36,8 @@ public class RemoteUserLoginLogServiceImpl implements RemoteUserLoginLogService 
 
     @Resource
     private UserLoginLogService userLoginLogService;
+    @Resource
+    private UserLogoutLogService userLogoutLogService;
 
     /**
      * 根据userId分页查询登录日志
@@ -78,5 +85,19 @@ public class RemoteUserLoginLogServiceImpl implements RemoteUserLoginLogService 
         });
         //todo 这里pageTotal不准确，需要自己逻辑补充
         return RemotePage.of(list, page.getTotal(), pageBO.getPageNum(), pageBO.getPageSize());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void insert(UserLoginLogBO userLoginLogBO) {
+        log.info("1111");
+        userLoginLogService.save(BeanUtil.copyProperties(userLoginLogBO, UserLoginLogDO::new));
+        new Thread(() -> {
+            userLogoutLogService.save(BeanUtil.copyProperties(userLoginLogBO, UserLogoutLogDO::new, (s, t) -> {
+            t.setLogoutType(s.getLoginType());
+            t.setLogoutTime(DateUtil.currentDate());
+        }));}).start();
+        log.info("2222");
+        int a = 1/0;
     }
 }

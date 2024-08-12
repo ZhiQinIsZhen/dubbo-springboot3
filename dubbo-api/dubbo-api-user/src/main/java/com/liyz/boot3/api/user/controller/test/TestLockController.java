@@ -38,10 +38,10 @@ public class TestLockController {
     @GetMapping("/lock")
     public Result<TestVO> lock(@ParameterObject @Valid TestDTO testDTO) {
         TestVO testVO = RedisLockUtil.lock("111", 1, TimeUnit.MINUTES, true, () -> BeanUtil.copyProperties(testDTO, TestVO::new));
-        Pair<Boolean, TestVO> pair = RedisLockUtil.tryLock("222", 5, 8, TimeUnit.SECONDS, true, () ->{
+        Pair<Boolean, TestVO> pair = RedisLockUtil.tryLock("222", 50, -1, TimeUnit.SECONDS, true, () ->{
             try {
                 log.info("step 1");
-                Thread.sleep(testDTO.getAge() * 1000);
+                Thread.sleep(testDTO.getAge() * 10000);
                 log.info("step 2");
             } catch (InterruptedException e) {
                 log.info("step 3");

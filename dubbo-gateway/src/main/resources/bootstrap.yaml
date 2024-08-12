@@ -48,6 +48,7 @@ spring:
                 key-resolver: '#{@keyResolver}'
                 redis-rate-limiter.replenishRate: 1
                 redis-rate-limiter.burstCapacity: 3
+                redis-rate-limiter.requestedTokens: 1
         - id: dubbo-api-user
           uri: http://localhost:7072
           predicates:
@@ -58,6 +59,7 @@ spring:
                 key-resolver: '#{@keyResolver}'
                 redis-rate-limiter.replenishRate: 1
                 redis-rate-limiter.burstCapacity: 3
+                redis-rate-limiter.requestedTokens: 1
             - name: GlobalAuthIdHeaderFilter
               args:
                 name: AUTH_ID

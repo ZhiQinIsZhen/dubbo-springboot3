@@ -13,9 +13,9 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <springboot.version>3.3.1</springboot.version>
-        <apache.dubbo.version>3.3.0-beta.4</apache.dubbo.version>
-        <hutool.version>5.8.28</hutool.version>
+        <springboot.version>3.3.2</springboot.version>
+        <apache.dubbo.version>3.3.0-beta.5</apache.dubbo.version>
+        <hutool.version>5.8.30</hutool.version>
         <google.guava.version>33.2.1-jre</google.guava.version>
         <knife4j.version>4.5.0</knife4j.version>
         <mybatis.plus.version>3.5.7</mybatis.plus.version>
@@ -30,6 +30,7 @@
         <flowable.version>7.0.1</flowable.version>
         <shardingsphere.version>5.5.0</shardingsphere.version>
         <jsoup.version>1.17.2</jsoup.version>
+        <prometheus.version>1.13.2</prometheus.version>
     </properties>
 
     <dependencyManagement>
@@ -90,6 +91,11 @@
                 <groupId>org.apache.dubbo</groupId>
                 <artifactId>dubbo-spring-boot-actuator</artifactId>
                 <version>${apache.dubbo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-registry-prometheus</artifactId>
+                <version>${prometheus.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>

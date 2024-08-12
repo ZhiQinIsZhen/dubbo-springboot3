@@ -60,6 +60,8 @@ logging:
 #    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5level) %clr(${PID:-}){magenta} %clr([%t]){faint} %clr([%F:%L]){cyan} %clr(:){faint} %m%n%throwable'
   level:
     com.liyz.boot3.service.user.dao: debug
+    org.springframework.transaction: debug
+    org.springframework.dbc.datasource: debug
   file:
     name: '\srv\logs\${spring.application.name}\${spring.application.name}.log'
 # dubbo
