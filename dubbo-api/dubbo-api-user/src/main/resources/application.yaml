@@ -43,6 +43,9 @@ spring:
       group-id: *application_name
       max-poll-records: 100
       auto-offset-reset: earliest
+  cloud:
+    sentinel:
+      enabled: true
 #server
 server:
   port: 7072

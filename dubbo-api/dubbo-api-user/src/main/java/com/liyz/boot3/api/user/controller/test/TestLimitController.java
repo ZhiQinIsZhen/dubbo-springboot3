@@ -1,5 +1,6 @@
 package com.liyz.boot3.api.user.controller.test;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.liyz.boot3.common.api.result.Result;
 import com.liyz.boot3.security.client.annotation.Anonymous;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,5 +44,12 @@ public class TestLimitController {
         boolean expire = rRateLimiter.expire(Duration.of(2, ChronoUnit.MINUTES));
         log.info("expire:{},trySetRate:{}", expire, trySetRate);
         return Result.success(rRateLimiter.tryAcquire());
+    }
+
+    @Operation(summary = "sentinel限流")
+    @GetMapping("/sentinel")
+    @SentinelResource(value = "test", blockHandler = "handlerException", blockHandlerClass = TestBlockLimitException.class)
+    public Result<Boolean> testLimit() {
+        return Result.success(Boolean.TRUE);
     }
 }

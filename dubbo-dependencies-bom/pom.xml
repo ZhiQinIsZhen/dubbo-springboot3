@@ -29,6 +29,7 @@
         <kafka.version>3.2.1</kafka.version>
         <flowable.version>7.0.1</flowable.version>
         <shardingsphere.version>5.5.0</shardingsphere.version>
+        <sentinel.version>2023.0.1.2</sentinel.version>
         <jsoup.version>1.17.2</jsoup.version>
         <prometheus.version>1.13.2</prometheus.version>
     </properties>
@@ -156,6 +157,11 @@
                 <groupId>org.apache.shardingsphere</groupId>
                 <artifactId>shardingsphere-jdbc</artifactId>
                 <version>${shardingsphere.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+                <version>${sentinel.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jsoup</groupId>
