@@ -18,6 +18,9 @@
 
 [Skywalking配置文档](https://github.com/ZhiQinIsZhen/dubbo-springboot3/tree/main/document/README.md)
 
+## 项目部署
+项目文档请参考文档:[DEPLOY.md](https://github.com/ZhiQinIsZhen/dubbo-springboot3/tree/main/document/DEPLOY.md)
+
 ## 项目结构
 
 1. `dubbo-dependencies-bom`：Maven Pom版本管理文件

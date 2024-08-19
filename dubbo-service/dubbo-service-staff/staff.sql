@@ -1,4 +1,7 @@
-CREATE TABLE `staff_auth_email` (
+CREATE DATABASE `staff3` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
+
+
+CREATE TABLE `staff3`.`staff_auth_email` (
    `staff_id` bigint(20) unsigned NOT NULL COMMENT '员工ID',
    `email` varchar(128) NOT NULL COMMENT '邮箱',
    `password` varchar(256) NOT NULL COMMENT '密码',
@@ -12,7 +15,7 @@ CREATE TABLE `staff_auth_email` (
    UNIQUE KEY `uniq_email` (`email`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='员工邮箱认证表';
 
-CREATE TABLE `staff_auth_mobile` (
+CREATE TABLE `staff3`.`staff_auth_mobile` (
     `staff_id` bigint(20) unsigned NOT NULL COMMENT '员工ID',
     `mobile` varchar(11) NOT NULL COMMENT '邮箱',
     `password` varchar(256) NOT NULL COMMENT '密码',
@@ -26,7 +29,7 @@ CREATE TABLE `staff_auth_mobile` (
     UNIQUE KEY `uniq_mobile` (`mobile`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='员工手机认证表';
 
-CREATE TABLE `staff_info` (
+CREATE TABLE `staff3`.`staff_info` (
      `staff_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '员工ID',
      `real_name` varchar(128) DEFAULT NULL COMMENT '真实名称',
      `nick_name` varchar(128) NOT NULL COMMENT '昵称',
@@ -43,7 +46,7 @@ CREATE TABLE `staff_info` (
      PRIMARY KEY (`staff_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='员工基础信息表';
 
-CREATE TABLE `staff_login_log` (
+CREATE TABLE `staff3`.`staff_login_log` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `staff_id` bigint(20) unsigned NOT NULL COMMENT '员工ID',
   `login_type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '登录方式：1:手机;2:邮箱',
@@ -60,7 +63,7 @@ CREATE TABLE `staff_login_log` (
   KEY `idx_staff_id` (`staff_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='员工登录日志表';
 
-CREATE TABLE `staff_logout_log` (
+CREATE TABLE `staff3`.`staff_logout_log` (
    `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
    `staff_id` bigint(20) unsigned NOT NULL COMMENT '员工ID',
    `logout_type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '登出方式：1:手机;2:邮箱',

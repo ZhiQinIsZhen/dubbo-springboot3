@@ -1,4 +1,6 @@
-CREATE TABLE `auth_source`  (
+CREATE DATABASE `auth` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
+
+CREATE TABLE `auth`.`auth_source`  (
      `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增ID',
      `client_id` varchar(128) NOT NULL COMMENT '客户端id',
      `client_tag` varchar(32) NOT NULL COMMENT 'dubbo tag',
@@ -16,11 +18,11 @@ CREATE TABLE `auth_source`  (
 -- ----------------------------
 -- Records of auth_application
 -- ----------------------------
-INSERT INTO `auth_source` VALUES
+INSERT INTO `auth`.`auth_source` VALUES
 (1, 'dubbo-api-admin', 'staff', -1, -1, now(), now(), 0, 0),
 (2, 'dubbo-api-user', 'user', -1, -1, now(), now(), 0, 0);
 
-CREATE TABLE `auth_jwt1` (
+CREATE TABLE `auth`.`auth_jwt1` (
     `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
     `client_id` varchar(128) NOT NULL COMMENT '客户端id',
     `jwt_prefix` varchar(32) NOT NULL COMMENT 'token前缀',

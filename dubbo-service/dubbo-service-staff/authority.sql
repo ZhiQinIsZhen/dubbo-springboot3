@@ -1,4 +1,4 @@
-CREATE TABLE `staff_role` (
+CREATE TABLE `staff3`.`staff_role` (
      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
      `staff_id` bigint(20) unsigned NOT NULL COMMENT '员工ID',
      `role_id` int(8) unsigned NOT NULL COMMENT '角色ID',
@@ -12,7 +12,7 @@ CREATE TABLE `staff_role` (
      UNIQUE KEY `uniq_staff_id_role_id` (`staff_id`,`role_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='员工角色表';
 
-CREATE TABLE `system_role` (
+CREATE TABLE `staff3`.`system_role` (
    `role_id` int(8) unsigned NOT NULL COMMENT '角色ID',
    `role_name` varchar(32) NOT NULL COMMENT '角色名称',
    `parent_role_id` int(8) unsigned DEFAULT NULL COMMENT '父角色ID',
@@ -25,7 +25,7 @@ CREATE TABLE `system_role` (
    PRIMARY KEY (`role_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统角色表';
 
-CREATE TABLE `system_authority` (
+CREATE TABLE `staff3`.`system_authority` (
     `authority_id` int(8) unsigned NOT NULL COMMENT '权限ID',
     `authority` varchar(32) NOT NULL COMMENT '权限CODE',
     `authority_name` varchar(32) NOT NULL COMMENT '权限名称',
@@ -40,7 +40,7 @@ CREATE TABLE `system_authority` (
     PRIMARY KEY (`authority_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统权限表';
 
-CREATE TABLE `system_role_authority` (
+CREATE TABLE `staff3`.`system_role_authority` (
      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
      `role_id` int(8) unsigned NOT NULL COMMENT '角色ID',
      `authority_id` int(8) unsigned NOT NULL COMMENT '权限ID',
@@ -54,7 +54,7 @@ CREATE TABLE `system_role_authority` (
      UNIQUE KEY `uniq_role_id_authority_id` (`role_id`,`authority_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统角色权限表';
 
-CREATE TABLE `staff_authority` (
+CREATE TABLE `staff3`.`staff_authority` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `staff_id` bigint(20) unsigned NOT NULL COMMENT '员工ID',
   `authority_id` int(8) unsigned NOT NULL COMMENT '权限ID',

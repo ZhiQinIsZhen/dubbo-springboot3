@@ -1,4 +1,6 @@
-CREATE TABLE `user_auth_email` (
+CREATE DATABASE `user3` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
+
+CREATE TABLE `user3`.`user_auth_email` (
    `user_id` bigint(20) unsigned NOT NULL COMMENT '用户ID',
    `email` varchar(128) NOT NULL COMMENT '邮箱',
    `password` varchar(256) NOT NULL COMMENT '密码',
@@ -12,7 +14,7 @@ CREATE TABLE `user_auth_email` (
    UNIQUE KEY `uniq_email` (`email`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户邮箱认证表';
 
-CREATE TABLE `user_auth_mobile` (
+CREATE TABLE `user3`.`user_auth_mobile` (
     `user_id` bigint(20) unsigned NOT NULL COMMENT '用户ID',
     `mobile` varchar(11) NOT NULL COMMENT '邮箱',
     `password` varchar(256) NOT NULL COMMENT '密码',
@@ -26,7 +28,7 @@ CREATE TABLE `user_auth_mobile` (
     UNIQUE KEY `uniq_mobile` (`mobile`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户手机认证表';
 
-CREATE TABLE `user_info` (
+CREATE TABLE `user3`.`user_info` (
      `user_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
      `real_name` varchar(128) DEFAULT NULL COMMENT '真实名称',
      `nick_name` varchar(128) NOT NULL COMMENT '昵称',
@@ -43,7 +45,7 @@ CREATE TABLE `user_info` (
      PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户基础信息表';
 
-CREATE TABLE `user_login_log` (
+CREATE TABLE `user3`.`user_login_log` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `user_id` bigint(20) unsigned NOT NULL COMMENT '用户ID',
   `login_type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '登录方式：1:手机;2:邮箱',
@@ -60,7 +62,7 @@ CREATE TABLE `user_login_log` (
   KEY `idx_user_id` (`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户登录日志表';
 
-CREATE TABLE `user_logout_log` (
+CREATE TABLE `user3`.`user_logout_log` (
    `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
    `user_id` bigint(20) unsigned NOT NULL COMMENT '用户ID',
    `logout_type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '登出方式：1:手机;2:邮箱',

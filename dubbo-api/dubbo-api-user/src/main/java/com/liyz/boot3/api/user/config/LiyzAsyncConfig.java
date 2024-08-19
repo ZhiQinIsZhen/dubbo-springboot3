@@ -1,5 +1,6 @@
 package com.liyz.boot3.api.user.config;
 
+import com.alibaba.csp.sentinel.annotation.aspectj.SentinelResourceAspect;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RDelayedQueue;
@@ -32,8 +33,8 @@ public class LiyzAsyncConfig implements AsyncConfigurer {
     @Bean
     public ThreadPoolTaskExecutor liyzAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(Runtime.getRuntime().availableProcessors() - 6);
-        executor.setMaxPoolSize(Runtime.getRuntime().availableProcessors() - 6);
+        executor.setCorePoolSize(Runtime.getRuntime().availableProcessors());
+        executor.setMaxPoolSize(Runtime.getRuntime().availableProcessors());
         executor.setWaitForTasksToCompleteOnShutdown(true);
         executor.setAwaitTerminationSeconds(60);
         executor.setQueueCapacity(100);
@@ -62,5 +63,10 @@ public class LiyzAsyncConfig implements AsyncConfigurer {
     @Bean
     public RDelayedQueue<String> delayedQueue(RBlockingQueue<String> blockingQueue) {
         return redissonClient.getDelayedQueue(blockingQueue);
+    }
+
+//    @Bean
+    public SentinelResourceAspect sentinelResourceAspect() {
+        return new SentinelResourceAspect();
     }
 }
