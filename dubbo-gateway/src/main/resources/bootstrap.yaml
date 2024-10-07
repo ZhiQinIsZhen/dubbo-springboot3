@@ -165,3 +165,4 @@ non:
 logging:
   file:
     name: '\srv\logs\${spring.application.name}\${spring.application.name}.log'
+

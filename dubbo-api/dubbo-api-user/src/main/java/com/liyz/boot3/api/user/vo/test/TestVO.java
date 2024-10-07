@@ -1,11 +1,13 @@
 package com.liyz.boot3.api.user.vo.test;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Desc:
@@ -28,4 +30,12 @@ public class TestVO implements Serializable {
 
     @Schema(description = "手机号码")
     private String mobile;
+
+
+//    private String multiple;
+
+    @NotBlank
+    public String getMultiple() {
+        return new StringBuilder().append(Objects.nonNull(name) ? name : "").append(Objects.nonNull(mobile) ? mobile : "").toString();
+    }
 }

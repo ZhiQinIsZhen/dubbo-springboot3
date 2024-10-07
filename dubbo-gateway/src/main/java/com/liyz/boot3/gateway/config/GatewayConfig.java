@@ -1,22 +1,22 @@
 package com.liyz.boot3.gateway.config;
 
 import com.google.common.base.Joiner;
+import com.liyz.boot3.common.util.JsonMapperUtil;
 import com.liyz.boot3.gateway.constant.GatewayConstant;
-import com.liyz.boot3.gateway.filter.GlobalLimitFilter;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.RedissonRateLimiter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
-import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
-import org.springframework.cloud.gateway.route.RouteLocator;
-import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.event.ContextRefreshedEvent;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -29,7 +29,7 @@ import java.util.Objects;
 @Slf4j
 @RefreshScope
 @Configuration
-public class GatewayConfig {
+public class GatewayConfig implements ApplicationListener<ContextRefreshedEvent> {
 
     /*@Resource
     private GlobalLimitFilter globalLimitFilter;
@@ -62,5 +62,9 @@ public class GatewayConfig {
             String path = exchange.getRequest().getURI().getPath();
             return Mono.just(Joiner.on("_").join(Objects.isNull(authId) ? ip : authId.toString(), path));
         };
+    }
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
     }
 }

@@ -13,25 +13,25 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <springboot.version>3.3.2</springboot.version>
-        <apache.dubbo.version>3.3.0-beta.5</apache.dubbo.version>
-        <hutool.version>5.8.30</hutool.version>
-        <google.guava.version>33.2.1-jre</google.guava.version>
+        <springboot.version>3.3.4</springboot.version>
+        <apache.dubbo.version>3.3.0</apache.dubbo.version>
+        <hutool.version>5.8.32</hutool.version>
+        <google.guava.version>33.3.1-jre</google.guava.version>
         <knife4j.version>4.5.0</knife4j.version>
-        <mybatis.plus.version>3.5.7</mybatis.plus.version>
-        <redisson.version>3.31.0</redisson.version>
-        <io.jwt.version>0.12.5</io.jwt.version>
+        <mybatis.plus.version>3.5.8</mybatis.plus.version>
+        <redisson.version>3.37.0</redisson.version>
+        <io.jwt.version>0.12.6</io.jwt.version>
         <elasticjob.version>3.0.4</elasticjob.version>
         <xxljob.version>2.4.1</xxljob.version>
-        <excel.version>4.0.1</excel.version>
-        <springboot.admin.version>3.2.3</springboot.admin.version>
-        <rocketmq.version>2.3.0</rocketmq.version>
-        <kafka.version>3.2.1</kafka.version>
+        <excel.version>4.0.3</excel.version>
+        <springboot.admin.version>3.3.4</springboot.admin.version>
+        <rocketmq.version>2.3.1</rocketmq.version>
+        <kafka.version>3.2.4</kafka.version>
         <flowable.version>7.0.1</flowable.version>
         <shardingsphere.version>5.5.0</shardingsphere.version>
         <sentinel.version>2023.0.1.2</sentinel.version>
-        <jsoup.version>1.17.2</jsoup.version>
-        <prometheus.version>1.13.2</prometheus.version>
+        <jsoup.version>1.18.1</jsoup.version>
+        <prometheus.version>1.13.5</prometheus.version>
     </properties>
 
     <dependencyManagement>
