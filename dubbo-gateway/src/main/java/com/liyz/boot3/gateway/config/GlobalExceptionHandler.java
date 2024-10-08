@@ -1,5 +1,6 @@
 package com.liyz.boot3.gateway.config;
 
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.liyz.boot3.common.remote.exception.CommonExceptionCodeEnum;
 import com.liyz.boot3.gateway.util.ResponseUtil;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
@@ -28,7 +29,11 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
         }
         if (ex instanceof ConnectException) {
             return ResponseUtil.response(resp, CommonExceptionCodeEnum.REMOTE_SERVICE_FAIL);
+        } else if (ex instanceof BlockException) {
+            return ResponseUtil.response(resp, CommonExceptionCodeEnum.OUT_LIMIT_COUNT);
         }
         return ResponseUtil.response(resp, CommonExceptionCodeEnum.REMOTE_SERVICE_FAIL);
     }
+
+
 }

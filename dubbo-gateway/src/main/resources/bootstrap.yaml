@@ -58,7 +58,7 @@ spring:
               args:
                 key-resolver: '#{@keyResolver}'
                 redis-rate-limiter.replenishRate: 1
-                redis-rate-limiter.burstCapacity: 3
+                redis-rate-limiter.burstCapacity: 300
                 redis-rate-limiter.requestedTokens: 1
             - name: GlobalAuthIdHeaderFilter
               args:
