@@ -638,7 +638,7 @@ public class DateUtil {
             return period.getYears();
         }
         if (field == ChronoUnit.MONTHS) {
-            return period.getYears() * 12 + period.getMonths();
+            return period.getYears() * 12L + period.getMonths();
         }
         return field.between(startTime, endTime);
     }

@@ -36,7 +36,7 @@ public class RedisLockUtil {
      * @return 返回结果
      * @param <T> 泛型
      */
-    public static <T> T lock(final String key, LockInterface func) {
+    public static <T> T lock(final String key, LockInterface<T> func) {
         return lock(key, false, func);
     }
 
@@ -49,11 +49,11 @@ public class RedisLockUtil {
      * @return 返回结果
      * @param <T> 泛型
      */
-    public static <T> T lock(final String key, boolean heldThrow, LockInterface func) {
+    public static <T> T lock(final String key, boolean heldThrow, LockInterface<T> func) {
         RLock rLock = REDISSON_CLIENT.getLock(key);
         try {
             rLock.lock();
-            return (T) func.callBack();
+            return func.callBack();
         } finally {
             if (rLock.isHeldByCurrentThread()) {
                 rLock.unlock();
@@ -74,11 +74,11 @@ public class RedisLockUtil {
      * @return 返回结果
      * @param <T> 泛型
      */
-    public static <T> T lock(final String key, long leaseTime, TimeUnit unit, boolean heldThrow, LockInterface func) {
+    public static <T> T lock(final String key, long leaseTime, TimeUnit unit, boolean heldThrow, LockInterface<T> func) {
         RLock rLock = REDISSON_CLIENT.getLock(key);
         try {
             rLock.lock(leaseTime, unit);
-            return (T) func.callBack();
+            return func.callBack();
         } finally {
             if (rLock.isHeldByCurrentThread()) {
                 rLock.unlock();
@@ -100,11 +100,12 @@ public class RedisLockUtil {
      * @return 返回结果
      * @param <T> 泛型
      */
-    public static <T> Pair<Boolean, T> tryLock(final String key,long waitTime, long leaseTime, TimeUnit unit, boolean heldThrow, LockInterface func) {
+    public static <T> Pair<Boolean, T> tryLock(final String key,long waitTime, long leaseTime, TimeUnit unit,
+                                               boolean heldThrow, LockInterface<T> func) {
         RLock rLock = REDISSON_CLIENT.getLock(key);
         try {
             if (rLock.tryLock(waitTime, leaseTime, unit)) {
-                return Pair.of(Boolean.TRUE, (T) func.callBack());
+                return Pair.of(Boolean.TRUE, func.callBack());
             }
             return Pair.of(Boolean.FALSE, null);
         } catch (InterruptedException e) {
@@ -127,7 +128,7 @@ public class RedisLockUtil {
      * @return 返回结果
      * @param <T> 泛型
      */
-    public static <T> T fairLock(final String key, LockInterface func) {
+    public static <T> T fairLock(final String key, LockInterface<T> func) {
         return fairLock(key, false, func);
     }
 
@@ -139,11 +140,11 @@ public class RedisLockUtil {
      * @return 返回结果
      * @param <T> 泛型
      */
-    public static <T> T fairLock(final String key, boolean heldThrow, LockInterface func) {
+    public static <T> T fairLock(final String key, boolean heldThrow, LockInterface<T> func) {
         RLock rLock = REDISSON_CLIENT.getFairLock(key);
         try {
             rLock.lock();
-            return (T) func.callBack();
+            return func.callBack();
         } finally {
             if (rLock.isHeldByCurrentThread()) {
                 rLock.unlock();
@@ -164,11 +165,11 @@ public class RedisLockUtil {
      * @return 返回结果
      * @param <T> 泛型
      */
-    public static <T> T fairLock(final String key, long leaseTime, TimeUnit unit, boolean heldThrow, LockInterface func) {
+    public static <T> T fairLock(final String key, long leaseTime, TimeUnit unit, boolean heldThrow, LockInterface<T> func) {
         RLock rLock = REDISSON_CLIENT.getFairLock(key);
         try {
             rLock.lock(leaseTime, unit);
-            return (T) func.callBack();
+            return func.callBack();
         } finally {
             if (rLock.isHeldByCurrentThread()) {
                 rLock.unlock();
@@ -186,7 +187,7 @@ public class RedisLockUtil {
      * @return 返回结果
      * @param <T> 泛型
      */
-    public static <T> T multiLock(LockInterface func, final String... keys) {
+    public static <T> T multiLock(LockInterface<T> func, final String... keys) {
         return multiLock(func, 1, TimeUnit.MINUTES, keys);
     }
 
@@ -200,11 +201,11 @@ public class RedisLockUtil {
      * @return 返回结果
      * @param <T> 泛型
      */
-    public static <T> T multiLock(LockInterface func, long leaseTime, TimeUnit unit, final String... keys) {
+    public static <T> T multiLock(LockInterface<T> func, long leaseTime, TimeUnit unit, final String... keys) {
         RedissonMultiLock multiLock = new RedissonMultiLock(Arrays.stream(keys).map(key -> REDISSON_CLIENT.getLock(key)).toArray(RLock[]::new));
         try {
             multiLock.lock(leaseTime, unit);
-            return (T) func.callBack();
+            return func.callBack();
         } finally {
             multiLock.unlock();
         }

@@ -8,7 +8,7 @@ package com.liyz.boot3.common.lock.service;
  * @date 2023/10/12 18:12
  */
 @FunctionalInterface
-public interface LockInterface {
+public interface LockInterface<T> {
 
-    Object callBack();
+    T callBack();
 }
