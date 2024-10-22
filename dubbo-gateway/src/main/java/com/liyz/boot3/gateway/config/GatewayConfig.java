@@ -42,7 +42,7 @@ import java.util.Set;
 @Configuration
 public class GatewayConfig implements ApplicationListener<ContextRefreshedEvent> {
 
-    @Bean
+//    @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public GlobalFilter sentinelGatewayFilter() {
         return new SentinelGatewayFilter();

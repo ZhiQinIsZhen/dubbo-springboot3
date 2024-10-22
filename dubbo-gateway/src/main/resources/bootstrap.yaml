@@ -148,6 +148,8 @@ anonymous:
         - /admin/auth/login
         - /admin/test/**
       dubbo-api-user:
+        - /user/doc.html
+        - /user/webjars/**
         - /user/v3/api-docs/**
         - /user/user/register
         - /user/user/login
