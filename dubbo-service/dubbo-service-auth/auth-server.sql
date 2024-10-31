@@ -20,7 +20,8 @@ CREATE TABLE `auth`.`auth_source`  (
 -- ----------------------------
 INSERT INTO `auth`.`auth_source` VALUES
 (1, 'dubbo-api-admin', 'staff', -1, -1, now(), now(), 0, 0),
-(2, 'dubbo-api-user', 'user', -1, -1, now(), now(), 0, 0);
+(2, 'dubbo-api-user', 'user', -1, -1, now(), now(), 0, 0),
+(3, 'dubbo-api-monitor', 'staff', -1, -1, now(), now(), 0, 0);
 
 CREATE TABLE `auth`.`auth_jwt1` (
     `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
@@ -44,4 +45,5 @@ CREATE TABLE `auth`.`auth_jwt1` (
 INSERT INTO `auth`.`auth_jwt1` VALUES
 (1, 'dubbo-api-admin', 'Bearer ', 'Bonnie', 604800, 'HS512', 0, 1, -1, -1, now(), now(), 0, 0),
 (2, 'dubbo-api-user', 'Bearer ', 'Bonnie', 604800, 'HS512', 0, 1, -1, -1, now(), now(), 0, 0),
-(3, 'dubbo-service-auth', 'Bearer ', 'Bonnie', 604800, 'HS512', 0, 1, -1, -1, now(), now(), 0, 0);
+(3, 'dubbo-service-auth', 'Bearer ', 'Bonnie', 604800, 'HS512', 0, 1, -1, -1, now(), now(), 0, 0),
+(4, 'dubbo-api-monitor', 'Bearer ', 'Bonnie', 604800, 'HS512', 0, 1, -1, -1, now(), now(), 0, 0);

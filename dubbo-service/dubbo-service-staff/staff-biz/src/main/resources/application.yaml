@@ -7,6 +7,15 @@ spring:
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
+  threads:
+    virtual:
+      enabled: true
+  lifecycle:
+    timeout-per-shutdown-phase: 60s
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:7060
 # datasource
   datasource:
     url: jdbc:mysql://localhost:3306/staff3?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
@@ -49,3 +58,14 @@ dubbo:
     address: nacos://localhost:8848?namespace=liyz
   scan:
     base-packages: com.liyz.boot3.service.staff.provider
+# management
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - '*'
+    enabled-by-default: true
+  endpoint:
+    health:
+      show-details: always

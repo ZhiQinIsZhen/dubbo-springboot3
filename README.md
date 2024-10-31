@@ -32,9 +32,9 @@
 
 ## api结构说明
 
-1. `dubbo-api-admin`: 管理后台网关层，鉴权基于spring-security
-2. `dubbo-api-user`: 客户前台网关层，鉴权基于spring-security
-3. `dubbo-api-monitor`: 监控平台
+1. `dubbo-api-admin`: 管理后台网关层，鉴权基于spring-security，认证服务使用的是`dubbo-service-staff`
+2. `dubbo-api-user`: 客户前台网关层，鉴权基于spring-security，认证服务使用的是`dubbo-service-user`
+3. `dubbo-api-monitor`: 监控平台，认证服务使用的是`dubbo-service-staff`，如需修改可以在`dubbo-service-auth`服务的表中修改`dubbo_tag`
 
 ## common结构说明
 

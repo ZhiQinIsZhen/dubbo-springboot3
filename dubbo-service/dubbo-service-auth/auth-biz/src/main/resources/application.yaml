@@ -84,11 +84,14 @@ dubbo:
     address: nacos://localhost:8848?namespace=liyz
   scan:
     base-packages: com.liyz.boot3.service.auth.provider
+# management
 management:
   endpoints:
     web:
       exposure:
-        include: '*'
+        include:
+          - '*'
+    enabled-by-default: true
   endpoint:
     health:
       show-details: always

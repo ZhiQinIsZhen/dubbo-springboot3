@@ -16,6 +16,10 @@ spring:
   threads:
     virtual:
       enabled: true
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:7060
 #server
 server:
   port: 7071
@@ -100,3 +104,21 @@ knife4j:
 auth:
   advice:
     enable: true
+# management
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - '*'
+    enabled-by-default: true
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application: *application_name
