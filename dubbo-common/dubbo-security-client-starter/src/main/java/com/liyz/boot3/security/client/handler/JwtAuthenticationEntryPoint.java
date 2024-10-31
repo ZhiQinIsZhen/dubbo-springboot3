@@ -1,5 +1,6 @@
 package com.liyz.boot3.security.client.handler;
 
+import com.google.common.base.Charsets;
 import com.liyz.boot3.common.api.result.Result;
 import com.liyz.boot3.common.util.JsonMapperUtil;
 import com.liyz.boot3.service.auth.exception.AuthExceptionCodeEnum;
@@ -11,6 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Desc:auth point
@@ -23,7 +25,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        response.getWriter().write(JsonMapperUtil.toJSONString(Result.error(AuthExceptionCodeEnum.AUTHORIZATION_FAIL)));
+        response.setCharacterEncoding(Charsets.UTF_8.name());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.getWriter().write(Objects.requireNonNull(JsonMapperUtil.toJSONString(Result.error(AuthExceptionCodeEnum.AUTHORIZATION_FAIL))));
     }
 }

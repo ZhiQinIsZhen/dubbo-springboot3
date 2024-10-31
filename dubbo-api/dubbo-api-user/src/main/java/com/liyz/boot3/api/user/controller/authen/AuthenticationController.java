@@ -19,13 +19,11 @@ import com.liyz.boot3.service.auth.bo.AuthUserRegisterBO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpHeaders;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +36,6 @@ import java.io.IOException;
  * @version 1.0.0
  * @date 2023/6/15 16:15
  */
-//@SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
 @Tag(name = "客户鉴权")
 @ApiResponses(value = {
         @ApiResponse(responseCode = "0", description = "成功"),

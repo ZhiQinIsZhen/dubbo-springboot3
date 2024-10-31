@@ -88,7 +88,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (RemoteServiceException exception) {
             response.setCharacterEncoding(Charsets.UTF_8.name());
-            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.getWriter().println(JsonMapperUtil.toJSONString(Result.error(exception.getCode(), exception.getMessage())));
             response.getWriter().flush();
         } finally {
