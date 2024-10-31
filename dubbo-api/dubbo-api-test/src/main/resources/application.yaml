@@ -1,7 +1,7 @@
 # spring
 spring:
   application:
-    name: &application_name dubbo-api-user
+    name: &application_name dubbo-api-test
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
@@ -25,10 +25,6 @@ spring:
     admin:
       client:
         url: http://127.0.0.1:7060
-  messages:
-    basename: i18n.message
-  session:
-    timeout: 1800s
   kafka:
     bootstrap-servers: 127.0.01:9092
     producer:
@@ -48,9 +44,9 @@ spring:
       enabled: true
 #server
 server:
-  port: 7072
+  port: 7069
   servlet:
-    context-path: /user
+    context-path: /test
   tomcat:
     accept-count: 10
     threads:
@@ -65,35 +61,18 @@ logging:
   file:
     name: '\srv\logs\${spring.application.name}\${spring.application.name}.log'
 #    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5level) %clr(${PID:-}){magenta} %clr([%t]){faint} %clr([%F:%L]){cyan} %clr(:){faint} %m%n%throwable'
-# dubbo
-dubbo:
-  application:
-    name: *application_name
-    qos-enable: false
-    serialize-check-status: WARN
-  protocol:
-    port: 20772
-    threads: 200
-  provider:
-    filter: remoteServiceExceptionFilter,-exception
-    version: 1.0.0
-  consumer:
-    version: 1.0.0
-    check: false
-    cluster: failfast
-    timeout: 60000
-    validation: jvalidation
-  registry:
-    timeout: 5000
-    address: nacos://localhost:8848?namespace=liyz
-  metadata-report:
-    address: nacos://localhost:8848?namespace=liyz
 # springdoc
 springdoc:
   default-flat-param-object: true
   api-docs:
     path: /v3/api-docs
     enabled: true
+# rocket mq
+#rocketmq:
+#  name-server: 127.0.0.1:9876
+#  producer:
+#    group: *application_name
+#    enable-msg-trace: true
 # knife4j
 knife4j:
   enable: true
@@ -106,9 +85,7 @@ knife4j:
     username: abc
     password: 123
     enable: false
-auth:
-  advice:
-    enable: true
+# management
 management:
   endpoints:
     web:
@@ -126,3 +103,8 @@ management:
   metrics:
     tags:
       application: *application_name
+# ssc
+ssc:
+  base-url: https://openapi.sscha.com
+  auth-header: Authorization
+  auth-value: 736fe7a1-6bc4-4663-b1f3-fc99aa1af2b0
