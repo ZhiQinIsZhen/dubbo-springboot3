@@ -1,12 +1,11 @@
-package com.liyz.boot3.api.user.controller.search.export;
+package com.liyz.boot3.api.test.controller.export;
 
 import com.alibaba.excel.EasyExcel;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
-import com.liyz.boot3.api.user.dto.search.export.ExportDTO;
-import com.liyz.boot3.api.user.excel.SscStaffExcel;
-import com.liyz.boot3.api.user.vo.export.SscPageVO;
-import com.liyz.boot3.common.api.result.Result;
-import com.liyz.boot3.security.client.annotation.Anonymous;
+import com.liyz.boot3.api.test.dto.export.ExportDTO;
+import com.liyz.boot3.api.test.excel.SscStaffExcel;
+import com.liyz.boot3.api.test.result.Result;
+import com.liyz.boot3.api.test.vo.export.SscPageVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -41,7 +40,6 @@ public class ExportController {
     @Resource
     private RestClient restClient;
 
-    @Anonymous
     @Operation(summary = "主要人员导出")
     @PostMapping("/staff")
     public Result<Boolean> exportStaff(@RequestBody ExportDTO exportDTO) {

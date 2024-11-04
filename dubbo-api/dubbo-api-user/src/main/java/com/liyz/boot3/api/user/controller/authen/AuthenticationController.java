@@ -49,7 +49,7 @@ public class AuthenticationController {
 
     @ApiOperationSupport(order = 1)
     @Anonymous
-    @Operation(summary = "注册", tags = {"1000"})
+    @Operation(summary = "注册")
     @PostMapping("/register")
     public Result<Boolean> register(@Validated({UserRegisterDTO.Register.class}) @RequestBody UserRegisterDTO staffRegister) {
         return Result.success(AuthContext.AuthService.registry(BeanUtil.copyProperties(staffRegister, AuthUserRegisterBO::new)));
@@ -60,7 +60,7 @@ public class AuthenticationController {
 
     @ApiOperationSupport(order = 2)
     @Anonymous
-    @Operation(summary = "登录", tags = "1000")
+    @Operation(summary = "登录")
     @PostMapping("/login")
     public Result<AuthLoginVO> login(@Validated({UserLoginDTO.Login.class}) @RequestBody UserLoginDTO loginDTO) throws IOException {
         HttpServletResponse response = HttpServletContext.getResponse();
@@ -77,7 +77,7 @@ public class AuthenticationController {
     }
 
     @ApiOperationSupport(order = 3)
-    @Operation(summary = "登出", tags = "1000")
+    @Operation(summary = "登出")
     @GetMapping(value = "/logout")
     public Result<Boolean> logout() {
         return Result.success(AuthContext.AuthService.logout());

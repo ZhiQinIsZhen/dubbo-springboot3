@@ -9,10 +9,11 @@
 ![Mybatis-plus Version](https://img.shields.io/badge/MybatisPlus-3.5.7-brightgreen)
 ![Swagger Version](https://img.shields.io/badge/knife4j-4.4.0-brightgreen)
 ![Elasticjob Version](https://img.shields.io/badge/elasticjob-3.0.4-brightgreen)
+![Flowable Version](https://img.shields.io/badge/flowable-7.1.0-brightgreen)
 
 这是一个基于Jdk21，框架是Dubbo3 + Springboot3的脚手架。
 
-详细介绍下项目中使用的框架：基础架构是[SpringBoot3](https://spring.io/projects/spring-boot)，服务治理是[Apache Dubbo](https://cn.dubbo.apache.org/zh-cn/index.html)，ORM框架选用了[Mybatis-plus](https://baomidou.com/)，注册中心以及配置中心使用了[Nacos](https://nacos.io/zh-cn/)，网关选用了[Gateway](https://spring.io/projects/spring-cloud-gateway)，认证以及资源框架使用了[Spring Security](https://spring.io/projects/spring-security)，接口文档选用了[knife4j](https://doc.xiaominfo.com)，分布式定时任务选用了[ElasticJob](https://shardingsphere.apache.org/elasticjob)，链路追踪使用的是[Skywalking](https://skywalking.apache.org/)。
+详细介绍下项目中使用的框架：基础架构是[SpringBoot3](https://spring.io/projects/spring-boot)，服务治理是[Apache Dubbo](https://cn.dubbo.apache.org/zh-cn/index.html)，ORM框架选用了[Mybatis-plus](https://baomidou.com/)，注册中心以及配置中心使用了[Nacos](https://nacos.io/zh-cn/)，网关选用了[Gateway](https://spring.io/projects/spring-cloud-gateway)，认证以及资源框架使用了[Spring Security](https://spring.io/projects/spring-security)，接口文档选用了[knife4j](https://doc.xiaominfo.com)，分布式定时任务选用了[ElasticJob](https://shardingsphere.apache.org/elasticjob)，链路追踪使用的是[Skywalking](https://skywalking.apache.org/)，流程框架使用的是[Flowable](https://www.flowable.com/open-source)。
 
 ## Skywalking配置
 
@@ -29,6 +30,7 @@
 4. `dubbo-common`：基础包的框架
 5. `dubbo-service`：Dubbo的服务提供者，即业务服务
 6. `dubbo-task`：分布式定时任务
+7. `dubbo-process`：流程引擎
 
 ## api结构说明
 
@@ -63,6 +65,9 @@
 ## task结构说明
 1. `dubbo-task-elastic`：使用的是基于elastic job为框架
 2. `dubbo-task-xxl`：使用的是基于xxl-job为框架
+
+## process结构说明
+1. `dubbo-process-flowable`：使用的是基于flowable为框架，由于最新的7.0.0版本中不在包含flowable-ui，所以ui版本需要下载最新的6.x.x版本
 
 ## 如需之前版本，请关注tag标签，重新拉取tag代码
 
