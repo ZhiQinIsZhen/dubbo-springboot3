@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title 已购买视频详情
+autonumber
+actor user
+user -> runFront: 获取课程详情
+runFront -> trade: 获取课程进度数据
+trade --> runFront: return
+runFront --> runFront: 校验订单信息、组装总进度数据
+runFront -> goods: 获取课程快照数据
+goods --> runFront: return
+runFront -> runFront: 组装课程相关数据
+runFront -> user: 返回课程详情数据
+
+user -> runFront: 获取课时信息
+runFront -> trade: 获取课程进度数据
+trade --> runFront: return
+runFront --> runFront: 校验订单信息、组装课时进度数据
+runFront -> goods: 获取课时快照数据
+goods --> runFront: return
+runFront -> runFront: 组装课时相关数据
+runFront -> user: 返回课时数据
+@enduml

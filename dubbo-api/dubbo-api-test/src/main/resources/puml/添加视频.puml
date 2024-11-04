@@ -1,0 +1,17 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+title 添加视频
+autonumber
+
+actor 商家 as user
+
+user -> adminApi: 新增视频
+adminApi -> goods: 新增视频
+goods -> business: 获取视频状态、市场、播放地址
+business --> goods: return
+goods --> adminApi: return
+adminApi --> user: return
+
+goods -> goods: job刷新无播放地址且非结束状态的视频
+goods -> goods: job刷新有播放地址的视频的有效期
+@enduml
