@@ -17,6 +17,7 @@
         <module>dubbo-gateway</module>
         <module>dubbo-task</module>
         <module>dubbo-process</module>
+        <module>dubbo-generation</module>
     </modules>
 
     <properties>

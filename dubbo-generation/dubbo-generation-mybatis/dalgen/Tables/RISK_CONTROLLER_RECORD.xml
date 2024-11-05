@@ -1,0 +1,153 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="risk_controller_record" physicalName="risk_controller_record" remark="风控指标表">
+    <!--  特殊字符说明 &lt;&gt; <> -->
+    <!-- baseSql option中 select * 会自动替换为 include -->
+    <sql id="Base_Column_List">
+        ID,BIZ_CODE,SCHOOL_CODE,RUN_PLAN_CODE,STUDENT_CODE 
+        ,SEMESTER_CODE,REASON,INDEX_NAME,INDEX_TYPE,RC_TYPE 
+        ,DEL_FLAG,CREATE_TIME,UPDATE_TIME
+    </sql>
+
+    <!-- baseSql option中 select sf.* 会自动替换为 include -->
+    <sql id="Base_SF_Column_List">
+        sf.ID,sf.BIZ_CODE,sf.SCHOOL_CODE,sf.RUN_PLAN_CODE,sf.STUDENT_CODE 
+        ,sf.SEMESTER_CODE,sf.REASON,sf.INDEX_NAME,sf.INDEX_TYPE,sf.RC_TYPE 
+        ,sf.DEL_FLAG,sf.CREATE_TIME,sf.UPDATE_TIME
+    </sql>
+
+    <operation name="insert" paramtype="object" remark="插入表:risk_controller_record" autoGen="true">
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+            <![CDATA[
+            INSERT INTO risk_controller_record(
+                    ID
+                    ,BIZ_CODE
+                    ,SCHOOL_CODE
+                    ,RUN_PLAN_CODE
+                    ,STUDENT_CODE
+                    ,SEMESTER_CODE
+                    ,REASON
+                    ,INDEX_NAME
+                    ,INDEX_TYPE
+                    ,RC_TYPE
+                    ,DEL_FLAG
+                    ,CREATE_TIME
+                    ,UPDATE_TIME
+            )VALUES(
+                     null
+                    , #{bizCode,jdbcType=BIGINT}
+                    , #{schoolCode,jdbcType=BIGINT}
+                    , #{runPlanCode,jdbcType=BIGINT}
+                    , #{studentCode,jdbcType=BIGINT}
+                    , #{semesterCode,jdbcType=BIGINT}
+                    , #{reason,jdbcType=VARCHAR}
+                    , #{indexName,jdbcType=VARCHAR}
+                    , #{indexType,jdbcType=VARCHAR}
+                    , #{rcType,jdbcType=INTEGER}
+                    , #{delFlag,jdbcType=TINYINT}
+                    , #{createTime,jdbcType=TIMESTAMP}
+                    , #{updateTime,jdbcType=TIMESTAMP}
+            )
+            ]]>
+    </operation>
+
+    <!-- foreach 可以自定义类型，paramtype="primitive" foreach->javatype="自己书写的类"  -->
+    <!-- 只有一个参数且为List时必须将参数命名为list -->
+    <operation name="insertBatch" paramtype="objectList" remark="批量插入表:risk_controller_record"  autoGen="true">
+            INSERT INTO risk_controller_record(
+                    ID
+                    ,BIZ_CODE
+                    ,SCHOOL_CODE
+                    ,RUN_PLAN_CODE
+                    ,STUDENT_CODE
+                    ,SEMESTER_CODE
+                    ,REASON
+                    ,INDEX_NAME
+                    ,INDEX_TYPE
+                    ,RC_TYPE
+                    ,DEL_FLAG
+                    ,CREATE_TIME
+                    ,UPDATE_TIME
+            )VALUES
+            <foreach collection="list"  item="item" separator=",">
+                (
+                     null
+                    , #{item.bizCode,jdbcType=BIGINT}
+                    , #{item.schoolCode,jdbcType=BIGINT}
+                    , #{item.runPlanCode,jdbcType=BIGINT}
+                    , #{item.studentCode,jdbcType=BIGINT}
+                    , #{item.semesterCode,jdbcType=BIGINT}
+                    , #{item.reason,jdbcType=VARCHAR}
+                    , #{item.indexName,jdbcType=VARCHAR}
+                    , #{item.indexType,jdbcType=VARCHAR}
+                    , #{item.rcType,jdbcType=INTEGER}
+                    , #{item.delFlag,jdbcType=TINYINT}
+                    , #{item.createTime,jdbcType=TIMESTAMP}
+                    , #{item.updateTime,jdbcType=TIMESTAMP}
+                )
+            </foreach>
+    </operation>
+
+    <!-- 不推荐使用全 update 有需要自己打开
+    <operation name="update" paramtype="object" remark="更新表:risk_controller_record"  autoGen="true">
+        <![CDATA[
+        UPDATE risk_controller_record
+        SET
+            BIZ_CODE        = #{bizCode,jdbcType=BIGINT}
+            ,SCHOOL_CODE     = #{schoolCode,jdbcType=BIGINT}
+            ,RUN_PLAN_CODE   = #{runPlanCode,jdbcType=BIGINT}
+            ,STUDENT_CODE    = #{studentCode,jdbcType=BIGINT}
+            ,SEMESTER_CODE   = #{semesterCode,jdbcType=BIGINT}
+            ,REASON          = #{reason,jdbcType=VARCHAR}
+            ,INDEX_NAME      = #{indexName,jdbcType=VARCHAR}
+            ,INDEX_TYPE      = #{indexType,jdbcType=VARCHAR}
+            ,RC_TYPE         = #{rcType,jdbcType=INTEGER}
+            ,DEL_FLAG        = #{delFlag,jdbcType=TINYINT}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE
+            ID              = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
+    -->
+    <operation name="deleteById"  remark="根据主键删除数据:risk_controller_record">
+        <![CDATA[
+        DELETE FROM risk_controller_record
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
+
+    <operation name="getById" multiplicity="one" remark="根据主键获取数据:risk_controller_record">
+        SELECT *
+        FROM risk_controller_record
+        WHERE
+        <![CDATA[
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </operation>
+
+    <!-- 根据普通索引查询数据 -->
+    <operation name="queryByIdxShcoolBizCode" multiplicity="many" remark="根据普通索引IdxShcoolBizCode获取数据:risk_controller_record">
+        SELECT *
+        FROM risk_controller_record
+        WHERE
+        <![CDATA[
+            SCHOOL_CODE     = #{schoolCode,jdbcType=BIGINT}
+            AND BIZ_CODE        = #{bizCode,jdbcType=BIGINT}
+        ]]>
+    </operation>
+    <!-- 根据普通索引查询数据 -->
+    <operation name="queryByIdxShcoolSemesterStud" multiplicity="many" remark="根据普通索引IdxShcoolSemesterStud获取数据:risk_controller_record">
+        SELECT *
+        FROM risk_controller_record
+        WHERE
+        <![CDATA[
+            SCHOOL_CODE     = #{schoolCode,jdbcType=BIGINT}
+            AND SEMESTER_CODE   = #{semesterCode,jdbcType=BIGINT}
+            AND STUDENT_CODE    = #{studentCode,jdbcType=BIGINT}
+        ]]>
+    </operation>
+</table>

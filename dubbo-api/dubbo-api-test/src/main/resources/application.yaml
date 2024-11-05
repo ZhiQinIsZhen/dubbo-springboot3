@@ -108,3 +108,12 @@ ssc:
   base-url: https://openapi.sscha.com
   auth-header: Authorization
   auth-value: 736fe7a1-6bc4-4663-b1f3-fc99aa1af2b0
+
+run-risk:
+  controller:
+    index:
+      RUN_DURATION: 10
+      RUN_DISTANCE: 10
+      RUN_PACE: 10
+      RUN_TOTAL_STEP: 10
+      RUN_FREQUENCY: 10

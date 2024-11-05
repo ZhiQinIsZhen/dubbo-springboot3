@@ -1,5 +1,6 @@
 package com.liyz.boot3.api.test.controller.http;
 
+import com.liyz.boot3.api.test.config.RunRiskIndexProperties;
 import com.liyz.boot3.api.test.result.Result;
 import com.liyz.boot3.api.test.service.SschaService;
 import com.liyz.boot3.api.test.vo.ssc.CompanyInfoVO;
@@ -34,5 +35,15 @@ public class TestHttpController {
     public Result<CompanyInfoVO> getCompanyInfo(@RequestParam("keyword") String keyword) {
         Mono<Result<CompanyInfoVO>> mono = sschaService.getCompanyInfo(keyword);
         return mono.block();
+    }
+
+    @Resource
+    private RunRiskIndexProperties properties;
+
+
+    @Operation(summary = "config")
+    @GetMapping("/config")
+    public Result<RunRiskIndexProperties> config() {
+        return Result.success(properties);
     }
 }

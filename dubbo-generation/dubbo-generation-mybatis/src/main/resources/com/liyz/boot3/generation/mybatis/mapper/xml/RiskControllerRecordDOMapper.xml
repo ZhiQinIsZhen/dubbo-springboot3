@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liyz.boot3.generation.mybatis.mapper.RiskControllerRecordDOMapper">
+    <!-- 自动生成,请修改 RISK_CONTROLLER_RECORD.xml -->
+    <resultMap id="BaseResultMap"  type="com.liyz.boot3.generation.mybatis.dataobject.RiskControllerRecordDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long" />
+        <result column="BIZ_CODE" property="bizCode" jdbcType="BIGINT" javaType="Long" />
+        <result column="SCHOOL_CODE" property="schoolCode" jdbcType="BIGINT" javaType="Long" />
+        <result column="RUN_PLAN_CODE" property="runPlanCode" jdbcType="BIGINT" javaType="Long" />
+        <result column="STUDENT_CODE" property="studentCode" jdbcType="BIGINT" javaType="Long" />
+        <result column="SEMESTER_CODE" property="semesterCode" jdbcType="BIGINT" javaType="Long" />
+        <result column="REASON" property="reason" jdbcType="VARCHAR" javaType="String" />
+        <result column="INDEX_NAME" property="indexName" jdbcType="VARCHAR" javaType="String" />
+        <result column="INDEX_TYPE" property="indexType" jdbcType="VARCHAR" javaType="String" />
+        <result column="RC_TYPE" property="rcType" jdbcType="INTEGER" javaType="Integer" />
+        <result column="DEL_FLAG" property="delFlag" jdbcType="TINYINT" javaType="Integer" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </resultMap>
+
+
+    <sql id="Base_SF_Column_List">
+        sf.ID,sf.BIZ_CODE,sf.SCHOOL_CODE,sf.RUN_PLAN_CODE,sf.STUDENT_CODE 
+        ,sf.SEMESTER_CODE,sf.REASON,sf.INDEX_NAME,sf.INDEX_TYPE,sf.RC_TYPE 
+        ,sf.DEL_FLAG,sf.CREATE_TIME,sf.UPDATE_TIME
+    </sql>
+    <sql id="Base_Column_List">
+        ID,BIZ_CODE,SCHOOL_CODE,RUN_PLAN_CODE,STUDENT_CODE 
+        ,SEMESTER_CODE,REASON,INDEX_NAME,INDEX_TYPE,RC_TYPE 
+        ,DEL_FLAG,CREATE_TIME,UPDATE_TIME
+    </sql>
+
+
+    <!--插入表:risk_controller_record  mydalgen自动生成，请勿修改-->
+    <insert id="insert"  >
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+            <![CDATA[
+            INSERT INTO risk_controller_record(
+                    ID
+                    ,BIZ_CODE
+                    ,SCHOOL_CODE
+                    ,RUN_PLAN_CODE
+                    ,STUDENT_CODE
+                    ,SEMESTER_CODE
+                    ,REASON
+                    ,INDEX_NAME
+                    ,INDEX_TYPE
+                    ,RC_TYPE
+                    ,DEL_FLAG
+                    ,CREATE_TIME
+                    ,UPDATE_TIME
+            )VALUES(
+                     null
+                    , #{bizCode,jdbcType=BIGINT}
+                    , #{schoolCode,jdbcType=BIGINT}
+                    , #{runPlanCode,jdbcType=BIGINT}
+                    , #{studentCode,jdbcType=BIGINT}
+                    , #{semesterCode,jdbcType=BIGINT}
+                    , #{reason,jdbcType=VARCHAR}
+                    , #{indexName,jdbcType=VARCHAR}
+                    , #{indexType,jdbcType=VARCHAR}
+                    , #{rcType,jdbcType=INTEGER}
+                    , #{delFlag,jdbcType=TINYINT}
+                    , #{createTime,jdbcType=TIMESTAMP}
+                    , #{updateTime,jdbcType=TIMESTAMP}
+            )
+            ]]>
+    </insert>
+
+    <!--批量插入表:risk_controller_record  mydalgen自动生成，请勿修改-->
+    <insert id="insertBatch"  >
+            INSERT INTO risk_controller_record(
+                    ID
+                    ,BIZ_CODE
+                    ,SCHOOL_CODE
+                    ,RUN_PLAN_CODE
+                    ,STUDENT_CODE
+                    ,SEMESTER_CODE
+                    ,REASON
+                    ,INDEX_NAME
+                    ,INDEX_TYPE
+                    ,RC_TYPE
+                    ,DEL_FLAG
+                    ,CREATE_TIME
+                    ,UPDATE_TIME
+            )VALUES
+            <foreach collection="list"  item="item" separator=",">
+                (
+                     null
+                    , #{item.bizCode,jdbcType=BIGINT}
+                    , #{item.schoolCode,jdbcType=BIGINT}
+                    , #{item.runPlanCode,jdbcType=BIGINT}
+                    , #{item.studentCode,jdbcType=BIGINT}
+                    , #{item.semesterCode,jdbcType=BIGINT}
+                    , #{item.reason,jdbcType=VARCHAR}
+                    , #{item.indexName,jdbcType=VARCHAR}
+                    , #{item.indexType,jdbcType=VARCHAR}
+                    , #{item.rcType,jdbcType=INTEGER}
+                    , #{item.delFlag,jdbcType=TINYINT}
+                    , #{item.createTime,jdbcType=TIMESTAMP}
+                    , #{item.updateTime,jdbcType=TIMESTAMP}
+                )
+            </foreach>
+    </insert>
+
+    <!--根据主键删除数据:risk_controller_record  mydalgen自动生成，请勿修改-->
+    <delete id="deleteById"  >
+        <![CDATA[
+        DELETE /*MS-RISK-CONTROLLER-RECORD-DELETEBYID*/ FROM risk_controller_record
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </delete>
+
+    <!--根据主键获取数据:risk_controller_record  mydalgen自动生成，请勿修改-->
+    <select id="getById" resultMap="BaseResultMap" >
+        SELECT /*MS-RISK-CONTROLLER-RECORD-GETBYID*/  <include refid="Base_Column_List" />
+        FROM risk_controller_record
+        WHERE
+        <![CDATA[
+            ID = #{id,jdbcType=BIGINT}
+        ]]>
+    </select>
+
+    <!--根据普通索引IdxShcoolBizCode获取数据:risk_controller_record  mydalgen自动生成，请勿修改-->
+    <select id="queryByIdxShcoolBizCode" resultMap="BaseResultMap" >
+        SELECT /*MS-RISK-CONTROLLER-RECORD-QUERYBYIDXSHCOOLBIZCODE*/  <include refid="Base_Column_List" />
+        FROM risk_controller_record
+        WHERE
+        <![CDATA[
+            SCHOOL_CODE     = #{schoolCode,jdbcType=BIGINT}
+            AND BIZ_CODE        = #{bizCode,jdbcType=BIGINT}
+        ]]>
+    </select>
+
+    <!--根据普通索引IdxShcoolSemesterStud获取数据:risk_controller_record  mydalgen自动生成，请勿修改-->
+    <select id="queryByIdxShcoolSemesterStud" resultMap="BaseResultMap" >
+        SELECT /*MS-RISK-CONTROLLER-RECORD-QUERYBYIDXSHCOOLSEMESTERSTUD*/  <include refid="Base_Column_List" />
+        FROM risk_controller_record
+        WHERE
+        <![CDATA[
+            SCHOOL_CODE     = #{schoolCode,jdbcType=BIGINT}
+            AND SEMESTER_CODE   = #{semesterCode,jdbcType=BIGINT}
+            AND STUDENT_CODE    = #{studentCode,jdbcType=BIGINT}
+        ]]>
+    </select>
+</mapper>
