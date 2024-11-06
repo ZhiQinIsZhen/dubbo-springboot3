@@ -112,8 +112,13 @@ ssc:
 run-risk:
   controller:
     index:
+      # 跑步时长
       RUN_DURATION: 10
+      # 跑步距离
       RUN_DISTANCE: 10
+      # 跑步配速
       RUN_PACE: 10
+      # 跑步总步数
       RUN_TOTAL_STEP: 10
+      # 跑步步频
       RUN_FREQUENCY: 10

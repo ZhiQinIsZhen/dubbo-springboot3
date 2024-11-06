@@ -41,14 +41,47 @@
 ## common结构说明
 
 1. `dubbo-common-api-starter`: 通用web或者网关层框架
+    ```text
+    1.1 全局异常拦截器
+    1.2 Swagger基础配置
+    1.3 Spring MVC的全局配置：Jackson、Error重定向、国际化
+    ```
 2. `dubbo-common-dao-starter`: 通用DAO层的框架(基于Mybatis-plus)
+    ```text
+    2.1 数据库字段加解密、脱敏
+    2.2 Mybatis-plus的插件：乐观锁、防止全表更新与删除、分页
+    2.3 公共字段的赋值
+    ```
 3. `dubbo-common-search-starter`: 通用Elastic Search层的框架(借鉴与Mybatis-plus，继承EsMapper即可开箱即用)
+    ````text
+    3.1 参考easy-es：后续该模块可能会被删除
+    ````
 4. `dubbo-common-lock-starter`: 通用Lock框架
 5. `dubbo-common-remote`: 通用Dubbo远程接口框架(包含了参数验证器:validation)
+    ```text
+    5.1 Dubbo远程服务提供jar的依赖：主要就是基础业务异常与通用枚举
+    ```
 6. `dubbo-common-service`: 业务通用核心框架
+    ```text
+    6.1 通用常量池
+    6.2 BeanUtil工具类
+    ```
 7. `dubbo-common-util`: 通用工具类框架
+    ```text
+    7.1 脱敏注解@Desensitization：支持10中类型（加解密、DFA、手机号等）
+    7.2 去除首尾空格注解@Trim
+    7.3 公告工具类：时间、Json、加解密等
+    ```
 8. `dubbo-exception-filter`: Dubbo自定义异常过滤器
+    ```text
+    8.1 Dubbo对自定义业务异常过滤
+    ```
 9. `dubbo-security-client-starter`: security-client，适用于各个网关服务中
+    ```text
+    9.1 匿名访问注解@Anonymous：对于不需要登录校验的接口直接在类或者方法上加上该注解，而不需要配置到Security的配置中
+    9.2 认证上下文：AuthContext
+    9.3 登录设备上下文：DeviceContext
+    ```
 
 ## service结构说明
 
