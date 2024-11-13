@@ -4,6 +4,7 @@ import com.liyz.boot3.security.client.constant.SecurityClientConstant;
 import com.liyz.boot3.security.client.context.AuthContext;
 import com.liyz.boot3.security.client.filter.JwtAuthenticationTokenFilter;
 import com.liyz.boot3.security.client.handler.JwtAuthenticationEntryPoint;
+import com.liyz.boot3.security.client.handler.AuthUserArgumentResolver;
 import com.liyz.boot3.security.client.handler.RestfulAccessDeniedHandler;
 import com.liyz.boot3.security.client.user.impl.UserDetailsServiceImpl;
 import com.liyz.boot3.service.auth.remote.RemoteAuthService;
@@ -32,6 +33,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 /**
  * Desc:
@@ -44,7 +49,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class AuthSecurityClientAutoConfig implements InitializingBean {
+public class AuthSecurityClientAutoConfig implements WebMvcConfigurer, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -127,5 +132,15 @@ public class AuthSecurityClientAutoConfig implements InitializingBean {
     @Bean(SecurityClientConstant.JWT_SERVICE_BEAN_NAME)
     public RemoteJwtParseService remoteJwtParseService() {
         return this.remoteJwtParseService;
+    }
+
+    /**
+     * 加载用户解析器
+     *
+     * @param argumentResolvers
+     */
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        argumentResolvers.add(new AuthUserArgumentResolver());
     }
 }

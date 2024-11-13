@@ -10,6 +10,7 @@ import com.liyz.boot3.common.api.result.Result;
 import com.liyz.boot3.common.remote.page.PageBO;
 import com.liyz.boot3.common.remote.page.RemotePage;
 import com.liyz.boot3.common.service.util.BeanUtil;
+import com.liyz.boot3.security.client.annotation.AuthUser;
 import com.liyz.boot3.security.client.context.AuthContext;
 import com.liyz.boot3.service.auth.bo.AuthUserBO;
 import com.liyz.boot3.service.user.bo.UserLoginLogBO;
@@ -59,7 +60,7 @@ public class UserInfoController {
 
     @Operation(summary = "查询当前登录用户信息")
     @GetMapping("/current")
-    public Result<UserInfoVO> userInfo() {
+    public Result<UserInfoVO> userInfo(@AuthUser AuthUserBO authUser) {
         AuthUserBO authUserBO = AuthContext.getAuthUser();
         return Result.success(BeanUtil.copyProperties(remoteUserInfoService.getByUserId(authUserBO.getAuthId()), UserInfoVO::new));
     }
