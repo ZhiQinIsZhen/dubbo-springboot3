@@ -14,7 +14,7 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <springboot.version>3.3.5</springboot.version>
-        <apache.dubbo.version>3.3.1</apache.dubbo.version>
+        <apache.dubbo.version>3.3.2</apache.dubbo.version>
         <hutool.version>5.8.32</hutool.version>
         <google.guava.version>33.3.1-jre</google.guava.version>
         <knife4j.version>4.5.0</knife4j.version>
@@ -260,6 +260,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>3.3.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>

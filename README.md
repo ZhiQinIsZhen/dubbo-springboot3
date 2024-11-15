@@ -5,7 +5,7 @@
 ![Springboot Version](https://img.shields.io/badge/Springboot-3.3.4-brightgreen)
 ![Gateway Version](https://img.shields.io/badge/Gateway-4.1.3-brightgreen)
 ![jjwt Version](https://img.shields.io/badge/jjwt-0.12.6-brightgreen)
-![Dubbo Version](https://img.shields.io/badge/Dubbo-3.3.1-brightgreen)
+![Dubbo Version](https://img.shields.io/badge/Dubbo-3.3.2-brightgreen)
 ![Mybatis-plus Version](https://img.shields.io/badge/MybatisPlus-3.5.7-brightgreen)
 ![Swagger Version](https://img.shields.io/badge/knife4j-4.4.0-brightgreen)
 ![Elasticjob Version](https://img.shields.io/badge/elasticjob-3.0.4-brightgreen)
@@ -81,6 +81,7 @@
     9.1 匿名访问注解@Anonymous：对于不需要登录校验的接口直接在类或者方法上加上该注解，而不需要配置到Security的配置中
     9.2 认证上下文：AuthContext
     9.3 登录设备上下文：DeviceContext
+    9.4 自定义参数解析器：AuthUserArgumentResolver
     ```
 
 ## service结构说明
