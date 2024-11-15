@@ -17,6 +17,7 @@ public enum CommonExceptionCodeEnum implements IExceptionService{
     NOT_FIND_CLASS("10008", "找不到指定的class"),
     PARSING_PROPERTY_NAME_ERROR("10009", "解析属性名称错误"),
     REFLECTOR_FAIL("10010", "反射失败"),
+    DB_TRANSACTION_ERROR("10011", "DB事务异常"),
 
     DEC_KEY_LENGTH_ERROR("13001", "DEC加密Key长度不能小于8位"),
     DEC_IV_LENGTH_ERROR("13002", "DEC加密IV长度必须等于8位"),

@@ -8,10 +8,15 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 import com.liyz.boot3.common.dao.handler.MybatisPlusMetaObjectHandler;
 import com.liyz.boot3.common.dao.interceptor.MapperParamInterceptor;
 import com.liyz.boot3.common.dao.interceptor.MapperResultInterceptor;
+import com.liyz.boot3.common.dao.transaction.LocalTransactionTemplate;
+import com.liyz.boot3.common.dao.transaction.impl.LocalTransactionTemplateImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * Desc:
@@ -57,5 +62,13 @@ public class MybatisPlusAutoConfig {
     @ConditionalOnProperty(prefix = "desensitization.database", name = "enable", havingValue = "true")
     public MapperResultInterceptor mapperResultInterceptor() {
         return new MapperResultInterceptor();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(LocalTransactionTemplate.class)
+    public LocalTransactionTemplate localTransactionTemplate(@Autowired(required = false) TransactionTemplate transactionTemplate) {
+        LocalTransactionTemplateImpl localTransactionTemplate = new LocalTransactionTemplateImpl();
+        localTransactionTemplate.setTransactionTemplate(transactionTemplate);
+        return localTransactionTemplate;
     }
 }

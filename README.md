@@ -51,12 +51,17 @@
     2.1 数据库字段加解密、脱敏
     2.2 Mybatis-plus的插件：乐观锁、防止全表更新与删除、分页
     2.3 公共字段的赋值
+    2.4 LocalTransactionTemplate: 本地事务调用模板
     ```
 3. `dubbo-common-search-starter`: 通用Elastic Search层的框架(借鉴与Mybatis-plus，继承EsMapper即可开箱即用)
     ````text
     3.1 参考easy-es：后续该模块可能会被删除
     ````
 4. `dubbo-common-lock-starter`: 通用Lock框架
+   ```text
+    4.1 RedisLockUtil: 基于Redisson封装的分布式锁工具
+    4.2 ZookeeperLockUtil: 后续会增加基于zk封装的分布式锁工具
+    ```
 5. `dubbo-common-remote`: 通用Dubbo远程接口框架(包含了参数验证器:validation)
     ```text
     5.1 Dubbo远程服务提供jar的依赖：主要就是基础业务异常与通用枚举
