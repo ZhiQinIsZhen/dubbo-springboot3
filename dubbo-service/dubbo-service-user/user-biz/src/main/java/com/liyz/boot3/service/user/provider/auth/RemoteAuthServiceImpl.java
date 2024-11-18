@@ -1,6 +1,7 @@
 package com.liyz.boot3.service.user.provider.auth;
 
-import com.alibaba.nacos.shaded.com.google.common.collect.Lists;
+import com.liyz.boot3.common.dao.transaction.LocalTransactionTemplate;
+import com.liyz.boot3.common.dao.transaction.callback.LocalTransactionCallbackWithoutResult;
 import com.liyz.boot3.common.service.util.BeanUtil;
 import com.liyz.boot3.common.util.DateUtil;
 import com.liyz.boot3.common.util.PatternUtil;
@@ -16,13 +17,14 @@ import com.liyz.boot3.service.auth.remote.RemoteAuthService;
 import com.liyz.boot3.service.user.model.*;
 import com.liyz.boot3.service.user.model.base.UserAuthBaseDO;
 import com.liyz.boot3.service.user.service.*;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboService;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,6 +51,9 @@ public class RemoteAuthServiceImpl implements RemoteAuthService {
     private UserLoginLogService userLoginLogService;
     @Resource
     private UserLogoutLogService userLogoutLogService;
+    @Resource
+    private LocalTransactionTemplate localTransactionTemplate;
+
 
     /**
      * 用户注册
@@ -127,7 +132,7 @@ public class RemoteAuthServiceImpl implements RemoteAuthService {
      * @return 当前登录时间
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
+//    @Transactional(rollbackFor = Exception.class)
     public Date login(AuthUserLoginBO authUserLogin) {
         UserLoginLogDO userLoginLogDO = BeanUtil.copyProperties(authUserLogin, UserLoginLogDO::new, (s, t) -> {
             t.setUserId(s.getAuthId());
@@ -135,7 +140,12 @@ public class RemoteAuthServiceImpl implements RemoteAuthService {
             t.setLoginType(s.getLoginType().getType());
             t.setDevice(s.getDevice().getType());
         });
-        userLoginLogService.save(userLoginLogDO);
+        localTransactionTemplate.execute(new LocalTransactionCallbackWithoutResult("登录记录") {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus status) {
+                userLoginLogService.save(userLoginLogDO);
+            }
+        });
         //可能会有时间误差
         return userLoginLogService.getById(userLoginLogDO.getId()).getLoginTime();
     }
