@@ -12,6 +12,7 @@ import java.util.Base64;
 public class Test {
 
     public static void main(String[] args) {
+        System.out.println(System.currentTimeMillis());
         String a = Base64.getUrlEncoder().encodeToString("Hello 图片服务!".getBytes(StandardCharsets.UTF_8));
 
         String b = UriUtils.encode("Hello, 图片服务！", StandardCharsets.UTF_8);
