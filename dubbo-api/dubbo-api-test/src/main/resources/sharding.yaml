@@ -1,0 +1,38 @@
+databaseName: test
+
+dataSources:
+  test_db_0:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
+    username: root
+    password: root
+
+rules:
+  - !SHARDING
+    tables:
+      user_login_log:
+        actualDataNodes: test_db_0.user_login_log_$->{0..1}
+        databaseStrategy:
+          none:
+        tableStrategy:
+          standard:
+            shardingColumn: user_id
+            shardingAlgorithmName: user_inline
+        keyGenerateStrategy:
+          column: id
+          keyGeneratorName: snowflake
+    keyGenerators:
+      snowflake:
+        type: SNOWFLAKE
+        props:
+          worker-id: 123
+    # 分片算法配置
+    shardingAlgorithms:
+      user_inline:
+        type: INLINE
+        props:
+          algorithm-expression: user_login_log_$->{user_id % 2}
+
+props:
+  sql-show: true

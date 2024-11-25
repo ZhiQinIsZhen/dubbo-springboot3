@@ -10,6 +10,13 @@ spring:
       enabled: true
   lifecycle:
     timeout-per-shutdown-phase: 60s
+  datasource:
+    url: jdbc:shardingsphere:classpath:sharding.yaml
+    driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
+  #    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
+#    type: com.zaxxer.hikari.HikariDataSource
+#    username: root
+#    password: root
   data:
     # redis
     redis:
