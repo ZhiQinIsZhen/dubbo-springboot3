@@ -26,6 +26,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-jsqlparser</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.liyz.boot3</groupId>
             <artifactId>dubbo-exception-filter</artifactId>
             <scope>provided</scope>
