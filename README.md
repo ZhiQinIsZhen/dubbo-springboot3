@@ -2,13 +2,15 @@
 
 [![Build Status](https://img.shields.io/badge/Build-ZhiQinlsZhen-red)](https://github.com/ZhiQinIsZhen)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/ZhiQinIsZhen/auth-netty/blob/main/LICENSE)
-![Springboot Version](https://img.shields.io/badge/Springboot-3.3.4-brightgreen)
-![Gateway Version](https://img.shields.io/badge/Gateway-4.1.3-brightgreen)
+![Springboot Version](https://img.shields.io/badge/Springboot-3.4.0-brightgreen)
+![Gateway Version](https://img.shields.io/badge/Gateway-4.1.5-brightgreen)
 ![jjwt Version](https://img.shields.io/badge/jjwt-0.12.6-brightgreen)
 ![Dubbo Version](https://img.shields.io/badge/Dubbo-3.3.2-brightgreen)
-![Mybatis-plus Version](https://img.shields.io/badge/MybatisPlus-3.5.7-brightgreen)
+![Mybatis-plus Version](https://img.shields.io/badge/MybatisPlus-3.5.9-brightgreen)
+![Sharding-jdbc Version](https://img.shields.io/badge/ShardingJdbc-5.5.1-brightgreen)
 ![Swagger Version](https://img.shields.io/badge/knife4j-4.4.0-brightgreen)
-![Elasticjob Version](https://img.shields.io/badge/elasticjob-3.0.4-brightgreen)
+![ElasticJob Version](https://img.shields.io/badge/elasticjob-3.0.4-brightgreen)
+![XxlJob Version](https://img.shields.io/badge/xxljob-2.4.2-brightgreen)
 ![Flowable Version](https://img.shields.io/badge/flowable-7.1.0-brightgreen)
 
 这是一个基于Jdk21，框架是Dubbo3 + Springboot3的脚手架。
