@@ -49,6 +49,8 @@ spring:
   cloud:
     sentinel:
       enabled: true
+    compatibility-verifier:
+      enabled: false
 #server
 server:
   port: 7069
