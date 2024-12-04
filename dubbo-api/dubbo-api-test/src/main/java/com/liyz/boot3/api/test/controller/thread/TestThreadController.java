@@ -1,6 +1,5 @@
 package com.liyz.boot3.api.test.controller.thread;
 
-import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.liyz.boot3.api.test.result.Result;
 import com.liyz.boot3.api.test.service.impl.TestServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,7 +35,6 @@ public class TestThreadController {
     @Resource
     private TestServiceImpl testService;
 
-    @ApiOperationSupport(order = 1)
     @Operation(summary = "正常线程")
     @GetMapping("/natual")
     public Result<Boolean> natualThread() {
@@ -56,7 +54,6 @@ public class TestThreadController {
         return Result.success(Boolean.TRUE);
     }
 
-    @ApiOperationSupport(order = 2)
     @Operation(summary = "虚拟线程")
     @GetMapping("/virtual")
     public Result<Boolean> virtualThread() {
@@ -76,7 +73,6 @@ public class TestThreadController {
         return Result.success(Boolean.TRUE);
     }
 
-    @ApiOperationSupport(order = 3)
     @Operation(summary = "优雅停机")
     @GetMapping("/graceful")
     public Result<Boolean> graceful() {
@@ -90,7 +86,6 @@ public class TestThreadController {
         return Result.success(Boolean.TRUE);
     }
 
-    @ApiOperationSupport(order = 4)
     @Operation(summary = "优雅停机1")
     @GetMapping("/graceful1")
     public Result<Boolean> graceful1() {
@@ -104,7 +99,6 @@ public class TestThreadController {
         return Result.success(Boolean.TRUE);
     }
 
-    @ApiOperationSupport(order = 5)
     @Operation(summary = "并行任务")
     @GetMapping("/forkJoin")
     public Result<Boolean> forkJoin() {
@@ -196,7 +190,6 @@ public class TestThreadController {
     }
 
 
-    @ApiOperationSupport(order = 6)
     @Operation(summary = "并行任务1")
     @GetMapping("/forkJoin1")
     public Result<Boolean> forkJoin1() {
@@ -287,7 +280,6 @@ public class TestThreadController {
         return Result.success(Boolean.TRUE);
     }
 
-    @ApiOperationSupport(order = 7)
     @Operation(summary = "异步调用")
     @GetMapping("/testAsync")
     public Result<Boolean> testAsync(@RequestParam("keyword") String keyword) {
@@ -295,7 +287,6 @@ public class TestThreadController {
         return Result.success(Boolean.TRUE);
     }
 
-    @ApiOperationSupport(order = 8)
     @Operation(summary = "同步调用")
     @GetMapping("/testSync")
     public Result<Boolean> testSync(@RequestParam("keyword") String keyword) {

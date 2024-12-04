@@ -21,9 +21,9 @@
     <!-- ========================================================== -->
 
     <database name="" class="com.mysql.cj.jdbc.Driver" type="mysql">
-        <property name="url" value="jdbc:mysql://47.96.108.69:3306/run?serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false"/>
-        <property name="userid" value="huachenjie"/>
-        <property name="password" value="hcj@53612rg45d"/>
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/test?serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false"/>
+        <property name="userid" value="root"/>
+        <property name="password" value="root"/>
     </database>
 
     <!-- ========project.name pom.xml中的值========================= -->

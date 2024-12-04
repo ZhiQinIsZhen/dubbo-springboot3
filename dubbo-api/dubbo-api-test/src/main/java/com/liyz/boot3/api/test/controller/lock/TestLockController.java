@@ -1,6 +1,5 @@
 package com.liyz.boot3.api.test.controller.lock;
 
-import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.liyz.boot3.api.test.dto.lock.TestDTO;
 import com.liyz.boot3.api.test.result.Result;
 import com.liyz.boot3.api.test.util.BeanUtil;
@@ -31,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/test/lock")
 public class TestLockController {
 
-    @ApiOperationSupport(order = 1)
+//    @ApiOperationSupport(order = 1)
     @Operation(summary = "锁")
     @GetMapping("/lock")
     public Result<TestVO> lock(@ParameterObject @Valid TestDTO testDTO) {

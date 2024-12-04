@@ -1,7 +1,6 @@
 package com.liyz.boot3.api.test.controller.export;
 
 import com.alibaba.excel.EasyExcel;
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.liyz.boot3.api.test.dto.export.ExportDTO;
 import com.liyz.boot3.api.test.excel.SscStaffExcel;
 import com.liyz.boot3.api.test.result.Result;
@@ -31,7 +30,6 @@ import java.util.Map;
  * @date 2024/1/12 9:47
  */
 @Slf4j
-@ApiSort(9)
 @Tag(name = "导出")
 @RestController
 @RequestMapping("/export")
