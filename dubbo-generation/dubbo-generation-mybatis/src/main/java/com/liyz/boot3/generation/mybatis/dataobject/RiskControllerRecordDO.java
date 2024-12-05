@@ -3,7 +3,7 @@ package com.liyz.boot3.generation.mybatis.dataobject;
 import java.util.Date;
 
 /**
- * The table 风控指标表
+ * The table RISK_CONTROLLER_RECORD
  */
 public class RiskControllerRecordDO{
 

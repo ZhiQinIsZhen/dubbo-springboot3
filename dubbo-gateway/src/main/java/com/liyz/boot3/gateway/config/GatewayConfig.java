@@ -140,7 +140,7 @@ public class GatewayConfig implements ApplicationListener<ContextRefreshedEvent>
                 .build();
     }*/
 
-    @Value(value = "${test}")
+//    @Value(value = "${test:111}")
     private String test;
 
     @RefreshScope
@@ -157,5 +157,6 @@ public class GatewayConfig implements ApplicationListener<ContextRefreshedEvent>
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+//        log.info("test : {}", test);
     }
 }

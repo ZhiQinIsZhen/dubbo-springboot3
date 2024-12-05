@@ -11,7 +11,6 @@ import com.liyz.boot3.service.auth.remote.RemoteJwtParseService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -47,9 +46,6 @@ import java.util.Set;
 @RefreshScope
 @EnableConfigurationProperties(AnonymousMappingProperties.class)
 public class GlobalJWTFilter implements GlobalFilter, Ordered {
-
-    @Value(value = "${test}")
-    private String test;
 
     private final AnonymousMappingProperties properties;
 

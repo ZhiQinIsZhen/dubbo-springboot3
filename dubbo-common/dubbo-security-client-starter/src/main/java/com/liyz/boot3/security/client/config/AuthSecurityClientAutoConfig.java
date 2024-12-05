@@ -93,7 +93,7 @@ public class AuthSecurityClientAutoConfig implements WebMvcConfigurer, Initializ
                 .exceptionHandling(eh -> eh
                         .accessDeniedHandler(new RestfulAccessDeniedHandler())
                         .authenticationEntryPoint(new JwtAuthenticationEntryPoint()))
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(ahr -> ahr
                         .requestMatchers(HttpMethod.OPTIONS, SecurityClientConstant.OPTIONS_PATTERNS).permitAll()
                         .requestMatchers(HttpMethod.GET, SecurityClientConstant.KNIFE4J_IGNORE_RESOURCES).permitAll()

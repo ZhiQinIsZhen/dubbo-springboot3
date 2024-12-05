@@ -25,7 +25,7 @@ spring:
         prefix: ${spring.application.name}
         file-extension: yaml
         refresh-enabled: true
-        extension-configs:
+#        extension-configs:
 #          - data-id: xxx.yaml
 #            group: config
 #            refresh: true
