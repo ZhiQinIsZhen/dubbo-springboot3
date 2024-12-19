@@ -4,6 +4,9 @@ import com.google.common.base.Joiner;
 import com.liyz.boot3.common.service.constant.CommonServiceConstant;
 import lombok.experimental.UtilityClass;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Desc:
  *
@@ -19,13 +22,15 @@ public class AuthConstants {
      */
     public final String REDIS_PREFIX = "auth";
 
+    public final String LOGIN_KEY = "loginKey";
+
     /**
      * 获取redis的key
      *
      * @param keys
      * @return
      */
-    public static String getRedisKey(final String... keys) {
-        return Joiner.on(CommonServiceConstant.DEFAULT_JOINER).join(REDIS_PREFIX, keys);
+    public static String getRedisKey(String... keys) {
+        return Joiner.on(CommonServiceConstant.DEFAULT_JOINER).join(REDIS_PREFIX, LOGIN_KEY, keys);
     }
 }

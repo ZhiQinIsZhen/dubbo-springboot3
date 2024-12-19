@@ -27,6 +27,9 @@ public class AuthJwtServiceImpl extends ServiceImpl<AuthJwtMapper, AuthJwtDO> im
     @Override
     @Cacheable(cacheNames = {"test"}, key = "'authJwt:clientId:' + #p0", unless = "#result == null")
     public AuthJwtDO getByClientId(String clientId) {
-        return getOne(Wrappers.lambdaQuery(AuthJwtDO.class).eq(AuthJwtDO::getClientId, clientId));
+        return getOne(Wrappers.lambdaQuery(AuthJwtDO.class)
+                .select(AuthJwtDO::getJwtPrefix, AuthJwtDO::getClientId, AuthJwtDO::getSigningKey, AuthJwtDO::getSignatureAlgorithm,
+                        AuthJwtDO::getIsAuthority, AuthJwtDO::getExpiration, AuthJwtDO::getOneOnline)
+                .eq(AuthJwtDO::getClientId, clientId));
     }
 }

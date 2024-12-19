@@ -9,8 +9,10 @@ import com.liyz.boot3.service.auth.bo.AuthUserRegisterBO;
 import com.liyz.boot3.service.auth.constants.AuthConstants;
 import com.liyz.boot3.service.auth.exception.AuthExceptionCodeEnum;
 import com.liyz.boot3.service.auth.exception.RemoteAuthServiceException;
+import com.liyz.boot3.service.auth.model.AuthJwtDO;
 import com.liyz.boot3.service.auth.model.AuthSourceDO;
 import com.liyz.boot3.service.auth.remote.RemoteAuthService;
+import com.liyz.boot3.service.auth.service.AuthJwtService;
 import com.liyz.boot3.service.auth.service.AuthSourceService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +44,8 @@ public class RemoteAuthServiceImpl implements RemoteAuthService {
 
     @Resource
     private PasswordEncoder passwordEncoder;
+    @Resource
+    private AuthJwtService authJwtService;
     @Resource
     private AuthSourceService authSourceService;
     @DubboReference
@@ -78,14 +82,20 @@ public class RemoteAuthServiceImpl implements RemoteAuthService {
      */
     @Override
     public AuthUserBO login(AuthUserLoginBO authUserLogin) {
-        if (StringUtils.isBlank(authUserLogin.getClientId())) {
+        final String clientId = authUserLogin.getClientId();
+        if (StringUtils.isBlank(clientId)) {
             log.warn("用户登录错误，原因 : clientId is blank");
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.LOGIN_ERROR);
         }
-        AuthSourceDO authSourceDO = authSourceService.getByClientId(authUserLogin.getClientId());
+        AuthSourceDO authSourceDO = authSourceService.getByClientId(clientId);
         if (Objects.isNull(authSourceDO)) {
-            log.warn("查询资源客户端ID失败，原因没有找到对应的配置信息，clientId : {}", authUserLogin.getClientId());
+            log.warn("查询资源客户端ID失败，原因没有找到对应的配置信息，clientId : {}", clientId);
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.LOGIN_ERROR);
+        }
+        AuthJwtDO authJwtDO = authJwtService.getByClientId(clientId);
+        if (Objects.isNull(authJwtDO)) {
+            log.error("解析token失败, 没有找到该应用下jwt配置信息，clientId：{}", clientId);
+            throw new RemoteAuthServiceException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
         RpcContext.getClientAttachment().setAttachment(DUBBO_TAG, authSourceDO.getClientTag());
         AuthUserBO authUserBO = remoteAuthService.login(authUserLogin);
@@ -93,9 +103,12 @@ public class RemoteAuthServiceImpl implements RemoteAuthService {
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.USER_NOT_EXIST);
         }
         String loginKey = UUID.randomUUID().toString();
-        RSet<String> set = redissonClient.getSet(AuthConstants.getRedisKey(authSourceDO.getClientId(), authUserBO.getAuthId().toString()));
+        RSet<String> set = redissonClient.getSet(AuthConstants.getRedisKey(clientId, authUserBO.getAuthId().toString()));
+        if (set.isExists() && authJwtDO.getOneOnline()) {
+            set.clear();
+        }
         set.add(loginKey);
-        set.expire(Duration.of(30, ChronoUnit.MINUTES));
+        set.expire(Duration.of(7, ChronoUnit.DAYS));
         authUserBO.setLoginKey(loginKey);
         return authUserBO;
     }

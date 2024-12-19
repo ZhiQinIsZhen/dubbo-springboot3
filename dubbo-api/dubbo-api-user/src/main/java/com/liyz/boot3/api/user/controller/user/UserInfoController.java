@@ -56,9 +56,15 @@ public class UserInfoController {
 
     @Operation(summary = "查询当前登录用户信息")
     @GetMapping("/current")
-    public Result<UserInfoVO> userInfo(@AuthUser AuthUserBO authUser) {
+    public Result<UserInfoVO> userInfo() {
         AuthUserBO authUserBO = AuthContext.getAuthUser();
         return Result.success(BeanUtil.copyProperties(remoteUserInfoService.getByUserId(authUserBO.getAuthId()), UserInfoVO::new));
+    }
+
+    @Operation(summary = "查询当前登录用户信息--注解式")
+    @GetMapping("/current1")
+    public Result<UserInfoVO> userInfo1(@AuthUser AuthUserBO authUser) {
+        return Result.success(BeanUtil.copyProperties(remoteUserInfoService.getByUserId(authUser.getAuthId()), UserInfoVO::new));
     }
 
     @Operation(summary = "分页查询用户登录日志")
