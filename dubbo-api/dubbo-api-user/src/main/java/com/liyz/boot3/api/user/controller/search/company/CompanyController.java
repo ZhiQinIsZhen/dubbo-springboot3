@@ -1,6 +1,5 @@
 package com.liyz.boot3.api.user.controller.search.company;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.liyz.boot3.api.user.dto.search.company.CompanyDTO;
 import com.liyz.boot3.api.user.event.spring.SearchEvent;
 import com.liyz.boot3.api.user.vo.search.company.CompanyBasicVO;
@@ -13,7 +12,6 @@ import com.liyz.boot3.common.service.util.BeanUtil;
 import com.liyz.boot3.security.client.annotation.Anonymous;
 import com.liyz.boot3.service.search.bo.company.CompanyBO;
 import com.liyz.boot3.service.search.bo.company.CompanyBasicBO;
-import com.liyz.boot3.service.search.query.company.CompanyPageQuery;
 import com.liyz.boot3.service.search.remote.company.RemoteCompanyBasicService;
 import com.liyz.boot3.service.search.remote.company.RemoteCompanyService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,7 +37,6 @@ import java.util.Objects;
  * @version 1.0.0
  * @date 2023/11/15 10:17
  */
-@ApiSort(2)
 @Tag(name = "搜索")
 @RestController
 @RequestMapping("/search/company")

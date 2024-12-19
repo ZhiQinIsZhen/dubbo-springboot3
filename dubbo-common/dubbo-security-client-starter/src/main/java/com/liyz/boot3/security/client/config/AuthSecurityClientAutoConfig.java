@@ -74,7 +74,7 @@ public class AuthSecurityClientAutoConfig implements WebMvcConfigurer, Initializ
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserDetailsServiceImpl();
+        return new UserDetailsServiceImpl(remoteAuthService);
     }
 
     @Bean

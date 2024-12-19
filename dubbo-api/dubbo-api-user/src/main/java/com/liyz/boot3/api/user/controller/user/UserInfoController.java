@@ -1,6 +1,5 @@
 package com.liyz.boot3.api.user.controller.user;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.liyz.boot3.api.user.vo.user.UserInfoVO;
 import com.liyz.boot3.api.user.vo.user.UserLoginLogVO;
 import com.liyz.boot3.api.user.vo.user.UserLogoutLogVO;
@@ -37,7 +36,6 @@ import java.util.Objects;
  * @version 1.0.0
  * @date 2023/12/6 10:47
  */
-@ApiSort(3)
 @Tag(name = "用户信息")
 @ApiResponses(value = {
         @ApiResponse(responseCode = "0", description = "成功"),

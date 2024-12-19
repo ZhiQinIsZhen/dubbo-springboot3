@@ -25,6 +25,7 @@ public enum AuthExceptionCodeEnum implements IExceptionService {
     OTHERS_LOGIN("20008", "该账号已在其他地方登录"),
     MOBILE_EXIST("20009", "该手机号码已注册"),
     EMAIL_EXIST("20010", "该邮箱地址已注册"),
+    USER_NOT_EXIST("20011", "当前用户不存在"),
     ;
 
     private final String code;

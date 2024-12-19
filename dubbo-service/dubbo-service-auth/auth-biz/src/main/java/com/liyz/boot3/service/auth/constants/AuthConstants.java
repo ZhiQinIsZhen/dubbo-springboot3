@@ -1,0 +1,31 @@
+package com.liyz.boot3.service.auth.constants;
+
+import com.google.common.base.Joiner;
+import com.liyz.boot3.common.service.constant.CommonServiceConstant;
+import lombok.experimental.UtilityClass;
+
+/**
+ * Desc:
+ *
+ * @author lyz
+ * @version 1.0.0
+ * @date 2023/6/15 9:28
+ */
+@UtilityClass
+public class AuthConstants {
+
+    /**
+     * redis前缀
+     */
+    public final String REDIS_PREFIX = "auth";
+
+    /**
+     * 获取redis的key
+     *
+     * @param keys
+     * @return
+     */
+    public static String getRedisKey(final String... keys) {
+        return Joiner.on(CommonServiceConstant.DEFAULT_JOINER).join(REDIS_PREFIX, keys);
+    }
+}

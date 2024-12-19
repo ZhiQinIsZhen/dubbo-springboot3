@@ -2,14 +2,16 @@ package com.liyz.boot3.api.test.controller.json;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.liyz.boot3.common.util.JsonMapperUtil;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -24,7 +26,12 @@ public class JsonController {
 
     @Getter
     @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Apple {
+
+        private BigDecimal price;
 
         private Integer colour;
 
@@ -32,7 +39,22 @@ public class JsonController {
         private String name;
     }
 
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) {
+        List<Apple> list = new ArrayList();
+        list.add(Apple.builder().price(BigDecimal.valueOf(3)).colour(4).build());
+        list.add(Apple.builder().price(BigDecimal.valueOf(5)).colour(1).build());
+        list.add(Apple.builder().price(BigDecimal.valueOf(2)).colour(6).build());
+        list.add(Apple.builder().price(BigDecimal.valueOf(3)).colour(1).build());
+        list.add(Apple.builder().price(BigDecimal.valueOf(4)).colour(2).build());
+        list.add(Apple.builder().price(BigDecimal.valueOf(2)).colour(0).build());
+        list.add(Apple.builder().price(BigDecimal.valueOf(2)).colour(0).build());
+        Apple object = list.stream().min(Comparator.comparing(Apple::getPrice).thenComparing(Apple::getColour)).orElse(null);
+        System.out.println(JsonMapperUtil.toJSONString(object));
+        object = list.stream().min(Comparator.comparing(Apple::getColour).thenComparing(Apple::getPrice)).orElse(null);
+        System.out.println(JsonMapperUtil.toJSONString(object));
+    }
+
+    /*public static void main1(String[] args) throws URISyntaxException {
         Apple apple = new Apple();
         apple.setColour(1);
         apple.setName("红富士");
@@ -42,5 +64,5 @@ public class JsonController {
         for (NameValuePair item : nameValuePairs) {
             System.out.println(JsonMapperUtil.toJSONPrettyString(item));
         }
-    }
+    }*/
 }

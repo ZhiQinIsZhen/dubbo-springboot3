@@ -1,21 +1,22 @@
 package com.liyz.boot3.security.client.context;
 
-import com.google.common.base.Joiner;
 import com.liyz.boot3.common.api.util.CookieUtil;
 import com.liyz.boot3.common.api.util.HttpServletContext;
-import com.liyz.boot3.common.service.constant.CommonServiceConstant;
 import com.liyz.boot3.common.service.util.BeanUtil;
 import com.liyz.boot3.common.util.PatternUtil;
+import com.liyz.boot3.security.client.bo.LoginBO;
 import com.liyz.boot3.security.client.constant.SecurityClientConstant;
 import com.liyz.boot3.security.client.user.AuthUserDetails;
 import com.liyz.boot3.service.auth.bo.AuthUserBO;
 import com.liyz.boot3.service.auth.bo.AuthUserLoginBO;
 import com.liyz.boot3.service.auth.bo.AuthUserLogoutBO;
 import com.liyz.boot3.service.auth.bo.AuthUserRegisterBO;
-import com.liyz.boot3.service.auth.enums.Device;
 import com.liyz.boot3.service.auth.enums.LoginType;
 import com.liyz.boot3.service.auth.remote.RemoteAuthService;
 import com.liyz.boot3.service.auth.remote.RemoteJwtParseService;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -28,16 +29,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.Date;
+import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Desc:
+ * Desc:认证上下文
  *
  * @author lyz
  * @version 1.0.0
  * @date 2023/11/24 10:39
  */
+@Slf4j
 public class AuthContext implements EnvironmentAware, ApplicationContextAware, InitializingBean {
 
     private static final InheritableThreadLocal<AuthUserBO> innerContext = new InheritableThreadLocal<>();
@@ -92,55 +94,36 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
         /**
          * 登录
          *
-         * @param authUserLoginBO 登录参数
+         * @param loginBO 登录参数
          * @return 登录用户信息
          */
-        public static AuthUserBO login(AuthUserLoginBO authUserLoginBO) {
+        public static AuthUserBO login(LoginBO loginBO) throws IOException {
+            Authentication authentication = new UsernamePasswordAuthenticationToken(loginBO.getUsername(), loginBO.getPassword());
+            SecurityContextHolder.getContext().setAuthentication(authenticationManager.authenticate(authentication));
+            AuthUserDetails authUserDetails = (AuthUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            AuthUserBO authUserBO = BeanUtil.copyProperties(authUserDetails.getAuthUser(), AuthUserBO::new, (s, t) -> {
+                t.setPassword(null);
+                t.setSalt(null);
+                t.setLoginKey(null);
+            });
+            AuthUserLoginBO authUserLoginBO = new AuthUserLoginBO();
+            authUserLoginBO.setUsername(loginBO.getUsername());
             authUserLoginBO.setClientId(clientId);
             authUserLoginBO.setDevice(DeviceContext.getDevice(HttpServletContext.getRequest()));
             authUserLoginBO.setLoginType(LoginType.getByType(PatternUtil.checkMobileEmail(authUserLoginBO.getUsername())));
             authUserLoginBO.setIp(HttpServletContext.getIpAddress());
-            Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    Joiner.on(CommonServiceConstant.DEFAULT_JOINER).join(
-                            authUserLoginBO.getDevice().getType(),
-                            authUserLoginBO.getClientId(),
-                            authUserLoginBO.getUsername()),
-                    authUserLoginBO.getPassword());
-            SecurityContextHolder.getContext().setAuthentication(authenticationManager.authenticate(authentication));
-            AuthUserDetails authUserDetails = (AuthUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            Date checkTime = remoteAuthService.login(
-                    AuthUserLoginBO.builder()
-                            .clientId(authUserLoginBO.getClientId())
-                            .authId(authUserDetails.getAuthUser().getAuthId())
-                            .loginType(authUserLoginBO.getLoginType())
-                            .device(authUserLoginBO.getDevice())
-                            .ip(authUserLoginBO.getIp())
-                            .build());
-            authUserDetails.getAuthUser().setCheckTime(checkTime);
-            Pair<String, String> pair = JwtService.generateToken(authUserDetails.getAuthUser());
-            AuthUserBO authUserBO = BeanUtil.copyProperties(authUserDetails.getAuthUser(), AuthUserBO::new, (s, t) -> {
-                t.setPassword(null);
-                t.setSalt(null);
-                s.setCheckTime(checkTime);
-                t.setToken(pair.getRight());
-            });
+            if (StringUtils.isNotBlank(authUserLoginBO.getRedirect())) {
+                HttpServletResponse response = HttpServletContext.getResponse();
+                response.setHeader(SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY, authUserBO.getToken());
+                response.sendRedirect(authUserLoginBO.getRedirect());
+            }
             CookieUtil.addCookie(
                     SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY,
-                    pair.getLeft() + authUserBO.getToken(),
+                    authUserBO.getJwtPrefix() + authUserBO.getToken(),
                     30 * 60,
                     null
             );
             return authUserBO;
-        }
-
-        /**
-         * 根据登录名查询用户信息
-         *
-         * @param username 用户名
-         * @return 用户信息
-         */
-        public static AuthUserBO loadByUsername(String username, Device device) {
-            return remoteAuthService.loadByUsername(username, device);
         }
 
         /**

@@ -59,4 +59,9 @@ public class AuthUserLoginBO implements Serializable {
      * 客户端ID
      */
     private String clientId;
+
+    /**
+     * 重定向路劲
+     */
+    private String redirect;
 }

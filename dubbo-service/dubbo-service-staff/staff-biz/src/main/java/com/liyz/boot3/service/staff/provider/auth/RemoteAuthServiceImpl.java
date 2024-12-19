@@ -8,7 +8,6 @@ import com.liyz.boot3.service.auth.bo.AuthUserBO;
 import com.liyz.boot3.service.auth.bo.AuthUserLoginBO;
 import com.liyz.boot3.service.auth.bo.AuthUserLogoutBO;
 import com.liyz.boot3.service.auth.bo.AuthUserRegisterBO;
-import com.liyz.boot3.service.auth.enums.Device;
 import com.liyz.boot3.service.auth.enums.LoginType;
 import com.liyz.boot3.service.auth.exception.AuthExceptionCodeEnum;
 import com.liyz.boot3.service.auth.exception.RemoteAuthServiceException;
@@ -17,15 +16,16 @@ import com.liyz.boot3.service.staff.model.*;
 import com.liyz.boot3.service.staff.model.base.StaffAuthBaseDO;
 import com.liyz.boot3.service.staff.service.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.*;
-import java.util.function.BiConsumer;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -100,38 +100,6 @@ public class RemoteAuthServiceImpl implements RemoteAuthService {
     }
 
     /**
-     * 根据用户名查询用户信息
-     *
-     * @param username 用户名
-     * @param device 登录设备
-     * @return 登录用户信息
-     */
-    @Override
-    public AuthUserBO loadByUsername(String username, Device device) {
-        AuthUserBO authUser = AuthUserBO.builder()
-                .username(username)
-                .loginType(LoginType.getByType(PatternUtil.checkMobileEmail(username)))
-                .authorities(List.of())
-                .build();
-        Long staffId = this.getStaffId(username, authUser);
-        if (Objects.isNull(staffId)) {
-            return null;
-        }
-        StaffInfoDO staffInfoDO = staffInfoService.getById(staffId);
-        authUser.setAuthId(staffId);
-        authUser.setUsername(username);
-        authUser.setSalt(staffInfoDO.getSalt());
-        authUser.setDevice(device);
-        Date lastLoginTime = staffLoginLogService.lastLoginTime(staffId, device);
-        Date lastLogoutTime = staffLogoutLogService.lastLogoutTime(staffId, device);
-        authUser.setCheckTime(ObjectUtils.max(lastLoginTime, lastLogoutTime));
-        //查询角色信息
-        List<StaffRoleDO> roles = staffRoleService.list(Wrappers.query(StaffRoleDO.builder().staffId(staffId).build()));
-        authUser.setRoleIds(CollectionUtils.isEmpty(roles) ? null : roles.stream().map(StaffRoleDO::getRoleId).collect(Collectors.toList()));
-        return authUser;
-    }
-
-    /**
      * 登录
      *
      * @param authUserLogin 登录参数
@@ -139,7 +107,27 @@ public class RemoteAuthServiceImpl implements RemoteAuthService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Date login(AuthUserLoginBO authUserLogin) {
+    public AuthUserBO login(AuthUserLoginBO authUserLogin) {
+        AuthUserBO authUser = AuthUserBO.builder()
+                .clientId(authUserLogin.getClientId())
+                .username(authUserLogin.getUsername())
+                .loginType(authUserLogin.getLoginType())
+                .device(authUserLogin.getDevice())
+                .authorities(List.of())
+                .build();
+        Long staffId = this.getStaffId(authUserLogin.getUsername(), authUser);
+        if (Objects.isNull(staffId)) {
+            throw new RemoteAuthServiceException(AuthExceptionCodeEnum.USER_NOT_EXIST);
+        }
+        StaffInfoDO staffInfoDO = staffInfoService.getById(staffId);
+        if (Objects.isNull(staffInfoDO)) {
+            throw new RemoteAuthServiceException(AuthExceptionCodeEnum.USER_NOT_EXIST);
+        }
+        authUser.setAuthId(staffId);
+        authUser.setSalt(staffInfoDO.getSalt());
+        //查询角色信息
+        List<StaffRoleDO> roles = staffRoleService.list(Wrappers.query(StaffRoleDO.builder().staffId(staffId).build()));
+        authUser.setRoleIds(CollectionUtils.isEmpty(roles) ? null : roles.stream().map(StaffRoleDO::getRoleId).collect(Collectors.toList()));
         StaffLoginLogDO staffLoginLogDO = BeanUtil.copyProperties(authUserLogin, StaffLoginLogDO::new, (s, t) -> {
             t.setStaffId(s.getAuthId());
             t.setLoginTime(DateUtil.currentDate());
@@ -147,8 +135,7 @@ public class RemoteAuthServiceImpl implements RemoteAuthService {
             t.setDevice(s.getDevice().getType());
         });
         staffLoginLogService.save(staffLoginLogDO);
-        //可能会有时间误差
-        return staffLoginLogService.getById(staffLoginLogDO.getId()).getLoginTime();
+        return authUser;
     }
 
     /**

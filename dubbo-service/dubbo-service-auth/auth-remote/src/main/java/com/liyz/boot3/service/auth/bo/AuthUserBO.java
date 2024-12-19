@@ -51,6 +51,11 @@ public class AuthUserBO implements Serializable {
     private String clientId;
 
     /**
+     * jwt前缀
+     */
+    private String jwtPrefix;
+
+    /**
      * token
      */
     private String token;
@@ -68,10 +73,9 @@ public class AuthUserBO implements Serializable {
     private Device device;
 
     /**
-     * 检查时间
-     * 用于是否但设备登录的
+     * 登录验证key
      */
-    private Date checkTime;
+    private String loginKey;
 
     /**
      * 用户角色

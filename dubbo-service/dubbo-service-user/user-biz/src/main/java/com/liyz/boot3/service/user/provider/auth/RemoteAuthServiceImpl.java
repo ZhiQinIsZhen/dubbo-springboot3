@@ -9,7 +9,6 @@ import com.liyz.boot3.service.auth.bo.AuthUserBO;
 import com.liyz.boot3.service.auth.bo.AuthUserLoginBO;
 import com.liyz.boot3.service.auth.bo.AuthUserLogoutBO;
 import com.liyz.boot3.service.auth.bo.AuthUserRegisterBO;
-import com.liyz.boot3.service.auth.enums.Device;
 import com.liyz.boot3.service.auth.enums.LoginType;
 import com.liyz.boot3.service.auth.exception.AuthExceptionCodeEnum;
 import com.liyz.boot3.service.auth.exception.RemoteAuthServiceException;
@@ -19,14 +18,12 @@ import com.liyz.boot3.service.user.model.base.UserAuthBaseDO;
 import com.liyz.boot3.service.user.service.*;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -96,36 +93,6 @@ public class RemoteAuthServiceImpl implements RemoteAuthService {
     }
 
     /**
-     * 根据用户名查询用户信息
-     *
-     * @param username 用户名
-     * @param device 登录设备
-     * @return 登录用户信息
-     */
-    @Override
-    public AuthUserBO loadByUsername(String username, Device device) {
-        AuthUserBO authUser = AuthUserBO.builder()
-                .username(username)
-                .loginType(LoginType.getByType(PatternUtil.checkMobileEmail(username)))
-                .authorities(List.of())
-                .build();
-        Long userId = this.getUserId(username, authUser);
-        if (Objects.isNull(userId)) {
-            return null;
-        }
-        UserInfoDO staffInfoDO = userInfoService.getById(userId);
-        authUser.setAuthId(userId);
-        authUser.setUsername(username);
-        authUser.setSalt(staffInfoDO.getSalt());
-        authUser.setDevice(device);
-        authUser.setAuthorities(new ArrayList<>());
-        Date lastLoginTime = userLoginLogService.lastLoginTime(userId, device);
-        Date lastLogoutTime = userLogoutLogService.lastLogoutTime(userId, device);
-        authUser.setCheckTime(ObjectUtils.max(lastLoginTime, lastLogoutTime));
-        return authUser;
-    }
-
-    /**
      * 登录
      *
      * @param authUserLogin 登录参数
@@ -133,8 +100,26 @@ public class RemoteAuthServiceImpl implements RemoteAuthService {
      */
     @Override
 //    @Transactional(rollbackFor = Exception.class)
-    public Date login(AuthUserLoginBO authUserLogin) {
-        UserLoginLogDO userLoginLogDO = BeanUtil.copyProperties(authUserLogin, UserLoginLogDO::new, (s, t) -> {
+    public AuthUserBO login(AuthUserLoginBO authUserLogin) {
+        AuthUserBO authUser = AuthUserBO.builder()
+                .clientId(authUserLogin.getClientId())
+                .username(authUserLogin.getUsername())
+                .loginType(authUserLogin.getLoginType())
+                .device(authUserLogin.getDevice())
+                .authorities(List.of())
+                .build();
+        Long userId = this.getUserId(authUserLogin.getUsername(), authUser);
+        if (Objects.isNull(userId)) {
+            throw new RemoteAuthServiceException(AuthExceptionCodeEnum.USER_NOT_EXIST);
+        }
+        UserInfoDO userInfoDO = userInfoService.getById(userId);
+        if (Objects.isNull(userInfoDO)) {
+            throw new RemoteAuthServiceException(AuthExceptionCodeEnum.USER_NOT_EXIST);
+        }
+        authUser.setAuthId(userId);
+        authUser.setSalt(userInfoDO.getSalt());
+        authUser.setAuthorities(new ArrayList<>());
+        UserLoginLogDO userLoginLogDO = BeanUtil.copyProperties(authUser, UserLoginLogDO::new, (s, t) -> {
             t.setUserId(s.getAuthId());
             t.setLoginTime(DateUtil.currentDate());
             t.setLoginType(s.getLoginType().getType());
@@ -146,8 +131,7 @@ public class RemoteAuthServiceImpl implements RemoteAuthService {
                 userLoginLogService.save(userLoginLogDO);
             }
         });
-        //可能会有时间误差
-        return userLoginLogService.getById(userLoginLogDO.getId()).getLoginTime();
+        return authUser;
     }
 
     /**

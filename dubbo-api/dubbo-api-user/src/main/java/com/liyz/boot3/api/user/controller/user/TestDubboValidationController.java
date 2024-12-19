@@ -1,6 +1,5 @@
 package com.liyz.boot3.api.user.controller.user;
 
-import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.liyz.boot3.api.user.vo.user.UserInfoVO;
 import com.liyz.boot3.common.api.result.Result;
 import com.liyz.boot3.common.service.util.BeanUtil;
@@ -32,7 +31,6 @@ public class TestDubboValidationController {
     @DubboReference
     private RemoteUserInfoService remoteUserInfoService;
 
-    @ApiOperationSupport(order = 1)
     @Operation(summary = "valid验证")
     @GetMapping("/valid")
     public Result<UserInfoVO> valid() {

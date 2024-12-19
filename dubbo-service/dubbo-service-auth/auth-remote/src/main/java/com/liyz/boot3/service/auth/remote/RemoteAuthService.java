@@ -4,12 +4,9 @@ import com.liyz.boot3.service.auth.bo.AuthUserBO;
 import com.liyz.boot3.service.auth.bo.AuthUserLoginBO;
 import com.liyz.boot3.service.auth.bo.AuthUserLogoutBO;
 import com.liyz.boot3.service.auth.bo.AuthUserRegisterBO;
-import com.liyz.boot3.service.auth.enums.Device;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,21 +27,12 @@ public interface RemoteAuthService {
     Boolean registry(@NotNull AuthUserRegisterBO authUserRegister);
 
     /**
-     * 根据用户名查询用户信息
-     *
-     * @param username 用户名
-     * @param device 登录设备
-     * @return 登录用户信息
-     */
-    AuthUserBO loadByUsername(@NotBlank String username, @NotNull Device device);
-
-    /**
      * 登录
      *
      * @param authUserLogin 登录参数
      * @return 当前登录时间
      */
-    Date login(@NotNull AuthUserLoginBO authUserLogin);
+    AuthUserBO login(@NotNull AuthUserLoginBO authUserLogin);
 
     /**
      * 登出
