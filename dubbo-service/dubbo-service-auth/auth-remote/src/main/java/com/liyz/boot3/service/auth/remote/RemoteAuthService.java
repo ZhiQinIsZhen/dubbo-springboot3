@@ -30,7 +30,7 @@ public interface RemoteAuthService {
      * 登录
      *
      * @param authUserLogin 登录参数
-     * @return 当前登录时间
+     * @return 当前登录用户信息
      */
     AuthUserBO login(@NotNull AuthUserLoginBO authUserLogin);
 

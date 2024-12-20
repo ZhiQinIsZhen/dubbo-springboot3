@@ -78,7 +78,7 @@ public class RemoteAuthServiceImpl implements RemoteAuthService {
      * 登录
      *
      * @param authUserLogin 登录参数
-     * @return 当前登录时间
+     * @return 当前登录用户信息
      */
     @Override
     public AuthUserBO login(AuthUserLoginBO authUserLogin) {

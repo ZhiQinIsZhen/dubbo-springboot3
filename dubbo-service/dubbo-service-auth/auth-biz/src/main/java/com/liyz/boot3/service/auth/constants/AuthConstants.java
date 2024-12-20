@@ -4,9 +4,6 @@ import com.google.common.base.Joiner;
 import com.liyz.boot3.common.service.constant.CommonServiceConstant;
 import lombok.experimental.UtilityClass;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Desc:
  *
