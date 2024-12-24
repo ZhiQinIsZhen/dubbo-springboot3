@@ -2,8 +2,9 @@
 
 [![Build Status](https://img.shields.io/badge/Build-ZhiQinlsZhen-red)](https://github.com/ZhiQinIsZhen)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/ZhiQinIsZhen/auth-netty/blob/main/LICENSE)
-![Springboot Version](https://img.shields.io/badge/Springboot-3.4.0-brightgreen)
+![Springboot Version](https://img.shields.io/badge/Springboot-3.4.1-brightgreen)
 ![Gateway Version](https://img.shields.io/badge/Gateway-4.1.5-brightgreen)
+![Admin Version](https://img.shields.io/badge/Admin-3.4.1-brightgreen)
 ![jjwt Version](https://img.shields.io/badge/jjwt-0.12.6-brightgreen)
 ![Dubbo Version](https://img.shields.io/badge/Dubbo-3.3.2-brightgreen)
 ![Mybatis-plus Version](https://img.shields.io/badge/MybatisPlus-3.5.9-brightgreen)
@@ -39,6 +40,10 @@
 1. `dubbo-api-admin`: 管理后台网关层，鉴权基于spring-security，认证服务使用的是`dubbo-service-staff`
 2. `dubbo-api-user`: 客户前台网关层，鉴权基于spring-security，认证服务使用的是`dubbo-service-user`
 3. `dubbo-api-monitor`: 监控平台，认证服务使用的是`dubbo-service-staff`，如需修改可以在`dubbo-service-auth`服务的表中修改`dubbo_tag`
+    ```text
+    3.1 dubbo-service中没有注册上monitor，是因为没有加 spring-boot-starter-web 依赖，如果需要加入monitor中，则需要增加该依赖，
+        因为health的数据获取是通过http来请求的
+    ```
 
 ## common结构说明
 

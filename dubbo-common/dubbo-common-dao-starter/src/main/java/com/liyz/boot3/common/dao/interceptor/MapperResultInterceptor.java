@@ -1,6 +1,6 @@
 package com.liyz.boot3.common.dao.interceptor;
 
-import cn.hutool.core.collection.ConcurrentHashSet;
+
 import cn.hutool.core.util.ReflectUtil;
 import com.liyz.boot3.common.util.DesensitizeUtil;
 import com.liyz.boot3.common.util.annotation.Desensitization;
@@ -32,8 +32,10 @@ import java.util.concurrent.ConcurrentHashMap;
 )})
 public class MapperResultInterceptor implements Interceptor {
 
+    private final static Object VALUE = new Object();
+
     private final ConcurrentHashMap<Class<?>, List<Field>> containMap = new ConcurrentHashMap<>();
-    private final ConcurrentHashSet<Class<?>> nonContainSet = new ConcurrentHashSet<>();
+    private final ConcurrentHashMap<Class<?>, Object> nonContainMap = new ConcurrentHashMap<>();
 
     /**
      * todo 这里只是提供了一个思路，没有解决多层套用关系（只对第一层字段进行判断）
@@ -54,7 +56,7 @@ public class MapperResultInterceptor implements Interceptor {
                 return result;
             }
             Object first = resultList.getFirst();
-            if (nonContainSet.contains(first.getClass())) {
+            if (nonContainMap.contains(first.getClass())) {
                 return result;
             }
             List<Field> fields = containMap.get(first.getClass());
@@ -63,7 +65,7 @@ public class MapperResultInterceptor implements Interceptor {
                         .filter(f -> f.isAnnotationPresent(Desensitization.class))
                         .toList();
                 if (CollectionUtils.isEmpty(fields)) {
-                    nonContainSet.add(first.getClass());
+                    nonContainMap.put(first.getClass(), VALUE);
                     return result;
                 } else {
                     containMap.putIfAbsent(first.getClass(), fields);

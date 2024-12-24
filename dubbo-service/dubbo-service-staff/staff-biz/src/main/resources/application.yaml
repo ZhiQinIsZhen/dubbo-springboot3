@@ -65,7 +65,6 @@ management:
       exposure:
         include:
           - '*'
-    enabled-by-default: true
   endpoint:
     health:
       show-details: always
