@@ -129,7 +129,7 @@ public class RemoteAuthServiceImpl implements RemoteAuthService {
         List<StaffRoleDO> roles = staffRoleService.list(Wrappers.query(StaffRoleDO.builder().staffId(staffId).build()));
         authUser.setRoleIds(CollectionUtils.isEmpty(roles) ? null : roles.stream().map(StaffRoleDO::getRoleId).collect(Collectors.toList()));
         StaffLoginLogDO staffLoginLogDO = BeanUtil.copyProperties(authUserLogin, StaffLoginLogDO::new, (s, t) -> {
-            t.setStaffId(s.getAuthId());
+            t.setStaffId(staffId);
             t.setLoginTime(DateUtil.currentDate());
             t.setLoginType(s.getLoginType().getType());
             t.setDevice(s.getDevice().getType());

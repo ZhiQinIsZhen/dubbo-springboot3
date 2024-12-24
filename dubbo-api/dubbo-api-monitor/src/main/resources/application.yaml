@@ -34,6 +34,7 @@ dubbo:
   application:
     name: *application_name
     qos-enable: false
+    serialize-check-status: WARN
   protocol:
     port: 20760
     threads: 1

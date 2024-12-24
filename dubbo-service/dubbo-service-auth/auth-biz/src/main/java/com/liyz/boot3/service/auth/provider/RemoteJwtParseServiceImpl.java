@@ -24,6 +24,7 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.redisson.api.RSet;
@@ -133,7 +134,7 @@ public class RemoteJwtParseServiceImpl implements RemoteJwtParseService {
             log.error("生成token失败, 没有找到该应用下jwt配置信息，clientId : {}", authUser.getClientId());
             throw new RemoteAuthServiceException(AuthExceptionCodeEnum.LOGIN_ERROR);
         }
-        return Pair.ofNonNull(authJwtDO.getJwtPrefix(),
+        return MutablePair.of(authJwtDO.getJwtPrefix(),
                 JwtUtil.builder()
                         .id(authUser.getAuthId().toString())
                         .subject(authUser.getUsername())

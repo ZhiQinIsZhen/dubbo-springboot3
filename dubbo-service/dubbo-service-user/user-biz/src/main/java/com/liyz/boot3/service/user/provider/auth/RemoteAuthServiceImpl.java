@@ -120,7 +120,7 @@ public class RemoteAuthServiceImpl implements RemoteAuthService {
         authUser.setSalt(userInfoDO.getSalt());
         authUser.setAuthorities(new ArrayList<>());
         UserLoginLogDO userLoginLogDO = BeanUtil.copyProperties(authUser, UserLoginLogDO::new, (s, t) -> {
-            t.setUserId(s.getAuthId());
+            t.setUserId(userId);
             t.setLoginTime(DateUtil.currentDate());
             t.setLoginType(s.getLoginType().getType());
             t.setDevice(s.getDevice().getType());
