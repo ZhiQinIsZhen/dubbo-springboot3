@@ -3,7 +3,7 @@ package com.liyz.boot3.gateway.filter;
 import com.liyz.boot3.common.remote.exception.RemoteServiceException;
 import com.liyz.boot3.gateway.constant.GatewayConstant;
 import com.liyz.boot3.gateway.properties.AnonymousMappingProperties;
-import com.liyz.boot3.gateway.util.ResponseUtil;
+import com.liyz.boot3.gateway.util.WebExchangeUtil;
 import com.liyz.boot3.service.auth.bo.AuthUserBO;
 import com.liyz.boot3.service.auth.exception.AuthExceptionCodeEnum;
 import com.liyz.boot3.service.auth.remote.RemoteJwtParseService;
@@ -17,10 +17,8 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.core.Ordered;
-import org.springframework.core.io.buffer.DefaultDataBuffer;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.util.UriUtils;
@@ -63,12 +61,14 @@ public class GlobalJWTFilter implements GlobalFilter, GatewayConstant, Ordered {
      */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        this.cacheBodyLog(exchange);
+        final String body;
+        if (StringUtils.isNotBlank(body = WebExchangeUtil.getBody(exchange))) {
+            log.info(body);
+        }
         ServerHttpRequest request = exchange.getRequest();
-        ServerHttpResponse response = exchange.getResponse();
         Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
         if (route == null) {
-            return ResponseUtil.response(response, AuthExceptionCodeEnum.NOT_FOUND);
+            return WebExchangeUtil.response(exchange, AuthExceptionCodeEnum.NOT_FOUND);
         }
         String path = request.getURI().getPath();
         String clientId = route.getId();
@@ -85,38 +85,21 @@ public class GlobalJWTFilter implements GlobalFilter, GatewayConstant, Ordered {
             jwt = UriUtils.decode(jwt, StandardCharsets.UTF_8);
         }
         if (StringUtils.isBlank(jwt)) {
-            return ResponseUtil.response(response, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
+            return WebExchangeUtil.response(exchange, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
         try {
             AuthUserBO authUserBO = remoteJwtParseService.parseToken(jwt, clientId);
             if (Objects.isNull(authUserBO)) {
-                return ResponseUtil.response(response, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
+                return WebExchangeUtil.response(exchange, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
             }
             exchange.getAttributes().put(GatewayConstant.AUTH_INFO, authUserBO);
         } catch (RemoteServiceException e) {
-            return ResponseUtil.response(response, e.getCode(), e.getMessage());
+            return WebExchangeUtil.response(exchange, e.getCode(), e.getMessage());
         } catch (Exception e) {
             log.error("parse token error", e);
-            return ResponseUtil.response(response, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
+            return WebExchangeUtil.response(exchange, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
         return chain.filter(exchange);
-    }
-
-    /**
-     * 打印缓存的body日志
-     *
-     * @param exchange
-     */
-    private void cacheBodyLog(ServerWebExchange exchange) {
-        Object cachedBody = exchange.getAttribute(ServerWebExchangeUtils.CACHED_REQUEST_BODY_ATTR);
-        if (Objects.isNull(cachedBody)) {
-            return;
-        }
-        if (cachedBody instanceof DefaultDataBuffer buffer) {
-            byte[] bytes = new byte[buffer.readableByteCount()];
-            buffer.read(bytes);
-            log.info("cachedBody : {}", new String(bytes, StandardCharsets.UTF_8));
-        }
     }
 
     @Override

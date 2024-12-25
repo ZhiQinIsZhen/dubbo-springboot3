@@ -3,7 +3,7 @@ package com.liyz.boot3.gateway.filter;
 import com.liyz.boot3.common.remote.exception.CommonExceptionCodeEnum;
 import com.liyz.boot3.common.util.PatternUtil;
 import com.liyz.boot3.gateway.properties.NonLimitMappingProperties;
-import com.liyz.boot3.gateway.util.ResponseUtil;
+import com.liyz.boot3.gateway.util.WebExchangeUtil;
 import com.liyz.boot3.service.auth.exception.AuthExceptionCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -49,7 +49,7 @@ public class GlobalLimitFilter extends RequestRateLimiterGatewayFilterFactory im
             String path = exchange.getRequest().getURI().getPath();
             Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
             if (route == null) {
-                return ResponseUtil.response(exchange.getResponse(), AuthExceptionCodeEnum.NOT_FOUND);
+                return WebExchangeUtil.response(exchange, AuthExceptionCodeEnum.NOT_FOUND);
             }
             String clientId = route.getId();
             Set<String> mappingSet = properties.getServer().get(clientId);
@@ -61,7 +61,7 @@ public class GlobalLimitFilter extends RequestRateLimiterGatewayFilterFactory im
                     return chain.filter(exchange);
                 }
                 log.warn("已限流: {}, key : {}", clientId, key);
-                return ResponseUtil.response(exchange.getResponse(), CommonExceptionCodeEnum.OUT_LIMIT_COUNT);
+                return WebExchangeUtil.response(exchange, CommonExceptionCodeEnum.OUT_LIMIT_COUNT);
             });
         });
     }

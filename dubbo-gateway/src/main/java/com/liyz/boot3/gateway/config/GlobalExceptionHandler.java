@@ -2,10 +2,9 @@ package com.liyz.boot3.gateway.config;
 
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.liyz.boot3.common.remote.exception.CommonExceptionCodeEnum;
-import com.liyz.boot3.gateway.util.ResponseUtil;
+import com.liyz.boot3.gateway.util.WebExchangeUtil;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -23,16 +22,15 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
 
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
-        ServerHttpResponse resp = exchange.getResponse();
-        if (resp.isCommitted()) {
+        if (exchange.getResponse().isCommitted()) {
             return Mono.error(ex);
         }
         if (ex instanceof ConnectException) {
-            return ResponseUtil.response(resp, CommonExceptionCodeEnum.REMOTE_SERVICE_FAIL);
+            return WebExchangeUtil.response(exchange, CommonExceptionCodeEnum.REMOTE_SERVICE_FAIL);
         } else if (ex instanceof BlockException) {
-            return ResponseUtil.response(resp, CommonExceptionCodeEnum.OUT_LIMIT_COUNT);
+            return WebExchangeUtil.response(exchange, CommonExceptionCodeEnum.OUT_LIMIT_COUNT);
         }
-        return ResponseUtil.response(resp, CommonExceptionCodeEnum.REMOTE_SERVICE_FAIL);
+        return WebExchangeUtil.response(exchange, CommonExceptionCodeEnum.REMOTE_SERVICE_FAIL);
     }
 
 

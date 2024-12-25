@@ -90,6 +90,10 @@
         </dependency>
         <dependency>
             <groupId>com.liyz.boot3</groupId>
+            <artifactId>dubbo-common-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.boot3</groupId>
             <artifactId>auth-remote</artifactId>
         </dependency>
 

@@ -3,7 +3,7 @@ package com.liyz.boot3.gateway.filter;
 import com.liyz.boot3.common.util.PatternUtil;
 import com.liyz.boot3.gateway.constant.GatewayConstant;
 import com.liyz.boot3.gateway.properties.AuthorityMappingProperties;
-import com.liyz.boot3.gateway.util.ResponseUtil;
+import com.liyz.boot3.gateway.util.WebExchangeUtil;
 import com.liyz.boot3.service.auth.bo.AuthUserBO;
 import com.liyz.boot3.service.auth.exception.AuthExceptionCodeEnum;
 import com.liyz.boot3.service.auth.remote.RemoteAuthService;
@@ -17,7 +17,6 @@ import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.core.Ordered;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ServerWebExchange;
@@ -50,10 +49,9 @@ public class GlobalAuthorityFilter implements GlobalFilter, GatewayConstant, Ord
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
-        ServerHttpResponse response = exchange.getResponse();
         Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
         if (route == null) {
-            return ResponseUtil.response(response, AuthExceptionCodeEnum.NOT_FOUND);
+            return WebExchangeUtil.response(exchange, AuthExceptionCodeEnum.NOT_FOUND);
         }
         AuthUserBO authUserBO = exchange.getAttribute(AUTH_INFO);
         if (Objects.isNull(authUserBO)) {
@@ -75,7 +73,7 @@ public class GlobalAuthorityFilter implements GlobalFilter, GatewayConstant, Ord
                 }
             }
         }
-        return ResponseUtil.response(response, AuthExceptionCodeEnum.NO_RIGHT);
+        return WebExchangeUtil.response(exchange, AuthExceptionCodeEnum.NO_RIGHT);
     }
 
     @Override
