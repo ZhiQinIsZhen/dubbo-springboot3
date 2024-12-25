@@ -19,7 +19,8 @@ spring:
     admin:
       client:
         url: http://127.0.0.1:7060
-# datasource
+        enabled: false
+  # datasource
   datasource:
     url: jdbc:mysql://localhost:3306/auth?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
     type: com.zaxxer.hikari.HikariDataSource
@@ -93,4 +94,4 @@ management:
           - '*'
   endpoint:
     health:
-      show-details: always
+      show-details: when_authorized

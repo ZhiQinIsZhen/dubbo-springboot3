@@ -1,6 +1,9 @@
 package com.liyz.boot3.gateway.filter;
 
+import com.liyz.boot3.common.util.CryptoUtil;
+import com.liyz.boot3.common.util.JsonMapperUtil;
 import com.liyz.boot3.gateway.constant.GatewayConstant;
+import com.liyz.boot3.service.auth.bo.AuthUserBO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -14,8 +17,7 @@ import reactor.core.publisher.Mono;
 import static org.springframework.cloud.gateway.support.GatewayToStringStyler.filterToStringCreator;
 
 /**
- * Desc:todo 这里是伪代码，因为在前置网关上校验过登陆权限，所以在后置网关上不再需要二次校验，可以把认证信息放入header中
- * 传下去，后置网关只需要解析该值就好，如果确保安全，可以加密该值或者解析token数据与其对比等安全方案
+ * Desc:往后传递header过滤器 -- 这里采用了aes加密方式
  *
  * @author lyz
  * @version 1.0.0
@@ -23,26 +25,26 @@ import static org.springframework.cloud.gateway.support.GatewayToStringStyler.fi
  */
 @Slf4j
 @Component
-public class GlobalAuthIdHeaderFilter extends AddRequestHeaderGatewayFilterFactory implements Ordered {
+public class GlobalAuthInfoHeaderFilter extends AddRequestHeaderGatewayFilterFactory implements Ordered {
 
     @Override
     public GatewayFilter apply(NameValueConfig config) {
         return new GatewayFilter() {
             @Override
             public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-                Long authId = exchange.getAttribute(GatewayConstant.AUTH_ID);
-                String value = authId == null ? config.getValue() : authId.toString();
+                AuthUserBO authUserBO = exchange.getAttribute(GatewayConstant.AUTH_INFO);
+                String authInfo = authUserBO == null ? null : CryptoUtil.Symmetric.encryptAES(JsonMapperUtil.toJSONString(authUserBO), config.getValue());
                 ServerHttpRequest request = exchange
                         .getRequest()
                         .mutate()
-                        .headers(httpHeaders -> httpHeaders.add(config.getName(), value))
+                        .headers(httpHeaders -> httpHeaders.add(config.getName(), authInfo))
                         .build();
                 return chain.filter(exchange.mutate().request(request).build());
             }
 
             @Override
             public String toString() {
-                return filterToStringCreator(GlobalAuthIdHeaderFilter.this)
+                return filterToStringCreator(GlobalAuthInfoHeaderFilter.this)
                         .append(config.getName(), config.getValue()).toString();
             }
         };
@@ -50,6 +52,6 @@ public class GlobalAuthIdHeaderFilter extends AddRequestHeaderGatewayFilterFacto
 
     @Override
     public int getOrder() {
-        return 20;
+        return Ordered.HIGHEST_PRECEDENCE + 40000;
     }
 }

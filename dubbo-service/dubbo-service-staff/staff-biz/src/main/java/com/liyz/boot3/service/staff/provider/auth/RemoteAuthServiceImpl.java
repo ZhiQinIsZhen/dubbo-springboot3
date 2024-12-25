@@ -165,13 +165,19 @@ public class RemoteAuthServiceImpl implements RemoteAuthService {
     @Override
     public List<AuthUserBO.AuthGrantedAuthorityBO> authorities(AuthUserBO authUser) {
         Set<Integer> authorityIdSet = new HashSet<>();
-        //查询角色拥有的权限
-        if (!CollectionUtils.isEmpty(authUser.getRoleIds())) {
-            List<SystemRoleAuthorityDO> roleAuthorityList = systemRoleAuthorityService.list(Wrappers.lambdaQuery(SystemRoleAuthorityDO.class)
-                    .in(SystemRoleAuthorityDO::getRoleId, authUser.getRoleIds()));
-            if (!CollectionUtils.isEmpty(roleAuthorityList)) {
-                roleAuthorityList.forEach(item -> authorityIdSet.add(item.getAuthorityId()));
+        if (CollectionUtils.isEmpty(authUser.getRoleIds())) {
+            //查询角色信息
+            List<StaffRoleDO> roles = staffRoleService.list(Wrappers.query(StaffRoleDO.builder().staffId(authUser.getAuthId()).build()));
+            if (CollectionUtils.isEmpty(roles)) {
+                //这里如果员工没有角色，则直接返回空的权限列表，不再查询临时权限数据
+                return RemoteAuthService.super.authorities(authUser);
             }
+            authUser.setRoleIds(roles.stream().map(StaffRoleDO::getRoleId).collect(Collectors.toList()));
+        }
+        List<SystemRoleAuthorityDO> roleAuthorityList = systemRoleAuthorityService.list(Wrappers.lambdaQuery(SystemRoleAuthorityDO.class)
+                .in(SystemRoleAuthorityDO::getRoleId, authUser.getRoleIds()));
+        if (!CollectionUtils.isEmpty(roleAuthorityList)) {
+            roleAuthorityList.forEach(item -> authorityIdSet.add(item.getAuthorityId()));
         }
         //查询临时权限
         List<StaffAuthorityDO> list = staffAuthorityService.list(Wrappers.lambdaQuery(StaffAuthorityDO.class)

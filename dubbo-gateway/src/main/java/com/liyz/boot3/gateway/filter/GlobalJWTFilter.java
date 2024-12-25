@@ -1,7 +1,6 @@
 package com.liyz.boot3.gateway.filter;
 
 import com.liyz.boot3.common.remote.exception.RemoteServiceException;
-import com.liyz.boot3.common.util.PatternUtil;
 import com.liyz.boot3.gateway.constant.GatewayConstant;
 import com.liyz.boot3.gateway.properties.AnonymousMappingProperties;
 import com.liyz.boot3.gateway.util.ResponseUtil;
@@ -18,18 +17,17 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.core.Ordered;
+import org.springframework.core.io.buffer.DefaultDataBuffer;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.util.UriUtils;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Desc:Jwt全局过滤器
@@ -45,7 +43,7 @@ import java.util.Set;
 @Component
 @RefreshScope
 @EnableConfigurationProperties(AnonymousMappingProperties.class)
-public class GlobalJWTFilter implements GlobalFilter, Ordered {
+public class GlobalJWTFilter implements GlobalFilter, GatewayConstant, Ordered {
 
     private final AnonymousMappingProperties properties;
 
@@ -58,7 +56,6 @@ public class GlobalJWTFilter implements GlobalFilter, Ordered {
 
     /**
      * 确认是否需要认证JWT
-     * todo 这里是伪代码，真实情况根据自己的来
      *
      * @param exchange 数据
      * @param chain 链
@@ -66,6 +63,7 @@ public class GlobalJWTFilter implements GlobalFilter, Ordered {
      */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        this.cacheBodyLog(exchange);
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
         Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
@@ -74,8 +72,8 @@ public class GlobalJWTFilter implements GlobalFilter, Ordered {
         }
         String path = request.getURI().getPath();
         String clientId = route.getId();
-        Set<String> mappingSet = properties.getServer().get(clientId);
-        if (!CollectionUtils.isEmpty(mappingSet) && (mappingSet.contains(path) || PatternUtil.pathMatch(path, mappingSet))) {
+        if (this.pathMatch(path, properties.getServer().get(GatewayConstant.DEFAULT_ANONYMOUS_MAPPING))
+                || this.pathMatch(path, properties.getServer().get(clientId))) {
             return chain.filter(exchange);
         }
         String jwt = Objects.requireNonNullElse(request.getCookies()
@@ -94,7 +92,7 @@ public class GlobalJWTFilter implements GlobalFilter, Ordered {
             if (Objects.isNull(authUserBO)) {
                 return ResponseUtil.response(response, AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
             }
-            exchange.getAttributes().put(GatewayConstant.AUTH_ID, authUserBO.getAuthId());
+            exchange.getAttributes().put(GatewayConstant.AUTH_INFO, authUserBO);
         } catch (RemoteServiceException e) {
             return ResponseUtil.response(response, e.getCode(), e.getMessage());
         } catch (Exception e) {
@@ -104,8 +102,25 @@ public class GlobalJWTFilter implements GlobalFilter, Ordered {
         return chain.filter(exchange);
     }
 
+    /**
+     * 打印缓存的body日志
+     *
+     * @param exchange
+     */
+    private void cacheBodyLog(ServerWebExchange exchange) {
+        Object cachedBody = exchange.getAttribute(ServerWebExchangeUtils.CACHED_REQUEST_BODY_ATTR);
+        if (Objects.isNull(cachedBody)) {
+            return;
+        }
+        if (cachedBody instanceof DefaultDataBuffer buffer) {
+            byte[] bytes = new byte[buffer.readableByteCount()];
+            buffer.read(bytes);
+            log.info("cachedBody : {}", new String(bytes, StandardCharsets.UTF_8));
+        }
+    }
+
     @Override
     public int getOrder() {
-        return 0;
+        return Ordered.HIGHEST_PRECEDENCE + 10000;
     }
 }

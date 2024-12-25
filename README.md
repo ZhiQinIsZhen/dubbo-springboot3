@@ -44,6 +44,13 @@
     3.1 dubbo-service中没有注册上monitor，是因为没有加 spring-boot-starter-web 依赖，如果需要加入monitor中，则需要增加该依赖，
         因为health的数据获取是通过http来请求的
     ```
+## gateway说明
+1. `GlobalRequestTimeFilter`: 请求耗时打印
+2. `GlobalCacheBodyFilter`: 缓存body参数
+3. `GlobalJWTFilter`: 登录认证，可配置匿名访问url
+4. `GlobalLimitFilter`: 限流过滤器，如果登录则按照用户id，否则根据ip限流
+5. `GlobalAuthorityFilter`: 权限过滤器，可配置白名单url
+6. `GlobalAuthInfoHeaderFilter`: 认证信息透传过滤器
 
 ## common结构说明
 

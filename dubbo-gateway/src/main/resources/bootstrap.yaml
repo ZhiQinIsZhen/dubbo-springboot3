@@ -49,6 +49,10 @@ spring:
                 redis-rate-limiter.replenishRate: 1
                 redis-rate-limiter.burstCapacity: 3
                 redis-rate-limiter.requestedTokens: 1
+            - name: GlobalAuthInfoHeaderFilter
+              args:
+                name: AUTH_INFO
+                value: BdbGFURCLfHFgg3qmhaBxG0LG6rYuhST
         - id: dubbo-api-user
           uri: http://localhost:7072
           predicates:
@@ -60,13 +64,10 @@ spring:
                 redis-rate-limiter.replenishRate: 1
                 redis-rate-limiter.burstCapacity: 300
                 redis-rate-limiter.requestedTokens: 1
-            - name: GlobalAuthIdHeaderFilter
+            - name: GlobalAuthInfoHeaderFilter
               args:
-                name: AUTH_ID
-                value: -1
-            - name: GlobalCacheBodyFilter
-              args:
-                body-class: java.lang.Object
+                name: AUTH_INFO
+                value: BdbGFURCLfHFgg3qmhaBxG0LG6rYuhST
   # redis
   data:
     redis:
@@ -77,8 +78,12 @@ spring:
     admin:
       client:
         url: http://127.0.0.1:7060
+        enabled: false
   messages:
     basename: i18n.message
+logging:
+  file:
+    name: '\srv\logs\${spring.application.name}\${spring.application.name}.log'
 # dubbo
 dubbo:
   application:
@@ -130,43 +135,49 @@ knife4j:
       version: openapi3
     tags-sorter: order
     operations-sorter: order
+# management
 management:
   endpoints:
     web:
       exposure:
         include:
           - '*'
-    enabled-by-default: true
   endpoint:
     health:
-      show-details: always
+      show-details: when_authorized
 # 免鉴权
 anonymous:
   mapping:
     server:
+      common-api:
+        - /*/v3/api-docs/**
+        - /*/auth/register
+        - /*/auth/login
       dubbo-api-admin:
-        - /admin/v3/api-docs/**
-        - /admin/auth/register
-        - /admin/auth/login
         - /admin/test/**
       dubbo-api-user:
-        - /user/doc.html
         - /user/webjars/**
-        - /user/v3/api-docs/**
-        - /user/user/register
-        - /user/user/login
         - /user/test/**
         - /user/export/**
         - /user/search/company/**
         - /user/search/investor/**
         - /user/search/financing/**
+# 免限流
 non:
   limit:
     mapping:
       server:
         dubbo-api-user:
           - /user/test/**
-logging:
-  file:
-    name: '\srv\logs\${spring.application.name}\${spring.application.name}.log'
+## 权限
+authority:
+  mapping:
+    white:
+      common-api:
+        - /*/auth/logout
+      dubbo-api-admin:
+        - /admin/staff/current
+        - /admin/staff/login/page
+        - /admin/staff/logout/page
+
 

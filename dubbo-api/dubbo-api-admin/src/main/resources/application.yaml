@@ -104,6 +104,11 @@ knife4j:
 auth:
   advice:
     enable: true
+gateway:
+  auth:
+    header:
+      key: AUTH_INFO
+      secret: BdbGFURCLfHFgg3qmhaBxG0LG6rYuhST
 # management
 management:
   endpoints:

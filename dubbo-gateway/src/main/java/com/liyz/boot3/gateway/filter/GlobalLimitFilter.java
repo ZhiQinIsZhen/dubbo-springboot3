@@ -68,6 +68,6 @@ public class GlobalLimitFilter extends RequestRateLimiterGatewayFilterFactory im
 
     @Override
     public int getOrder() {
-        return 10;
+        return Ordered.HIGHEST_PRECEDENCE + 20000;
     }
 }

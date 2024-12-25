@@ -6,13 +6,16 @@ import com.liyz.boot3.security.client.filter.JwtAuthenticationTokenFilter;
 import com.liyz.boot3.security.client.handler.JwtAuthenticationEntryPoint;
 import com.liyz.boot3.security.client.handler.AuthUserArgumentResolver;
 import com.liyz.boot3.security.client.handler.RestfulAccessDeniedHandler;
+import com.liyz.boot3.security.client.properties.GatewayAuthHeaderProperties;
 import com.liyz.boot3.security.client.user.impl.UserDetailsServiceImpl;
 import com.liyz.boot3.service.auth.remote.RemoteAuthService;
 import com.liyz.boot3.service.auth.remote.RemoteJwtParseService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -49,7 +52,11 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@EnableConfigurationProperties(GatewayAuthHeaderProperties.class)
 public class AuthSecurityClientAutoConfig implements WebMvcConfigurer, InitializingBean {
+
+    @Resource
+    private GatewayAuthHeaderProperties properties;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -100,7 +107,7 @@ public class AuthSecurityClientAutoConfig implements WebMvcConfigurer, Initializ
                         .requestMatchers(HttpMethod.GET, SecurityClientConstant.ACTUATOR_RESOURCES).permitAll()
                         .requestMatchers(AnonymousMappingConfig.getAnonymousMappings()).permitAll()
                         .anyRequest().authenticated())
-                .addFilterBefore(new JwtAuthenticationTokenFilter(SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY),
+                .addFilterBefore(new JwtAuthenticationTokenFilter(SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY, properties),
                         UsernamePasswordAuthenticationFilter.class)
                 .headers(hc -> hc.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 //如无需要请勿设置跨域

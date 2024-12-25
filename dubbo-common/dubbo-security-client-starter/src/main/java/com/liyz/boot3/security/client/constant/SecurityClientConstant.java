@@ -42,4 +42,9 @@ public interface SecurityClientConstant {
     String JWT_SERVICE_BEAN_NAME = "remoteJwtParseService-auth";
 
     String AUTH_MANAGER_BEAN_NAME = "authenticationManager";
+
+    /**
+     * 默认cookie过期时间
+     */
+    int DEFAULT_COOKIE_EXPIRY = 30 * 60;
 }
