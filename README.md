@@ -51,6 +51,7 @@
 4. `GlobalLimitFilter`: 限流过滤器，如果登录则按照用户id，否则根据ip限流
 5. `GlobalAuthorityFilter`: 权限过滤器，可配置白名单url
 6. `GlobalAuthInfoHeaderFilter`: 认证信息透传过滤器
+7. Filter执行顺序：RequestTime -> CacheBody -> JWT -> Limit -> Authority -> AuthInfoHeader
 
 ## common结构说明
 
@@ -87,7 +88,7 @@
     ```
 7. `dubbo-common-util`: 通用工具类框架
     ```text
-    7.1 脱敏注解@Desensitization：支持10中类型（加解密、DFA、手机号等）
+    7.1 脱敏注解@Desensitization：支持10中类型（加解密、DFA、手机号等），支持Jackson序列化以及mysql
     7.2 去除首尾空格注解@Trim
     7.3 公告工具类：时间、Json、加解密等
     ```
@@ -109,11 +110,6 @@
 2. `dubbo-service-staff`: 员工信息服务
 3. `dubbo-service-user`: 客户信息服务
 4. `dubbo-service-search`：搜索服务
-
-## gateway结构说明
-
-1. `GlobalJWTFilter`: 自定义全局JWT过滤器
-2. `GlobalLimitFilter`: 自定义限流过滤器
 
 ## task结构说明
 1. `dubbo-task-elastic`：使用的是基于elastic job为框架
