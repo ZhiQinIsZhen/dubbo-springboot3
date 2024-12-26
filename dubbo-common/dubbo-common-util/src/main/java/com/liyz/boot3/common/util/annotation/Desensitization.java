@@ -41,4 +41,18 @@ public @interface Desensitization {
      * @return 结束坐标值
      */
     int endIndex() default 0;
+
+    /**
+     * 是否db入参脱敏
+     *
+     * @return true:是; false:否
+     */
+    boolean dbParam() default true;
+
+    /**
+     * 是否db结果脱敏
+     *
+     * @return true:是; false:否
+     */
+    boolean dbResult() default true;
 }

@@ -72,7 +72,7 @@ public class MapperParamInterceptor implements Interceptor {
         List<Field> fields = containMap.get(cls);
         if (CollectionUtils.isEmpty(fields)) {
             fields = Arrays.stream(ReflectUtil.getFields(cls))
-                    .filter(f -> f.isAnnotationPresent(Desensitization.class))
+                    .filter(f -> f.isAnnotationPresent(Desensitization.class) && f.getAnnotation(Desensitization.class).dbParam())
                     .toList();
             if (CollectionUtils.isEmpty(fields)) {
                 nonContainSet.add(cls);

@@ -43,6 +43,6 @@ public class UserLoginLogDO extends BaseDO implements Serializable {
 
     private Date loginTime;
 
-    @Desensitization(value = DesensitizationType.SELF_DEFINITION, beginIndex = 2, endIndex = 5)
+    @Desensitization(value = DesensitizationType.SELF_DEFINITION, beginIndex = 2, endIndex = 5, dbParam = false)
     private String ip;
 }

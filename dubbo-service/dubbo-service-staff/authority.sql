@@ -10,7 +10,7 @@ CREATE TABLE `staff3`.`staff_role` (
      `version` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '版本号',
      PRIMARY KEY (`id`) USING BTREE,
      UNIQUE KEY `uniq_staff_id_role_id` (`staff_id`,`role_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='员工角色表';
+) ENGINE=InnoDB COMMENT='员工角色表';
 
 CREATE TABLE `staff3`.`system_role` (
    `role_id` int(8) unsigned NOT NULL COMMENT '角色ID',
@@ -23,7 +23,7 @@ CREATE TABLE `staff3`.`system_role` (
    `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除 | 0、未删除 1、已删除',
    `version` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '版本号',
    PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统角色表';
+) ENGINE=InnoDB COMMENT='系统角色表';
 
 CREATE TABLE `staff3`.`system_authority` (
     `authority_id` int(8) unsigned NOT NULL COMMENT '权限ID',
@@ -38,7 +38,7 @@ CREATE TABLE `staff3`.`system_authority` (
     `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除 | 0、未删除 1、已删除',
     `version` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '版本号',
     PRIMARY KEY (`authority_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统权限表';
+) ENGINE=InnoDB COMMENT='系统权限表';
 
 CREATE TABLE `staff3`.`system_role_authority` (
      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
@@ -52,7 +52,7 @@ CREATE TABLE `staff3`.`system_role_authority` (
      `version` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '版本号',
      PRIMARY KEY (`id`) USING BTREE,
      UNIQUE KEY `uniq_role_id_authority_id` (`role_id`,`authority_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统角色权限表';
+) ENGINE=InnoDB COMMENT='系统角色权限表';
 
 CREATE TABLE `staff3`.`staff_authority` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
@@ -67,4 +67,4 @@ CREATE TABLE `staff3`.`staff_authority` (
   `version` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '版本号',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uniq_staff_id_authority_id` (`staff_id`,`authority_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='员工权限表';
+) ENGINE=InnoDB COMMENT='员工权限表';

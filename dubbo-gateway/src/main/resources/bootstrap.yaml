@@ -179,5 +179,7 @@ authority:
         - /admin/staff/current
         - /admin/staff/login/page
         - /admin/staff/logout/page
+      dubbo-api-user:
+        - /user/**
 
 

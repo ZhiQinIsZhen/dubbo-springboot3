@@ -82,6 +82,8 @@ public class UserInfoController {
         AuthUserBO authUserBO = AuthContext.getAuthUser();
         page = Objects.nonNull(page) ? page : new PageDTO();
         RemotePage<UserLogoutLogBO> remotePage = remoteUserLogoutLogService.page(authUserBO.getAuthId(), BeanUtil.copyProperties(page, PageBO::new));
-        return PageResult.success(BeanUtil.copyRemotePage(remotePage, UserLogoutLogVO::new));
+        return PageResult.success(BeanUtil.copyRemotePage(remotePage, UserLogoutLogVO::new, (s, t) -> {
+            t.setType(s.getLogoutType());
+        }));
     }
 }

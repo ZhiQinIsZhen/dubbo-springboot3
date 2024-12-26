@@ -37,7 +37,7 @@ import java.io.IOException;
 })
 @Slf4j
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/auth")
 public class AuthenticationController {
 
     @Anonymous

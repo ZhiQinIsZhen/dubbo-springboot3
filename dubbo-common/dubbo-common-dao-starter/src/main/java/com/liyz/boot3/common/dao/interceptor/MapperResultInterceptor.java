@@ -62,7 +62,7 @@ public class MapperResultInterceptor implements Interceptor {
             List<Field> fields = containMap.get(first.getClass());
             if (CollectionUtils.isEmpty(fields)) {
                 fields = Arrays.stream(ReflectUtil.getFields(first.getClass()))
-                        .filter(f -> f.isAnnotationPresent(Desensitization.class))
+                        .filter(f -> f.isAnnotationPresent(Desensitization.class) && f.getAnnotation(Desensitization.class).dbResult())
                         .toList();
                 if (CollectionUtils.isEmpty(fields)) {
                     nonContainMap.put(first.getClass(), VALUE);
