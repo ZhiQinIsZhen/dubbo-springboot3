@@ -11,6 +11,7 @@ import com.liyz.boot3.common.remote.page.RemotePage;
 import com.liyz.boot3.common.service.util.BeanUtil;
 import com.liyz.boot3.security.client.annotation.AuthUser;
 import com.liyz.boot3.security.client.context.AuthContext;
+import com.liyz.boot3.security.client.dto.BaseDTO;
 import com.liyz.boot3.service.auth.bo.AuthUserBO;
 import com.liyz.boot3.service.user.bo.UserLoginLogBO;
 import com.liyz.boot3.service.user.bo.UserLogoutLogBO;
@@ -65,6 +66,12 @@ public class UserInfoController {
     @GetMapping("/current1")
     public Result<UserInfoVO> userInfo1(@AuthUser AuthUserBO authUser) {
         return Result.success(BeanUtil.copyProperties(remoteUserInfoService.getByUserId(authUser.getAuthId()), UserInfoVO::new));
+    }
+
+    @Operation(summary = "查询当前登录用户信息--切面注入")
+    @GetMapping("/current2")
+    public Result<UserInfoVO> userInfo(BaseDTO baseDTO) {
+        return Result.success(BeanUtil.copyProperties(remoteUserInfoService.getByUserId(baseDTO.getCurrentAuthId()), UserInfoVO::new));
     }
 
     @Operation(summary = "分页查询用户登录日志")

@@ -62,7 +62,7 @@ spring:
               args:
                 key-resolver: '#{@keyResolver}'
                 redis-rate-limiter.replenishRate: 1
-                redis-rate-limiter.burstCapacity: 300
+                redis-rate-limiter.burstCapacity: 3
                 redis-rate-limiter.requestedTokens: 1
             - name: GlobalAuthInfoHeaderFilter
               args:
@@ -150,6 +150,7 @@ anonymous:
   mapping:
     server:
       common-api:
+        - /*/doc.html
         - /*/v3/api-docs/**
         - /*/auth/register
         - /*/auth/login

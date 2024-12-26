@@ -1,5 +1,6 @@
 package com.liyz.boot3.security.client.config;
 
+import com.liyz.boot3.security.client.aspect.AuthInfoInjectionAspect;
 import com.liyz.boot3.security.client.constant.SecurityClientConstant;
 import com.liyz.boot3.security.client.context.AuthContext;
 import com.liyz.boot3.security.client.filter.JwtAuthenticationTokenFilter;
@@ -19,6 +20,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -52,6 +54,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@Import({AuthInfoInjectionAspect.class})
 @EnableConfigurationProperties(GatewayAuthHeaderProperties.class)
 public class AuthSecurityClientAutoConfig implements WebMvcConfigurer, InitializingBean {
 
