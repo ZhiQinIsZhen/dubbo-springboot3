@@ -1,0 +1,21 @@
+@startuml
+
+title 认证授权
+autonumber
+actor user
+user -> gateway: authority interface
+gateway -> gateway: GlobalRequestTimeFilter
+gateway -> gateway: GlobalCacheBodyFilter
+gateway -> serviceAuth: GlobalJWTFilter
+serviceAuth --> gateway: AuthUserBO
+gateway -> gateway: GlobalLimitFilter
+gateway -> serviceAuth: GlobalAuthorityFilter
+serviceAuth --> gateway: AuthGrantedAuthorityBO
+gateway -> gateway: GlobalAuthInfoHeaderFilter
+gateway -> apiAdmin: authority interface
+apiAdmin -> apiAdmin: JwtAuthenticationTokenFilter
+apiAdmin -> serviceStaff: interface
+serviceStaff --> apiAdmin: result
+apiAdmin --> gateway: result
+gateway --> user: result
+@enduml

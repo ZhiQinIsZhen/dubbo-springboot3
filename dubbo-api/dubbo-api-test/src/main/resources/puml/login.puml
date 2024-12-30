@@ -1,0 +1,19 @@
+@startuml
+
+title 登录过程
+autonumber
+actor user
+user -> gateway: login
+gateway -> apiAdmin: login
+apiAdmin -> apiAdmin: authenticationManager.authenticate
+apiAdmin -> apiAdmin: loadUserByUsername
+apiAdmin -> serviceAuth: login
+serviceAuth -> serviceStaff: login
+serviceStaff -> serviceStaff: save login log
+serviceStaff --> serviceAuth: staff info
+serviceAuth --> apiAdmin: staff info
+apiAdmin -> serviceAuth: create token
+serviceAuth --> apiAdmin: token
+apiAdmin --> gateway: token
+gateway --> user: login success and token
+@enduml

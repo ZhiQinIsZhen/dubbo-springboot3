@@ -14,9 +14,34 @@
 ![XxlJob Version](https://img.shields.io/badge/xxljob-2.4.2-brightgreen)
 ![Flowable Version](https://img.shields.io/badge/flowable-7.1.0-brightgreen)
 
-这是一个基于Jdk21，框架是Dubbo3 + Springboot3的脚手架。
+该项目基于JDK21 + Dubbo(3.3.x) + Springboot(3.4.x) 来进行搭建，主要提供Gateway层的认证、鉴权、限流，以及数据层面的分库分表的解决方案。
+![登录过程](/document/login.png)
+![认证过程](/document/authority.png)
 
-详细介绍下项目中使用的框架：基础架构是[SpringBoot3](https://spring.io/projects/spring-boot)，服务治理是[Apache Dubbo](https://cn.dubbo.apache.org/zh-cn/index.html)，ORM框架选用了[Mybatis-plus](https://baomidou.com/)，注册中心以及配置中心使用了[Nacos](https://nacos.io/zh-cn/)，网关选用了[Gateway](https://spring.io/projects/spring-cloud-gateway)，认证以及资源框架使用了[Spring Security](https://spring.io/projects/spring-security)，接口文档选用了[knife4j](https://doc.xiaominfo.com)，分布式定时任务选用了[ElasticJob](https://shardingsphere.apache.org/elasticjob)，链路追踪使用的是[Skywalking](https://skywalking.apache.org/)，流程框架使用的是[Flowable](https://www.flowable.com/open-source)。
+## 项目搭建框架
+
+- JDK：选择JDK21版本，因为该版本是长期支持的一个版本，并且支持虚拟线程，使得多数据组装在不使用多线程的情况下有更高效的查询。
+- [SpringBoot](https://spring.io/projects/spring-boot)：选择最新的3.4.x版本，当然了也可以选择3.3.x版本，在该项目中会持续迭代，使用最新版本来支撑。
+- [Apache Dubbo](https://cn.dubbo.apache.org/zh-cn/index.html)：选择最新的3.3.x版本，在3.3.x版本中，Dubbo来支持云原生框架来适应云部署。
+- [Gateway](https://spring.io/projects/spring-cloud-gateway)：网关选用Springcloud-gateway，并在其进行统一的认证、鉴权、限流，使得业务开发更加专注。
+- [Spring Security](https://spring.io/projects/spring-security)：认证框架选用Spring-security，全家桶，兼容性更强。
+- [Mybatis-plus](https://baomidou.com/)：ORM选择Mybatis-plus，它会使得Java程序猿更加专注业务逻辑，而不用生成或者编写sql.xml文件，从而提高开发效率。
+- [Nacos](https://nacos.io/zh-cn/)：作为所有服务的注册、配置中心，阿里出品，必属精品。
+- [knife4j](https://doc.xiaominfo.com)：接口文档使用它，因为页面清晰，对接、调试两不误，开发也不关心繁琐的文档编写，边写代码边生成文档。
+- [Skywalking](https://skywalking.apache.org/)：方便问题追踪，有兴趣的同学可以前往我的另一个项目[skywalking-java](https://github.com/ZhiQinIsZhen/skywalking-java)，输出日志自动注入链路ID，并将链路ID返回到Response Header中。
+   ```properties
+   # jvm启动参数
+   -javaagent:C:\skywalking-java\skywalking-agent\skywalking-agent.jar
+   -Dskywalking.agent.keep_tracing=true
+   -Dskywalking.agent.service_name=dubbo-service-auth
+   -Dskywalking.collector.backend_service=localhost:11800
+   
+   # Remote Debug配置监听
+   -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=6666
+   ```
+  
+- Job：支持[ElasticJob](https://shardingsphere.apache.org/elasticjob)，同时也支持[Xxl-Job](https://www.xuxueli.com/xxl-job/)
+- [Flowable](https://www.flowable.com/open-source)：后续会搭建出流程框架的使用。
 
 ## Skywalking配置
 
