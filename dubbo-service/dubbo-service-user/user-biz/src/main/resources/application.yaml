@@ -17,7 +17,7 @@ spring:
     timeout-per-shutdown-phase: 180s
 # datasource
   datasource:
-    url: jdbc:mysql://localhost:3306/user3?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/dubbo_user?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
     type: com.zaxxer.hikari.HikariDataSource
     username: root
     password: root

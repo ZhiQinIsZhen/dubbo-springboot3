@@ -19,7 +19,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@TableName("auth_jwt1")
+@TableName("auth_jwt")
 public class AuthJwtDO extends BaseDO implements Serializable {
     @Serial
     private static final long serialVersionUID = 4949126727508321753L;

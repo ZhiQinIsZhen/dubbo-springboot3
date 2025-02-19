@@ -18,7 +18,7 @@ spring:
         url: http://127.0.0.1:7060
 # datasource
   datasource:
-    url: jdbc:mysql://localhost:3306/staff3?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/dubbo_staff?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
     type: com.zaxxer.hikari.HikariDataSource
     username: root
     password: root
