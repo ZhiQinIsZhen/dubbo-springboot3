@@ -20,6 +20,9 @@ public class UserLoginLogBO implements Serializable {
     @Serial
     private static final long serialVersionUID = -8978119199629210583L;
 
+    /**
+     * 用户ID
+     */
     private Long userId;
 
     /**
@@ -27,9 +30,18 @@ public class UserLoginLogBO implements Serializable {
      */
     private Integer loginType;
 
+    /**
+     * 设备标识
+     */
     private Integer device;
 
+    /**
+     * 登录时间
+     */
     private Date loginTime;
 
+    /**
+     * 登录IP地址
+     */
     private String ip;
 }
