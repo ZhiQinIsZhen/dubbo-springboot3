@@ -13,26 +13,26 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <springboot.version>3.4.5</springboot.version>
-        <apache.dubbo.version>3.3.4</apache.dubbo.version>
-        <hutool.version>5.8.37</hutool.version>
+        <springboot.version>3.5.3</springboot.version>
+        <apache.dubbo.version>3.3.5</apache.dubbo.version>
+        <hutool.version>5.8.39</hutool.version>
         <google.guava.version>33.4.8-jre</google.guava.version>
         <knife4j.version>4.5.0</knife4j.version>
         <mybatis.plus.version>3.5.12</mybatis.plus.version>
-        <redisson.version>3.46.0</redisson.version>
+        <redisson.version>3.50.0</redisson.version>
         <io.jwt.version>0.12.6</io.jwt.version>
         <elasticjob.version>3.0.4</elasticjob.version>
-        <xxljob.version>3.1.0</xxljob.version>
-        <excel.version>4.0.3</excel.version>
-        <springboot.admin.version>3.4.5</springboot.admin.version>
-        <rocketmq.version>2.3.3</rocketmq.version>
-        <kafka.version>3.3.5</kafka.version>
+        <xxljob.version>3.1.1</xxljob.version>
+        <fast.excel.version>1.2.0</fast.excel.version>
+        <springboot.admin.version>3.5.1</springboot.admin.version>
+        <rocketmq.version>2.3.4</rocketmq.version>
+        <kafka.version>4.0.0-M2</kafka.version>
         <flowable.version>7.1.0</flowable.version>
         <shardingsphere.version>5.5.2</shardingsphere.version>
-        <alibaba.cloud.version>2023.0.3.2</alibaba.cloud.version>
+        <alibaba.cloud.version>2023.0.3.3</alibaba.cloud.version>
         <jsoup.version>1.20.1</jsoup.version>
-        <prometheus.version>1.14.6</prometheus.version>
-        <springdoc.version>2.8.6</springdoc.version>
+        <prometheus.version>1.15.1</prometheus.version>
+        <springdoc.version>2.8.9</springdoc.version>
     </properties>
 
     <dependencyManagement>
@@ -144,9 +144,9 @@
                 <version>${io.jwt.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>easyexcel</artifactId>
-                <version>${excel.version}</version>
+                <groupId>cn.idev.excel</groupId>
+                <artifactId>fastexcel</artifactId>
+                <version>${fast.excel.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.shardingsphere.elasticjob</groupId>

@@ -1,6 +1,6 @@
 package com.liyz.boot3.api.test.controller.export;
 
-import com.alibaba.excel.EasyExcel;
+import cn.idev.excel.EasyExcel;
 import com.liyz.boot3.api.test.dto.export.ExportDTO;
 import com.liyz.boot3.api.test.excel.SscStaffExcel;
 import com.liyz.boot3.api.test.result.Result;

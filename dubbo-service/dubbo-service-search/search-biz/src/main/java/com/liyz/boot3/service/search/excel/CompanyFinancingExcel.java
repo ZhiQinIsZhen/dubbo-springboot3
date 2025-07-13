@@ -1,7 +1,7 @@
 package com.liyz.boot3.service.search.excel;
 
-import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.annotation.format.DateTimeFormat;
+import cn.idev.excel.annotation.ExcelProperty;
+import cn.idev.excel.annotation.format.DateTimeFormat;
 import lombok.Getter;
 import lombok.Setter;
 

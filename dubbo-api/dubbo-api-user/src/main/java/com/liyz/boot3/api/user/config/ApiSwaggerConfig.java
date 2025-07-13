@@ -19,7 +19,8 @@ public class ApiSwaggerConfig extends SwaggerConfig {
     public GroupedOpenApi allGroupedOpenApi() {
         return GroupedOpenApi
                 .builder()
-                .group("全部")
+                .displayName("全部")
+                .group("all")
                 .packagesToScan("com.liyz.boot3.api.user.controller")
                 .build();
     }
@@ -28,7 +29,8 @@ public class ApiSwaggerConfig extends SwaggerConfig {
     public GroupedOpenApi authGroupedOpenApi() {
         return GroupedOpenApi
                 .builder()
-                .group("鉴权")
+                .displayName("鉴权")
+                .group("authentication")
                 .packagesToScan("com.liyz.boot3.api.user.controller.authen")
                 .build();
     }
@@ -37,7 +39,8 @@ public class ApiSwaggerConfig extends SwaggerConfig {
     public GroupedOpenApi searchGroupedOpenApi() {
         return GroupedOpenApi
                 .builder()
-                .group("搜索")
+                .displayName("搜索")
+                .group("search")
                 .packagesToScan("com.liyz.boot3.api.user.controller.search")
                 .build();
     }
@@ -46,7 +49,8 @@ public class ApiSwaggerConfig extends SwaggerConfig {
     public GroupedOpenApi userGroupedOpenApi() {
         return GroupedOpenApi
                 .builder()
-                .group("用户")
+                .displayName("用户")
+                .group("user")
                 .packagesToScan("com.liyz.boot3.api.user.controller.user")
                 .build();
     }
@@ -55,7 +59,8 @@ public class ApiSwaggerConfig extends SwaggerConfig {
     public GroupedOpenApi testGroupedOpenApi() {
         return GroupedOpenApi
                 .builder()
-                .group("测试")
+                .displayName("测试")
+                .group("test")
                 .packagesToScan("com.liyz.boot3.api.user.controller.test")
                 .build();
     }

@@ -1,8 +1,8 @@
 package com.liyz.boot3.service.search.provider.company;
 
+import cn.idev.excel.EasyExcel;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
-import com.alibaba.excel.EasyExcel;
 import com.liyz.boot3.common.search.query.LambdaQueryWrapper;
 import com.liyz.boot3.common.search.response.AggResponse;
 import com.liyz.boot3.common.service.util.BeanUtil;

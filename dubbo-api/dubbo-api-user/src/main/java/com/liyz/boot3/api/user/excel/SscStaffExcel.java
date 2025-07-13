@@ -1,6 +1,6 @@
 package com.liyz.boot3.api.user.excel;
 
-import com.alibaba.excel.annotation.ExcelProperty;
+import cn.idev.excel.annotation.ExcelProperty;
 import lombok.Getter;
 import lombok.Setter;
 

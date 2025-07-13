@@ -12,7 +12,7 @@
     <artifactId>dubbo-gateway</artifactId>
 
     <properties>
-        <spring.cloud.gateway.version>4.2.0</spring.cloud.gateway.version>
+        <spring.cloud.gateway.version>4.3.0</spring.cloud.gateway.version>
     </properties>
 
     <dependencies>
@@ -50,7 +50,7 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
-            <version>4.2.0</version>
+            <version>4.3.0</version>
         </dependency>
         <dependency>
             <groupId>de.codecentric</groupId>

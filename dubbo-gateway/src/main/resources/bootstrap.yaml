@@ -33,41 +33,43 @@ spring:
       enabled: true
     #gateway-#路由规则
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
-      routes:
-        - id: dubbo-api-admin
-          uri: http://localhost:7071
-          predicates:
-            - Path=/admin/**
-          filters:
-            - name: GlobalLimitFilter
-              args:
-                key-resolver: '#{@keyResolver}'
-                redis-rate-limiter.replenishRate: 1
-                redis-rate-limiter.burstCapacity: 3
-                redis-rate-limiter.requestedTokens: 1
-            - name: GlobalAuthInfoHeaderFilter
-              args:
-                name: AUTH_INFO
-                value: BdbGFURCLfHFgg3qmhaBxG0LG6rYuhST
-        - id: dubbo-api-user
-          uri: http://localhost:7072
-          predicates:
-            - Path=/user/**
-          filters:
-            - name: GlobalLimitFilter
-              args:
-                key-resolver: '#{@keyResolver}'
-                redis-rate-limiter.replenishRate: 1
-                redis-rate-limiter.burstCapacity: 3
-                redis-rate-limiter.requestedTokens: 1
-            - name: GlobalAuthInfoHeaderFilter
-              args:
-                name: AUTH_INFO
-                value: BdbGFURCLfHFgg3qmhaBxG0LG6rYuhST
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+          routes:
+            - id: dubbo-api-admin
+              uri: http://localhost:7071
+              predicates:
+                - Path=/admin/**
+              filters:
+                - name: GlobalLimitFilter
+                  args:
+                    key-resolver: '#{@keyResolver}'
+                    redis-rate-limiter.replenishRate: 1
+                    redis-rate-limiter.requestedTokens: 1
+                    redis-rate-limiter.burstCapacity: 3
+                - name: GlobalAuthInfoHeaderFilter
+                  args:
+                    name: AUTH_INFO
+                    value: BdbGFURCLfHFgg3qmhaBxG0LG6rYuhST
+            - id: dubbo-api-user
+              uri: http://localhost:7072
+              predicates:
+                - Path=/user/**
+              filters:
+                - name: GlobalLimitFilter
+                  args:
+                    key-resolver: '#{@keyResolver}'
+                    redis-rate-limiter.replenishRate: 1
+                    redis-rate-limiter.burstCapacity: 3
+                    redis-rate-limiter.requestedTokens: 1
+                - name: GlobalAuthInfoHeaderFilter
+                  args:
+                    name: AUTH_INFO
+                    value: BdbGFURCLfHFgg3qmhaBxG0LG6rYuhST
   # redis
   data:
     redis:
@@ -127,7 +129,7 @@ knife4j:
         context-path: /user
         order: 101
       - name: 用户前台服务-鉴权
-        url: /user/v3/api-docs/authen?group=default
+        url: /user/v3/api-docs/authentication?group=default
         service-name: dubbo-api-user
         context-path: /user
         order: 102

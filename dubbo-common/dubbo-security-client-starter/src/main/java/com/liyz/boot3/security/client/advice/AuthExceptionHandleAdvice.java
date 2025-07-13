@@ -10,6 +10,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -36,5 +37,10 @@ public class AuthExceptionHandleAdvice {
     @ExceptionHandler({AccessDeniedException.class})
     public Result<String> accessDeniedException(Exception exception) {
         return Result.error(AuthExceptionCodeEnum.NO_RIGHT);
+    }
+
+    @ExceptionHandler({AuthenticationException.class})
+    public Result<String> authenticationException(Exception exception) {
+        return Result.error(AuthExceptionCodeEnum.USER_NOT_EXIST);
     }
 }
